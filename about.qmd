@@ -1,1 +1,5 @@
-/home/albarran/Archivos/teaching/MAD/000/gh/AnalDatos/about.qmd
+---
+title: "About"
+---
+
+About this site

@@ -1,1 +1,3 @@
-/home/albarran/Archivos/teaching/MAD/000/gh/AnalDatos/.gitignore
+/.quarto/
+/_site/
+.Rproj.user
