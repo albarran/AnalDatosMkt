@@ -1,1 +1,18 @@
-/home/albarran/Archivos/teaching/MAD/000/gh/AnalDatos/styles.css
+/* https://stackoverflow.com/questions/74100418/inline-images-in-quarto-markdown */
+.center{
+  margin: 0!important;
+  height: 30px;
+}
+
+.scrollable {
+    height: 100%;
+    overflow-y: scroll  !important;
+    scrollbar-gutter: stable both-edges;
+    overflow: scroll;
+    scrollbar-color: red orange;
+    scrollbar-width: thin;
+}
+
+.MathJax {
+    font-size: 80% !important;
+}
