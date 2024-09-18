@@ -42,7 +42,7 @@ strip-comments: true
 (6-Nov. a 10-Nov.)
 
   * [Tema 05 - Ejercicio](docs/Tema05ejWebScrap.qmd)
-    - Fecha:  mie. 29-Nov. 23:59h 
+    - Fecha:  mie. 29-Nov. 23:59h
 
   * [Tema 07 - Ejercicio](docs/Tema07ej.qmd)
     - Fecha:  mie. 29-Nov. 23:59h 
