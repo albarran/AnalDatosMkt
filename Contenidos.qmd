@@ -42,7 +42,7 @@ strip-comments: true
 (6-Nov. a 10-Nov.)
 
   * [Tema 05 - Ejercicio](docs/Tema05ejWebScrap.qmd)
-    - Fecha:  mie. 29-Nov. 23:59h
+    - Fecha:  mie. 29-Nov. 23:59h 
 
   * [Tema 07 - Ejercicio](docs/Tema07ej.qmd)
     - Fecha:  mie. 29-Nov. 23:59h 
@@ -76,30 +76,24 @@ strip-comments: true
 (2-Oct. a 6-Oct.)
 
   * [Tema 02 - Ejercicio](docs/Tema02ej.qmd)
-
-## Semana 3
-(25-Sept. a 29-Sept.)
-
-  * [Tema 02 - Manipulación de datos relacionales](docs/Tema02.qmd)
-
 -->
 
 <!-- *********************************************************************  -->
+
+
+## Semana 3
+(23-Sept. a 29-Sept.)
+
+  * [Tema 01 - Visualización de Datos](docs/Tema01.qmd)
+  * [Tema 01 - Ejercicio](docs/Tema01ej.qmd)
+    - Fecha límite de entrega: **vie., 04-oct., 23:59h**
 
 ## Semana 2
 (16-Sept. a 22-Sept.)
 
   * [Tema 0 - Ejercicio 1](docs/Tema00ej1.qmd)
 
-<!--
-  * [Tema 0 - Ejercicio 2](docs/Tema00ej2.qmd)
-
-  * Fecha límite de entrega de los ejercicios del Tema 0: **vie., 22-sept., 23:59h**
-
-  * [Tema 01 - Transformación de datos](docs/Tema01.qmd)
-  * [Tema 01 - Ejercicio 1](docs/Tema01ej1.qmd)
-
--->
+    - Fecha límite de entrega: **vie., 04-oct., 23:59h**
 
 ## Semana 1
 (09-Sept. a 15-Sept.)
