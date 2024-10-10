@@ -32,8 +32,8 @@ strip-comments: true
 
 * Tema 2:
 
+  + [VentasTabla](https://raw.githubusercontent.com/albarran/00datos/main/VentasTabla.xlsx)
   + [Empleados](https://raw.githubusercontent.com/albarran/00datos/main/empleados.csv.zip)
-
 
 <!--
 * Tema 5:
