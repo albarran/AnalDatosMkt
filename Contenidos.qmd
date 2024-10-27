@@ -46,15 +46,14 @@ strip-comments: true
 
   * [Tema 07 - Ejercicio](docs/Tema07ej.qmd)
     - Fecha:  mie. 29-Nov. 23:59h 
-
-## Semana 8
-(30-Oct. a 3-Nov.)
-
   * [Tema 07 - Fundamentos Estadísticos](docs/Tema07.qmd)
 
 -->
 
 <!-- *********************************************************************  -->
+
+## Semana 8
+(28-Oct. a 03-Nov.)
 
 ## Semana 7
 (21-Oct. a 27-Oct.)
