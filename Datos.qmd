@@ -39,18 +39,18 @@ strip-comments: true
 
   + [DosTablas](https://raw.githubusercontent.com/albarran/00datos/main/DosTablas.xlsx)
 
-
 * Tema 5:
 
   + [BankMarketing.csv](https://raw.githubusercontent.com/albarran/00datos/main/BankMarketing.csv)
 
   + [BostonHousing.csv](https://raw.githubusercontent.com/albarran/00datos/main/BostonHousing.csv)
 
-<!--
-* Tema 7:
+
+* Tema 6:
 
   + [discount.csv](https://raw.githubusercontent.com/albarran/00datos/main/discount.csv)
 
+<!--
 
 * Tema 8:
 

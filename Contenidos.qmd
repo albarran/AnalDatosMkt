@@ -52,6 +52,8 @@ strip-comments: true
 (04-Nov. a 10-Nov.)
 
   * [Tema 05 - Ejercicio](docs/Tema05ej1.qmd)
+    - Fecha límite de entrega: **dom., 17-nov., 23:59h**
+  * [Tema 06 - Modelización: métodos estadísticos](docs/Tema06.qmd)
 
 ## Semana 8
 (28-Oct. a 03-Nov.)
