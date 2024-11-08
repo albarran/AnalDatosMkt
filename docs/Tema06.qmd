@@ -113,6 +113,8 @@ library(kableExtra)
 library(rmarkdown)
 #render("filename.Rmd")     
 #browseURL("filename.html")
+
+options(scipen=999)  # no usar notación científica
 ```
 
 # Métodos Estadísticos
@@ -1116,7 +1118,12 @@ $$
    
 ## Regresión Lineal: Estimación (cont.)
 
-* Los parámetros del modelo $f(.)$ estimado, en este caso los $\small \beta_j$  son estadísticos con **variabilidad muestral**, medida por  su **error estándar** $\small se(\widehat{\beta}_j)$ <!--mide la precisión del coeficiente estimado -->
+::: {style="font-size: 92%;"} 
+
+* Los parámetros del modelo $f(.)$ estimado, en este caso los $\small \beta_j$, son estadísticos con **variabilidad muestral**, medida por  su **error estándar** $\small se(\widehat{\beta}_j)$ <!--mide la precisión del coeficiente estimado -->
+
+    * Estos se usan para construir intervalos de confianza y para contrastar hipótesis sobre los parámetros poblacionales, p.e., significatividad ($\small \beta_1=0$) y signo
+
 
 <!--
 :::: {style="display: flex;"}
@@ -1146,29 +1153,43 @@ $$
 ::::
 -->
 
-* Se usan para construir intervalos de confianza y <!--estadísticos--> para contrastar hipótesis sobre los parámetros poblacionales, p.e., significatividad ($\small \beta_1=0$)
+<!-- 
+* Se usan para construir intervalos de confianza y estadísticos para contrastar hipótesis sobre los parámetros poblacionales, p.e., significatividad ($\small \beta_1=0$)
 
-<!--    
+   
     + individual: $\small H_0: \beta_1=0$ con un estadístico $\small t=\frac{\widehat{\beta}_1-0}{se(\widehat{\beta}_1)}$
     + conjunta: $\small H_0: \beta_1=\beta_2=\dots=\beta_k=0$ con un estadístico $\small F$
 -->
 
 <!-- * Medidas de la precisión del modelo: $\small MSE$ o $\small R^2=1-\frac{SCR}{SCT} = \frac{SCE}{SCT}$  -->
 
-* En R, usamos la función `lm()`
+* La función `lm()` con la notación de fórmula crea un objeto <!--de
+regresión: una -->lista con resultados <!--varios resultados almacenados-->
+
 
 ```{r}
 descuento <- read.csv("data/descuento.csv") %>% 
               mutate(zona = parse_factor(zona))
 modelo <- lm(data = descuento, ventas ~ renta + descuento)
 summary(modelo)
+nobs(modelo)
 ```
 
 * La predicción $\widehat{y}$ también está sujeta a incertidumbre por la estimación: se puede calcular su error estándar e intervalos de confianzas
 
 ```{r}
-ventas_pred <- predict(modelo, type = "response")
-cbind(descuento$ventas, ventas_pred) %>% head()
+pred <- predict(modelo, type = "response", 
+                se.fit = T, interval = "confidence")
+cbind(descuento$ventas, pred$fit, pred$se.fit) %>% head()
+```
+
+
+```{r}
+#| echo: false
+ventas_pred <- predict(modelo, type = "response", se.fit = T)
+
+(a <- predict(modelo, type = "response", interval = "confidence"))
+(b <- predict(modelo, type = "response", interval = "prediction"))
 ```
 
 <!--   
@@ -1289,13 +1310,25 @@ zona <- sample(c("pueblo", "ciudad", "capital"), size = n, replace = TRUE, prob 
 
 
 # Creación de la variable de ventas que depende de renta y descuento
-ventas <- -500 + 0.95 * renta -0.0002 * renta^2 + 100 * descuento + 
-  100 * descuento * (renta < 2500) + 150 * descuento * (renta < 1000) +
-  100 * (zona == "ciudad") + 500 * (zona=="capital") + 
+# ventas <- -500 + 0.95 * renta -0.0002 * renta^2 + 100 * descuento + 
+#   100 * descuento * (renta < 2500) + 150 * descuento * (renta < 1000) +
+#   100 * (zona == "ciudad") + 500 * (zona=="capital") + 
+#   rnorm(n, mean = 0, sd = 200)
+
+ventas <- 00 + .8 * (renta-1500) -0.0005 * (renta-1500)^2 + 450 * descuento +
+  #50 * descuento * (renta < 2500) +  200 * descuento * (renta < 1000) +
+  - 0.25 * descuento * (renta-1250)  +  
+  # 100 * descuento * (renta < 1000) +   
+  100 * (zona == "ciudad") + 500 * (zona=="capital") +
   rnorm(n, mean = 0, sd = 200)
+
 
 # Crear data frame
 datos <- data.frame(ventas, renta, descuento, zona)
+
+datos %>% ggplot(aes(x=renta, y=ventas)) + geom_point() + 
+                   geom_smooth(method = "lm", formula = y ~ x + I(x^2),
+                               se = FALSE)
 
 # Exportar el data frame a un archivo CSV
 write.csv(datos, "data/descuento.csv", row.names = FALSE)
@@ -1304,11 +1337,15 @@ write.csv(datos, "data/descuento.csv", row.names = FALSE)
 modelo1 <- lm(ventas ~ renta + I(renta^2) + descuento + descuento:renta  + zona , data = datos)
 summary(modelo1)
 
+
+modelo1b <- lm(ventas ~ renta + I(renta^2) + descuento , data = datos)
+summary(modelo1b)
+
 modelo2 <- lm(ventas ~ descuento, data = datos)
 summary(modelo2)
 
-modelo2 <- lm(ventas ~ descuento + renta, data = datos)
-summary(modelo2)
+modelo3 <- lm(ventas ~ descuento + renta, data = datos)
+summary(modelo3)
 
 ```
 
@@ -1351,26 +1388,64 @@ lm(data = datos, sales ~ discount + income) %>% summary()
 ```
 -->
 
+:::
+
+## Ampliando el Modelo de Regresión Lineal
+
+* Para incorporar información **cualitativa** en el modelo, se debe incluir una variable binaria para cada categoría, excepto una (grupo de referencia)
+
+    * Los coeficientes de cada variable binaria son el efecto diferencial de ese grupo respecto al grupo de referencia
+    
+    * Al incluir un **factor**, se crean automáticamente las variables binarias
+
+::: {style="font-size: 90%;"} 
+```{r}
+lm(data = descuento, ventas ~ zona) %>% summary()
+lm(data = descuento, ventas ~ renta + descuento + zona) %>% summary()
+```
+:::
+
+. . .
+
+* Podemos modelizar relaciones **no lineales** entre la variable dependiente y las explicativas incluyendo **transformaciones** de variables como logaritmos, polinomios, interacciones, etc.
+
+* PERO la interpretación del cambio de un regresor sobre $\small Y$ es diferente
+
 ## Regresión Lineal: superando la linealidad
 
-* Se pueden incluir transformaciones no lineales de las variables del modelo 
+::: {style="font-size: 90%;"} 
+* Usando logaritmos, modelizamos cambios porcentuales en las variables
 
-<!--, como logaritmos o incluir términos polinomiales-->
-
-* La interpretación del cambio de un regresor sobre $\small Y$ es diferente
 ```{r}
-lm(data=descuento, log(ventas) ~ renta + I(renta^2) + descuento) %>% summary()
+lm(data=descuento, log(ventas) ~ log(renta) + descuento) %>% summary()
+lm(data=descuento, log(ventas) ~ renta + descuento) %>% summary()
 ```
+
+* Usando polinomios en los regresores, modelizamos efectos no lineales; esto implica que el efecto de $\small X$ sobre $\small Y$ depende de $\small X$
+
+
+```{r}
+lm(data=descuento, ventas ~ renta + I(renta^2) + descuento) %>% summary()
+ggplot(descuento, aes(x=renta, y=ventas)) + geom_point() + 
+  geom_smooth(method = "lm", formula = y ~ x + I(x^2))
+```
+
+
 * Otra forma de permitir no linealidades es discretizando variables continuas: permite efectos "escalón" diferentes para distintos valores
 
 ```{r}
-lm(data=descuento , ventas ~ cut_width(renta, 500) + descuento) %>% summary()
+lm(data=descuento, ventas ~ descuento  + 
+     cut(renta, seq(0, 4000, 1000), include.lowest = T)) %>% summary()
+ggplot(descuento, aes(x=renta, y=ventas)) + geom_point() + 
+  geom_smooth(method = "lm", formula = y ~ cut(x, seq(0, 4000, 1000), include.lowest = T))
 ```
+
+<!--
 
 * Se incluyen indicadores binarios para cada clase excepto uno
   + la constante recoge el valor medio de $\small Y$ para ese grupo de referencia
   + cada coeficiente recoge el efecto adicional de su grupo sobre $\small Y$ 
-
+-->
 
 ```{r}
 #| echo: false
@@ -1441,6 +1516,8 @@ lm(data=Carseats %>% filter(Sales != 0), log(Sales) ~ poly(Advertising,2))
 lm(data=Carseats , Sales ~ cut_width(Advertising, 10)) %>% summary()
 ```
 -->
+
+:::
 
 ## Regresión Lineal: superando la linealidad (cont.)
 
