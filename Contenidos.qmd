@@ -25,7 +25,6 @@ strip-comments: true
 (27-Nov. a 03-Dic.)
 
   * [Tema 11 - kNN](docs/Tema11.qmd)
-  * [Tema 12 - Métodos basados en árboles](docs/Tema12.qmd)
 
 -->
 
@@ -36,6 +35,8 @@ strip-comments: true
 
   * [Tema 08 - Ejemplo 1](docs/Tema08ej1.qmd)
   * [Tema 08 - Ejercicio 2](docs/Tema08ej2.qmd)
+
+  * [Tema 09 - Métodos basados en árboles](docs/Tema09.qmd)
 
 ## Semana 11
 (18-Nov. a 24-Nov.)
