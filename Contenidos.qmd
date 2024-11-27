@@ -20,23 +20,23 @@ strip-comments: true
 
   * [Tema 10 - Ejercicio](docs/Tema10ej.qmd)
   * [Ejemplo de **Proyecto Final**](docs/Proyect01.qmd)
-
-## Semana 12
-(27-Nov. a 03-Dic.)
-
   * [Tema 11 - kNN](docs/Tema11.qmd)
 
 -->
 
 <!-- *********************************************************************  -->
 
+## Semana 13
+(02-Dic. a 08-Dic.)
+
+  * [Tema 08 - Ejercicio 2](docs/Tema08ej2.qmd)
+  
+  * [Tema 09 - Métodos basados en árboles](docs/Tema09.qmd)
+
 ## Semana 12
 (25-Nov. a 01-Dic.)
 
   * [Tema 08 - Ejemplo 1](docs/Tema08ej1.qmd)
-  * [Tema 08 - Ejercicio 2](docs/Tema08ej2.qmd)
-
-  * [Tema 09 - Métodos basados en árboles](docs/Tema09.qmd)
 
 ## Semana 11
 (18-Nov. a 24-Nov.)
