@@ -48,7 +48,7 @@ strip-comments: true
 (11-Nov. a 17-Nov.)
 
   * [Tema 06 - Ejercicio 1](docs/Tema06ej1.qmd)
-    - Fecha límite de entrega: **dom., 01-dic., 23:59h**
+    - Fecha límite de entrega: **dom., 08-dic., 23:59h**
 
 ## Semana 9
 (04-Nov. a 10-Nov.)
