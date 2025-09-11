@@ -230,6 +230,7 @@ b) Añadir una columna con el valor total de las ventas (nacionales más interna
 
 ```{r ej2.b}
 #| echo: false
+#| eval: false 
 ###---------- Apartado 2.b) ----------------------------------------------------
 
 # Calcular total ventas
@@ -243,6 +244,7 @@ c) Calcular la media del valor de las ventas internacionales (media sobre todos 
 
 ```{r ej2.c}
 #| echo: false
+#| eval: false
 ###---------- Apartado 2.c) ----------------------------------------------------
 
 # media del valor de las ventas internacionales
