@@ -1,6 +1,6 @@
 ---
-subtitle: "Técnicas para 'Big Data' en Economía - Curso 2023/24 \n\n Universidad de Alicante"
-# subtitle: "Análisis de Datos Multivariantes aplicado al Marketing - Curso 2023/24 \n\n Universidad de Alicante"
+#subtitle: "Técnicas para 'Big Data' en Economía - Curso 2023/24 \n\n Universidad de Alicante"
+subtitle: "Análisis de Datos Multivariantes aplicado al Marketing - Curso 2025/26 \n\n Universidad de Alicante"
 # subtitle: "Muestreo y Análisis de Datos - Universidad de Alicante"
 # subtitle: "Econometría II - Curso 2023/24 \n\n Universidad de Alicante"
 title    :  "Tema 0. Introducción a R. Ejercicio 1"
@@ -213,6 +213,7 @@ a) Los archivos [`Ventas2a.xlsx`](https://raw.githubusercontent.com/albarran/00d
 
 ```{r ej.2b}
 #| echo: false
+#| eval: false
 ###---------- Apartado 2.a) ----------------------------------------------------
 
 datos2a <- import("Ventas2a.xlsx")
