@@ -30,12 +30,11 @@ strip-comments: true
 
   * [Tema 10 - Ejemplo 1](docs/Tema10ej1.qmd)
 
-
 ## Semana 13
 (02-Dic. a 08-Dic.)
 
   * [Tema 08 - Ejercicio 2](docs/Tema08ej2.qmd)
-    - Fecha límite de entrega: **jue., 19-dic., 23:59h**
+    - Fecha límite de entrega: **dom., 15-dic., 23:59h**
 
   * [Tema 09 - Métodos basados en árboles](docs/Tema09.qmd)
 
@@ -59,30 +58,30 @@ strip-comments: true
     - Fecha límite de entrega: **dom., 08-dic., 23:59h**
 
 ## Semana 9
-(04-Nov. a 10-Nov.)
+(4-Nov. a 10-Nov.)
 
   * [Tema 05 - Ejercicio](docs/Tema05ej1.qmd)
     - Fecha límite de entrega: **dom., 17-nov., 23:59h**
   * [Tema 06 - Modelización: métodos estadísticos](docs/Tema06.qmd)
 
 ## Semana 8
-(28-Oct. a 03-Nov.)
+(28-Oct. a 3-Nov.)
 
+  * [Tema 05 - Análisis Exploratorio de Datos](docs/Tema05.qmd)
 
 ## Semana 7
 (21-Oct. a 27-Oct.)
 
   * [Tema 03 - Ejercicio](docs/Tema03ej.qmd)
-  * [Tema 05 - Análisis Exploratorio de Datos](docs/Tema05.qmd)
+
+  * [Tema 04 - Introducción a Quarto](docs/Tema04.qmd)
+  * [Tema 04 - Ejercicio](docs/Tema04ej.qmd)
+    - Fecha límite de entrega: **dom., 03-nov., 23:59h**
 
 ## Semana 6
 (14-Oct. a 20-Oct.)
 
   * [Tema 03 - Datos relacionales](docs/Tema03.qmd)
-
-  * [Tema 04 - Introducción a Quarto](docs/Tema04.qmd)
-  * [Tema 04 - Ejercicio](docs/Tema04ej.qmd)
-    - Fecha límite de entrega: **jue., 31-oct., 23:59h**
 
 ## Semana 5
 (07-Oct. a 13-Oct.)
@@ -103,15 +102,17 @@ strip-comments: true
 *********************************************************************  
 
 -->
+
 ## Semana 2
 (15-Sept. a 21-Sept.)
 
   * [Tema 0 - Ejercicio 1](docs/Tema00ej1.qmd)
 
-    - Fecha límite de entrega: **vie., 03-oct., 23:59h**
+    - Fecha límite de entrega: **dom., 21-sep., 23:59h**
 
 
-  
+
+
 ## Semana 1
 (08-Sept. a 14-Sept.)
 
