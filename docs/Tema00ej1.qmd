@@ -1,15 +1,9 @@
 ---
-#subtitle: "Técnicas para 'Big Data' en Economía - Curso 2025/26  \n\n Universidad de Alicante"
-subtitle: "Análisis de Datos Multivariantes aplicado al Marketing - Curso 2025/26 \n\n Universidad de Alicante"
-#subtitle: "Muestreo y Análisis de Datos - Curso 2025/26  \n\n
-#Universidad de Alicante"
-# subtitle: "Econometría II - Curso 2023/24 \n\n Universidad de Alicante"
 title    :  "Tema 0. Introducción a R. Ejercicio 1"
 author:  
     - "Pedro Albarrán"
 #    - "Teresa Molina"
-# institute: "Dpto. de Fundamentos del Análisis Económico. Universidad de Alicante"
-   
+ 
 # institute: 
 #     - "Dpto. de Fundamentos del Análisis Económico. Universidad de Alicante"
 #     - "Dpto. de Fundamentos del Análisis Económico. Universidad de Alicante"
@@ -55,7 +49,6 @@ toc: false
 # css: styles.css
 ---
 
-
 ```{r setup}
 #| include: false
 library(kableExtra)
@@ -64,10 +57,7 @@ library(rio)
 library(knitr)
 ```
 
-
-* En este ejercicio vamos a practicar los conceptos básicos de R. Debéis escribir un archivo de código de R con los comandos necesarios para responder a los siguientes ejercicios. Podéis encontrar una plantilla [aquí](Tema00ej1_12345678.R)
-
-
+- En este ejercicio vamos a practicar los conceptos básicos de R. Debéis escribir un archivo de código de R con los comandos necesarios para responder a los siguientes ejercicios. Podéis encontrar una plantilla [aquí](Tema00ej1_123456789.R)
 
 ```{r}
 #| echo: false
@@ -83,7 +73,6 @@ library(knitr)
 ## DNI:    (reemplaza esto con tu DNI, o similar)
 ############################################################
 ```
-
 
 # Apartado 1
 
@@ -112,7 +101,7 @@ export(datos1, "datos/Ventas1.xlsx", overwrite = TRUE)
 
 El archivo [`Ventas1.xlsx`](https://raw.githubusercontent.com/albarran/00datos/main/Ventas1.xlsx) contiene las ventas de dos tiendas, A y B, de Lunes a Viernes. Calcular las ventas totales (sumando ambas tiendas) para cada día, las ventas totales de ambas tiendas en toda la semana y las ventas medias de la semana de la tienda A.
 
-  NOTA: se recomienda crear un proyecto de RStudio y guardar el archivo `Ventas1.xlsx` en la carpeta.
+NOTA: se recomienda crear un proyecto de RStudio y guardar el archivo `Ventas1.xlsx` en la carpeta.
 
 ```{r ej1}
 #| echo: false
@@ -205,9 +194,7 @@ export(mVentas2, "datos/Ventas2b.xlsx", overwrite = TRUE)
 
 ```
 
-
 a) Los archivos [`Ventas2a.xlsx`](https://raw.githubusercontent.com/albarran/00datos/main/Ventas2a.xlsx) y [`Ventas2b.xlsx`](https://raw.githubusercontent.com/albarran/00datos/main/Ventas2b.xlsx) contiene el valor de las ventas de tres productos cada uno, a nivel nacional y a nivel internacional (en millones de euros). Combinar ambos conjuntos de datos en uno solo con las información de todos los productos.
-
 
 ```{r ej.2b}
 #| echo: false
@@ -222,7 +209,6 @@ datos2 <- rbind(datos2a, datos2b)
 
 datos2
 ```
-
 
 b) Añadir una columna con el valor total de las ventas (nacionales más internacionales) de cada producto.
 
@@ -301,7 +287,7 @@ datos2$compradoresN <- datos2$Nacional / datos2[[5]]
 datos2$compradoresI <- datos2$Internacional / datos2[[6]]
 ```
 
-
+````{=html}
 <!--
 # Apartado 3
 
@@ -361,13 +347,14 @@ class(comparar_clientes)
 # satisf_vector[2] > satisf_vector[5]
 ```
 -->
+````
 
 # Apartado 3
 
-a) El conjunto de datos `mtcars` está incluido en R por defecto; buscar en la ayuda de RStudio `mtcars` para conocer las variables que incluye. Comprobar la estructura con `str()` y visualizar las primeras observaciones con `head()`. 
+a) El conjunto de datos `mtcars` está incluido en R por defecto; buscar en la ayuda de RStudio `mtcars` para conocer las variables que incluye. Comprobar la estructura con `str()` y visualizar las primeras observaciones con `head()`.
 
     * Generar la variable (escalar) `Datsun710_CV` con los caballos de potencia del coche modelo Datsun 710.
-    
+
     * Generar el vector `Valiant_vector` con toda la información (esto es, variables) disponibles sobre el coche modelo `Valiant`.
 
 ```{r ej.4a}
@@ -460,6 +447,7 @@ media_consumo_autom_cyl4
 #planets_df[positions, ]
 ```
 
+````{=html}
 <!--
 # Apartado 5
 
@@ -503,20 +491,18 @@ media_datos_5 <- mean(mi_lista[[3]][1:5,1])
 media_datos_5
 ```
 -->
+````
 
 # Entrega del ejercicio
 
-Rellenad este [FORMULARIO](https://docs.google.com/forms/d/e/1FAIpQLSfNcz7-CZ4fZOFL4KJzgVNGpcrVMSTjzqsRX8e5HW08hb3B1g/viewform) con vuestros datos y subid 
+Rellenad este [FORMULARIO](https://docs.google.com/forms/d/e/1FAIpQLSfNcz7-CZ4fZOFL4KJzgVNGpcrVMSTjzqsRX8e5HW08hb3B1g/viewform) con vuestros datos y subid
 
-  * vuestro archivo de R 
-    
+-   vuestro archivo de R
+
 <!--  * el fichero .csv que utilizáis.. -->
-    
-IMPORTANTE: el nombre de los ficheros que subáis DEBE  seguir el  siguiente formato que incluye vuestro número de DNI: ej., 
 
-  * Tema00ej1_123456789.R
-    
+IMPORTANTE: el nombre de los ficheros que subáis DEBE seguir el siguiente formato que incluye vuestro número de DNI: ej.,
+
+-   Tema00ej1_123456789.R
+
 <!--  * 12345678_ET05_datos.csv -->
-
-
-
