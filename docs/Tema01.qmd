@@ -940,7 +940,7 @@ graf + scale_fill_manual(values = c("#1f77b4", "#ff7f0e",
 
 ```{r paletas-predefinidas}
 #| eval: false
-graf <- ggplot(ventas, aes(x = region, y = ventas, Fill = region)) + 
+graf <- ggplot(ventas, aes(x = region, y = ventas, fill = region)) + 
           geom_boxplot()
 library(RColorBrewer)
 display.brewer.all()
