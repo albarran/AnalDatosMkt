@@ -515,7 +515,7 @@ ventas %>%
 
 ## Caso de Estudio: RetailCorp
 
-- **Contexto:** Cadena de venta al por menor scon 12 tiendas en España
+- **Contexto:** Cadena de venta al por menor con 12 tiendas en España
 
 - **Objetivo:** Analizar rendimiento de ventas para toma de decisiones estratégicas
 
@@ -1262,7 +1262,7 @@ flights %>% mutate(retraso = cut_width(dep_delay,2))   # retraso es factor
 ```
 
 
-- Funciones para fechas de `lubridate`: `year()`, `month()`, ``day()`, `quarter()`, `week()`
+- Funciones para fechas de `lubridate`: `year()`, `month()`, `day()`, `quarter()`, `week()`
 
 ```{r}
 #| echo: false
@@ -1447,6 +1447,70 @@ ventas %>%
   )
 ```
 
+## Operaciones Adicionales de Limpieza
+
+::: {style="font-size: 90%;"}
+
+- `separate()`: dividir una columna por caracter o posición
+
+```{r}
+table3 |> separate(rate, into = c("cases", "population"), sep = "/")
+tabla5 <- table3 |> separate(year, into = c("century", "year"), sep = 2)
+```
+
+- Con  `convert = TRUE` intenta convertir el tipo de dato (no mantener carácter)
+
+```{r}
+table3 |> separate(rate, into = c("cases", "population"), convert = TRUE)
+```
+
+:::: {.notes}
+
+- Argumentos: *date frame*, columna a dividir, nombres de las nuevas variables y carácter separador (por defecto cualquier carácter no numérico)
+
+(estrictamente, una expresión regular)
+
+
+- Si se pasa a `sep` un vector de enteros, son posiciones en las que dividir
+- la longitud de `sep` debe ser uno menos que la de `into`
+- valores positivos comienzan (en 1)por la izquierda; negativos (desde -1) por la derecha
+
+::::
+
+
+- `unite()`: combinar columnas
+
+```{r}
+table5 |> unite(new, century, year, sep = "-")
+```
+
+:::: {.notes}
+- Argumentos: 
+  - un *data frame*
+  - el nombre de la nueva variable a crear 
+- un conjunto de columnas a combinar
+- carácter entre valores de las columnas originales
+
+- El separador por defecto es subrayado, `sep = _`
+
+::::
+
+:::
+
+. . .
+
+::: {style="font-size: 90%;"}
+- Para nombres de columnas con espacios o caracteres especiales, debemos usar acento invertido
+
+  - Mejor: renombrar sin espacios
+
+```{r}
+datos_problema |> 
+  rename(nombre_producto = `Nombre Producto`,
+         precio_euros    = `Precio (€)`)
+```
+
+:::
 
 
 # Transformación de Datos: Pivotar
@@ -1563,6 +1627,7 @@ https://www.r-bloggers.com/2019/07/how-to-reshape-a-dataframe-from-wide-to-long-
 - Se pueden almacenar datos en uno u otro formato, según nuestro objetivos
 
   - P.e., largo en Excel para tablas dinámicas, fórmulas de agregación (SUMAR.SI), algunos gráficos
+  
 ::::
 
 ::: {style="font-size: 95%;"}
@@ -1740,7 +1805,14 @@ ventas_largo |>
 
 ::: {style="font-size: 90%;"}
 
+- Según nuestro objetivos, podemos preferir formato ancho o largo
+
+- Problemas prácticos con formato ancho para **analizar datos**:
+
 ::::{.notes}
+
+- P.e., largo en Excel para tablas dinámicas, fórmulas de agregación (SUMAR.SI), algunos gráficos
+
 - Total por trimestre: en formato ancho, posible pero repetitivo
 
 ```{r}
@@ -1777,22 +1849,14 @@ ventas_largo |>
 
 ::::
 
-- ¿Qué trimestres superan 160 en ventas?
-
-  - formato ancho: imposible (tarea manual difícil con muchas fechas)
-  
-
+1. Algunas tareas son imposibles. P.e., ¿qué trimestres superan 160 en ventas?
 
 ```{r}
 ventas_largo |>
   filter(ventas > 160)
 ```
 
-- Calcular crecimiento
-
-  - formato ancho: cada columna manualmente (Excel), difícil con muchas fechas
-
-  - formato largo: una línea, independientemente del número
+2. Código repetitivo y propenso a errores. P.e., Calcular crecimiento
 
 ```{r}
 ventas_ancho |>
@@ -1807,15 +1871,23 @@ ventas_largo |>
   mutate(crecimiento = (ventas - lag(ventas)) / lag(ventas) * 100)
 ```
 
-:::
+::::{.notes}
+
+1. formato ancho: tarea manual difícil con muchas fechas)
+
+2. formato ancho: cada columna manualmente, difícil con muchas fechas
+
+::::
+
+:::  
 
 ## Comparación: Tareas Comunes (cont.)
 
-::: {style="font-size: 95%;"}
+::: {style="font-size: 90%;"}
 
-- Gráfico temporal
+  
 
-  - en formato ancho: añadir cada tienda manualmente (no escala: ¿y si tengo 50 tiendas?)
+3. No escalable. P.e., gráfico temporal por grupos
 
 ```{r}
 ggplot(ventas_ancho) +
@@ -1828,113 +1900,25 @@ ggplot(ventas_largo, aes(x = trimestre, y = ventas,
   geom_line() + geom_point()
 ```
 
-- Problemas prácticos con formato ancho para analizar datos:
-
-  1. Algunas tareas son imposibles
-  
-  2. Código repetitivo y propenso a errores
-
-  3. No escala: con 12 meses o 50 tiendas se vuelve inmanejable
-  
 :::  
 
-::::{.notes}
+. . .
 
-   1. Ej.: No puedes usar `filter()` sobre valores que están en columnas
+::: {style="font-size: 90%;"}
 
-   2. (si añado Q5, debo modificar múltiples líneas),
-
-   3. Incompatible con ggplot2: ggplot2 espera formato largo   
-   
-**Cuándo Usar Cada Formato**
-
-- **LARGO**: Para análisis con `dplyr` y `ggplot2`
-- **ANCHO**: Solo para tablas de presentación final
+- Formato ancho solo para tablas de presentación final
 
 ```{r}
-# Análisis en largo
 analisis <- ventas_largo |>
   group_by(trimestre) |>
   summarize(total = sum(ingresos))
 
-# Presentar en ancho para ejecutivos
 tabla_presentacion <- ventas_largo |>
   pivot_wider(names_from = trimestre, values_from = ingresos) |>
   mutate(Total = Q1 + Q2 + Q3 + Q4)
 ```
 
-:::: 
-
-## Dos funciones útiles
-
-- `separate()`: dividir una columna en múltiples variables indicando un separador o vector de posiciones en las que dividir
-
-```{r}
-table3 |> separate(rate, 
-                   into = c("cases", "population"), sep = "/")
-table3 |> separate(year, 
-                   into = c("century", "year"), sep = 2)
-```
-
-
-:::: {.notes}
-- Argumentos: *date frame*, columna a dividir, nombres de las nuevas variables y carácter separador (por defecto cualquier carácter no numérico)
-
-(estrictamente, una expresión regular)
-
-
-```{r}
-#| echo: false
-table3 |> separate(rate, into = c("cases", "population"), sep = "/")
-table3 |> separate(rate, into = c("cases", "population")) 
-```
-
-
-- Si se pasa a `sep` un vector de enteros, son posiciones en las que dividir
-    - la longitud de `sep` debe ser uno menos que la de `into`
-    - valores positivos comienzan (en 1)por la izquierda; negativos (desde -1) por la derecha
-
-```{r}
-#| echo: false
-table3 |> separate(year, into = c("century", "year"), sep = 2)
-```
-
-::::
-
-- Con  `convert = TRUE` intenta convertir el tipo <!--de datos--> (no mantener carácter)
-
-
-```{r}
-table3 |> separate(rate, into = c("cases", "population"), 
-                    convert = TRUE)
-```
-
-- `unite()`: combinar múltiples columnas en una 
-
-:::: {.notes}
-- Argumentos: 
-    - un *data frame*
-    - el nombre de la nueva variable a crear 
-    - un conjunto de columnas a combinar
-    - carácter entre valores de las columnas originales
-    
-- El separador por defecto es subrayado, `sep = _`
-
-::::
-
-```{r}
-table5 |> 
-  unite(new, century, year, sep = "-")
-```
-
-```{r}
-#| echo: false
-table5 |> 
-  unite(new, century, year, sep = "")   # sin separación
-
-table5 |> 
-  unite(new, century, year, sep = "-")
-```
+:::  
 
 
 # Datos Relacionales
@@ -2406,65 +2390,6 @@ informe_devoluciones
 
 ## Buenas Prácticas y Errores Comunes
 
-### Trabajar con Valores Ausentes (NA)
-
-```{r}
-# Identificar NAs
-ventas %>%
-  summarize(
-    na_cliente = sum(is.na(id_cliente)),
-    na_producto = sum(is.na(id_producto)),
-    na_total = sum(is.na(total))
-  )
-
-# Filtrar NAs
-ventas_sin_na <- ventas %>%
-  filter(!is.na(id_cliente))
-
-# Eliminar filas con ANY NA
-ventas_completas <- ventas %>%
-  drop_na()
-
-# Eliminar NAs de columnas específicas
-ventas %>%
-  drop_na(id_cliente, total)
-
-# Reemplazar NAs
-clientes_limpio <- clientes %>%
-  mutate(
-    programa_fidelidad = replace_na(programa_fidelidad, "Básico")
-  )
-
-# NA en operaciones: usar na.rm = TRUE
-ventas %>%
-  summarize(
-    media_con_na = mean(descuento_porcentaje),
-    media_sin_na = mean(descuento_porcentaje, na.rm = TRUE)
-  )
-```
-
-
-## Errores Comunes y Soluciones (cont.)
-**Error 2: Nombres de columnas con espacios o caracteres especiales**
-
-```{r}
-# PROBLEMA
-datos_problema <- tibble(
-  `Nombre Producto` = c("A", "B", "C"),
-  `Precio (€)` = c(10, 20, 30)
-)
-
-# Usar backticks
-datos_problema %>%
-  select(`Nombre Producto`, `Precio (€)`)
-
-# MEJOR: Usar nombres sin espacios
-datos_bien <- datos_problema %>%
-  rename(
-    nombre_producto = `Nombre Producto`,
-    precio_euros = `Precio (€)`
-  )
-```
 
 ## Errores Comunes y Soluciones (y 3)
 
@@ -2595,114 +2520,41 @@ ggplot(ventas_region, aes(x = factor(año), y = ingresos, fill = region)) +
 ```
 
 
-:::: {.notes}
-**Guardar Datasets Procesados**
 
-```{r}
-# Guardar en RData
-save(ventas_completo, file = "data/ventas_procesado.RData")
+## Principios Clave
 
-# Guardar en CSV
-write_csv(ventas_completo, "data/ventas_procesado.csv")
+- Datos Ordenados
 
-# Guardar múltiples objetos
-save(analisis_rentabilidad, comparacion_objetivos, 
-     file = "data/analisis_completo.RData")
-```
+- Código Legible:
 
-**Crear Reportes**
+  - Usar pipe `%>%` para encadenar operaciones
+  
+  - Un paso por línea
+  
+  - Nombres descriptivos de variables
+  
+  - Comentarios para lógica compleja
 
-```{r}
-# Tabla resumen para Excel
-reporte_ejecutivo <- ventas %>%
-  left_join(tiendas %>% select(id_tienda, nombre_tienda, region), 
-            by = "id_tienda") %>%
-  group_by(region, año, trimestre) %>%
-  summarize(
-    num_transacciones = n(),
-    ingresos = sum(total),
-    ticket_promedio = mean(total),
-    clientes_unicos = n_distinct(id_cliente),
-    .groups = "drop"
-  ) %>%
-  pivot_wider(
-    names_from = trimestre,
-    values_from = c(ingresos, num_transacciones),
-    names_glue = "{.value}_Q{trimestre}"
-  )
+- Eficiencia:
 
-# Exportar
-library(writexl)
-write_xlsx(reporte_ejecutivo, "reportes/reporte_ejecutivo.xlsx")
-```
+  - Filtrar temprano, unir tarde
+  
+  - Seleccionar solo columnas necesarias
+  
+  - Verificar claves antes de joins
+  
+-   Inspeccionar resultados intermedios
 
-::::
+- Reproducibilidad:
+
+  - Scripts ordenados y comentados
+  
+  - Guardar datos procesados
+  
+  - Documentar decisiones de limpieza
 
 
 :::: {.notes}
-
-**Resumen**
-
-- Flujo de Trabajo Recomendado
-
-1. **Exploración Inicial**
-   - `glimpse()`, `summary()`, `head()`
-   - Identificar tipos de datos y valores ausentes
-
-2. **Limpieza**
-   - Filtrar datos irrelevantes
-   - Manejar valores ausentes
-   - Corregir tipos de datos
-
-3. **Transformación**
-   - Crear variables derivadas
-   - Pivotar si es necesario
-   - Unir tablas relacionadas
-
-4. **Agregación**
-   - `group_by()` + `summarize()` para KPIs
-   - Calcular métricas de negocio
-
-5. **Análisis**
-   - Comparaciones temporales
-   - Rankings y segmentaciones
-   - Identificar outliers
-
-6. **Visualización**
-   - Gráficos exploratorios
-   - Dashboards de KPIs
-
-7. **Exportación**
-   - Guardar resultados procesados
-   - Crear reportes
-
-
-**Principios Clave**
-
-*Datos Ordenados (Tidy Data):*
-- Una variable por columna
-- Una observación por fila
-- Un valor por celda
-
-*Código Legible:*
-- Usar pipe `%>%` para encadenar operaciones
-- Un paso por línea
-- Nombres descriptivos de variables
-- Comentarios para lógica compleja
-
-*Eficiencia:*
-- Filtrar temprano, unir tarde
-- Seleccionar solo columnas necesarias
-- Verificar claves antes de joins
-- Usar `glimpse()` para inspeccionar resultados intermedios
-
-*Reproducibilidad:*
-- Scripts ordenados y comentados
-- Guardar datos procesados
-- Documentar decisiones de limpieza
-
-
-
 **Recursos Adicionales**
 
 - **Documentación:** `?dplyr`, `?tidyr`
@@ -2746,35 +2598,3 @@ Usando los datos de RetailCorp:
 3. Calcula el stock óptimo por tienda (simulado)
 4. Recomienda productos a eliminar del catálogo
 
-
-<!--
-## Conclusión
-
-**Has aprendido:**
-
-✓ Principios de datos ordenados (tidy data)
-
-✓ Los 5 verbos principales de `dplyr`
-
-✓ Uso del operador pipe `%>%`
-
-✓ Agregación con `group_by()` y `summarize()`
-
-✓ Transformación de datos con pivot
-
-✓ Unión de múltiples tablas
-
-✓ Análisis completo de casos reales
-
-**Próximos pasos:**
-
-- Practicar con tus propios datos
-- Explorar funciones avanzadas de `dplyr`
-- Aprender sobre datos temporales con `lubridate`
-- Profundizar en visualización con `ggplot2`
-
-**Recuerda:**
-
-> "La preparación de datos es el 80% del trabajo de análisis. Hacerlo bien desde el principio ahorra tiempo y errores después."
-
--->
