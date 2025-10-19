@@ -1,121 +1,91 @@
 ---
-# subtitle: "Técnicas para 'Big Data' en Economía - Curso 2023/24 \n\n Universidad de Alicante"
-# subtitle: "Análisis de Datos Multivariantes aplicado al Marketing - Curso 2023/24 \n\n Universidad de Alicante"
-# subtitle: "Muestreo y Análisis de Datos - Universidad de Alicante"
-# subtitle: "Econometría II - Curso 2023/24 \n\n Universidad de Alicante"
-title    :  "Tema 2. Transformación de Datos. Ejercicio 1"
-author:  
+title: "Tema 02 - Transformación de Datos"
+subtitle: "Ejercicio Práctico 1"
+author:
     - "Pedro Albarrán"
     - "Alberto Pérez"
-# institute: "Dpto. de Fundamentos del Análisis Económico. Universidad de Alicante"
-   
-# institute: 
-#     - "Dpto. de Fundamentos del Análisis Económico. Universidad de Alicante"
-#     - "Dpto. de Fundamentos del Análisis Económico. Universidad de Alicante"
+institute: "Dpto. de Fundamentos del Análisis Económico. Universidad de Alicante"
 format:
-#   beamer:
-#     logo: figure/by-nc-sa2.png
-#     titlegraphic: figure/by-nc-sa.png
-#     theme: Boadilla # Copenhagen # CambridgeUS #
-#     outertheme: miniframes
-#     colortheme: crane
-#     section-titles: false
-#     fontsize: 10pt
-# #    header-includes:
-# #      - \setbeameroption{show notes}
-# #      # - \setbeameroption{show notes on second screen}
-  # revealjs:
-  #   logo: figure/by-nc-sa2.png
-  #   titlegraphic: figure/by-nc-sa.png
-  #   theme:  serif # simple # default # moon # beige # sky #
-  #   smaller: false
-  #   scrollable: true
-  #   embed-resources: true
-  #   slide-number: true
-  #   show-slide-number: all
-  #   transition: slide # concave # 
-  #   background-transition: fade
-  #   progress: true
   html: 
     embed-resources: true
+    toc: true
+    toc-depth: 3
+    theme: cosmo
+    css: styles.css
 execute:
-  enabled: true      # (no) ejecutar code chunks
-  eval: false        # por defecto, evalúa y muestra códido de code chunks
-  #| echo: FALSE
-  warning: false    # pero no los mensajes ni warnings
+  enabled: true
+  eval: false
+  echo: true
+  warning: false
   message: false
-knitr:
-  opts_chunk:
-    results: hide     # ni muestra resultados ni figuras
-    fig.show: hide
+  output: false      
+  fig.show: hide     
 lang: es
 strip-comments: true
-toc: false
-# css: styles.css
 ---
+<!-- markdownlint-disable-file MD013 -->
 
-
-```{r setup}
-#| include: FALSE
-# include=F es suficiente para no incluir mensajes, etc.
+```{r}
+#| include: false
+#| eval: true
+# se evalua pero no incluye output (mensajes, etc.)
 
 # Elimino todo del Entorno (del documento)
-rm(list = ls())       
+rm(list = ls())
+
+# Working directory
+#setwd("/home/albarran/Dropbox/MAD/00.TEC")
 
 # Cargo todas las bibliotecas necesarias
 # (se podría hacer cuando cada una sea necesaria)
 library(tidyverse)
+library(rio)
 library(kableExtra)
-library(knitr)
-
-#fijo el directorio de trabajo
-#setwd("/home/albarran/Dropbox/MAD/00.TEC")
 ```
 
+**NOTA**: Este ejercicio se realizará en clase y NO cuenta para los alumnos de evaluación NO continua (aunque es recomendable como práctica).
 
-# Entrega del ejercicio
+---
 
-Este ejercicio se realizará en clase y NO cuenta para los alumnos de evaluación NO continua (aunque es recomendable como práctica).
-
-
-# Pregunta 1
+## Ejercicio 1
 
 Descargad [este archivo (comprimido)](https://raw.githubusercontent.com/albarran/00datos/main/empleados.csv.zip) con datos en texto separados por punto y coma con la siguiente información de los empleados de una empresa: el identificador de empleado (`ID`), sus dos apellidos y su nombre, su género (hombre o mujer) y el valor de las `ventas` realizadas por dicho empleado en un periodo concreto, dado por año y mes.
 
+::: {.content-visible when-profile="soluciones"}
+En clase haremos estos apartados utilizando tanto un programa de hoja de cálculo (como Excel, LibreOffice Calc o Google Sheets) como también empleando R. 
+:::
+
+Para garantizar claridad y accesibilidad, se recomienda dividir las tareas en pasos manejables y utilizar herramientas que permitan una visualización clara de los datos.
+
+
+### Apartado 1.a)
+
+Elige como identificador del empleado las cuatro últimas cifras de tu DNI o similar (Nota: no tener en cuenta los ceros empezando por la izquierda: ej., para `0104` debes usar `104`). Encontrar el periodo (año y mes) en el que sus ventas totales fueron mayores.
+
+::: {.content-visible when-profile="soluciones"}
 ```{r}
-#| echo: false
-library(rio)
-empleados <- import("data/empleados.csv.zip")
-# empleados <- import("https://raw.githubusercontent.com/albarran/00datos/main/empleados.csv.zip")
-```
+empleados <- import("https://raw.githubusercontent.com/albarran/00datos/main/empleados.csv.zip")
 
-
-En clase haremos estos apartados tanto usando un programa de hoja de cálculo (como Excel, LibreOffice Calc o Google Sheets) como usando R.
-
-a. Elige como identificador del empleado las cuatro últimas cifras de tu DNI o similar (Nota: no tener en cuenta los ceros empezando por la izquierda: ej., para `0104` debes usar `104`). Encontrar el periodo (año y mes) en el que sus ventas totales fueron mayores.
-
-```{r echo=FALSE, eval=FALSE}
-library(tidyverse)
-# (alternativa 1)                   # misma secuencia que en Excel....
-empleados %>%
-  filter(ID == 8751) %>%            
-  arrange(desc(ventas)) %>%    # slice_max(ventas)
-  slice_head(n=1) %>%                     
+# (alternativa 1) - misma secuencia que en Excel
+empleados |>
+  filter(ID == 8751) |>
+  arrange(desc(ventas)) |>
+  slice_head(n=1) |>   # tambien slice(1)
   select(anio, mes)
 
 # (alternativa 2)
-empleados %>%
-  filter(ID == 8751) %>%
-  filter(ventas == max(ventas))%>%    
+empleados |>
+  filter(ID == 8751) |>
+  filter(ventas == max(ventas)) |>
   select(anio, mes)
 
-# Horrible solución equivalente
-# head(select(arrange(filter(empleados, ID == 8751), desc(ventas)), anio, mes),1)
-
+# (alternativa 3)
+empleados |>
+  filter(ID == 8751) |>
+  slice_max(ventas) |>
+  select(anio, mes)
 ```
 
-
-<!--
 Pensar PASOS, pensar qué funciones (de las cinco) usar en cada paso
 
 * seleccionar filas de un empledo/a
@@ -126,36 +96,39 @@ Pensar PASOS, pensar qué funciones (de las cinco) usar en cada paso
 
 * o ordenar descendente y elegir el primer valor
 
-* OJO: ambas opciones NO son equivalente si en caso de empates: si mismo valor máximo en dos periodos, filter selecciona dos 
-
--->
+* OJO: ambas opciones NO son equivalente si en caso de empates: si mismo valor máximo en dos periodos, filter selecciona dos
 
 
-b. Elige como identificador del empleado las cuatro últimas cifras de tu DNI o similar (Nota: no tener en cuenta los ceros empezando por la izquierda: ej., para `0104` debes usar `104`). Encontrar el periodo (año y mes) en el que sus ventas **relativas al total** de ventas de la empresa en ese periodo (proporción vendida por ese empleado en un periodo) fueron mayores.
+:::
 
-```{r echo=FALSE, eval=FALSE}
+### Apartado 1.b)
+
+Elige como identificador del empleado las cuatro últimas cifras de tu DNI o similar (Nota: no tener en cuenta los ceros empezando por la izquierda: ej., para `0104` debes usar `104`). Encontrar el periodo (año y mes) en el que sus ventas **relativas al total** de ventas de la empresa en ese periodo (proporción vendida por ese empleado en un periodo) fueron mayores.
+
+::: {.content-visible when-profile="soluciones"}
+```{r}
 # (alternativa 1)
-empleados %>%
-  group_by(anio, mes) %>% 
-  mutate(ventas_prop = ventas / sum(ventas)*100) %>%   ## COMPLICADO EN EXCEL
-  ungroup() %>%                                        
-  filter(ID == 8751) %>%
-  arrange(desc(ventas_prop)) %>%  
-  slice_head(n=1) %>%                     # head(1) %>%   # si slice(1), necesita ungroup()
-  select(anio, mes)
+empleados |>
+  group_by(anio, mes) |>
+  mutate(ventas_prop = ventas / sum(ventas) * 100) |>
+  ungroup() |>
+  filter(ID == 8751) |>
+  arrange(desc(ventas_prop)) |>
+  slice_head(n=1) |>             # tambien slice(1)
+  select(anio, mes, ventas_prop)
 
 # (alternativa 2)
-empleados %>%
-  group_by(anio, mes) %>% 
-  mutate(ventas_prop = ventas / sum(ventas)*100) %>%
-  ungroup() %>%                                        # OJO si no ungroup()
-  filter(ID == 8751) %>%
-  filter(ventas_prop == max(ventas_prop)) %>% 
-  select(anio, mes)
+empleados |>
+  group_by(anio, mes) |>
+  mutate(ventas_prop = ventas / sum(ventas) * 100) |>
+  ungroup() |>
+  filter(ID == 8751) |>
+  filter(ventas_prop == max(ventas_prop)) |>
+  select(anio, mes, ventas_prop)
+
+# (alternativa 3)
+#igual que antes con slice_max(ventas_prop)
 ```
-
-<!--
-
 PASOS: necesitamos crear una variables (ventas de i en t)/(total ventas en t)
 
 1. si se crea después de filtrar: ventas/suma(ventas) es (ventas de i en t)/(total ventas de i)
@@ -169,301 +142,142 @@ NO olvidar ungroup() cuando ya no necesitamos
 * En Excel: se podría crear Ventas_totales en cada periodo, y luego dividir por esa columna
 * opcion 1: tabla dinámica, PERO luego hay que hacer JOIN con la tabla original:
               * BUSCARV, BUSCARH, BUSCARX,... HLOOKUP, VLOOKUP, XLOOKUP
-* opción 2: SUMAR.SI o SUMAR.SI.CONJUNTO,.. SUMIF, SUMIFS 
+* opción 2: SUMAR.SI o SUMAR.SI.CONJUNTO,.. SUMIF, SUMIFS
              * SUMAR.SI.CONJUNTO(F:F,G:G,G2,H:H,H2)  (F: ventas, G: anio, H: mes)
              * muy lento
 
 
+** OJO: tabla dinámica con función en Excel: PIVOTAR
 
--->
+:::
 
+### Apartado 1.c)
 
-c. Repetir el apartado a) para **cada empleado** de la empresa, es decir, encontrar el periodo (año y mes) en el que sus ventas totales fueron mayores.
+Repetir el apartado a) para **cada empleado** de la empresa, es decir, encontrar el periodo (año y mes) en el que sus ventas totales fueron mayores.
 
+::: {.content-visible when-profile="soluciones"}
 ```{r}
-#| echo: false
-#| eval: false
-# Para todos                      # imposible (o casi) en Excel
-empleados %>% 
-  group_by(ID) %>% 
-  arrange(desc(ventas)) %>%    
-  slice_head(n=1) %>%                       
+# Para todos los empleados - imposible en Excel (o casi)
+empleados |>
+  group_by(ID) |>
+  arrange(desc(ventas)) |>
+  slice_head(n=1) |>      # también slice(1)
+  select(ID, anio, mes)
+
+# Alternativa estilo Excel:
+# ordenar por ventas y eliminar duplicados de ID
+empleados |>
+  arrange(desc(ventas)) |>
+  distinct(ID, .keep_all = TRUE) |>
   select(ID, anio, mes)
 ```
+:::
 
-<!-- De manera similar, se podría hacer para ventas relativas -->
+### Apartado 1.d)
 
-d. ¿En qué periodo (año y mes) hubo más ventas en total en la empresa y cuántas fueron?
-  
-```{r echo=F, eval=F}
-# solución
-empleados %>% 
-  group_by(anio, mes) %>%
-  summarize(ventas_totales = sum(ventas)) %>% 
-  ungroup() %>%                               ### OJO: ungroup() IMPORTANTE
-  arrange(desc(ventas_totales)) %>%            
+¿En qué periodo (año y mes) hubo más ventas en total en la empresa y cuántas fueron?
+
+::: {.content-visible when-profile="soluciones"}
+```{r}
+# Solución ADECUADA: nuevo conjunto de datos
+# a nivel de empresa
+empleados |>
+  group_by(anio, mes) |>
+  summarize(ventas_totales = sum(ventas)) |>
+  ungroup() |>
+  arrange(desc(ventas_totales)) |>
   slice_head(n=1)
-
-# dos opciones alternativas para los dos últimos pasos:
+# alternativas sustituyendo los dos ultimos pasos, por una de las dos siguientes
 # filter(ventas_totales = max(ventas_totales))
 # slice_max(ventas_totales)
+```
 
-# alternativa
-empleados %>% 
-  group_by(anio, mes) %>% 
-  mutate(ventas_totales = sum(ventas)) %>% 
-  arrange(desc(ventas_totales)) %>%            # mas lento por más filas
-  slice_head(n=1)                                      # columnas innecesarias
-```  
+- Opción lenta, con más columnas e inadecuada
 
-<!--
-
-Lógicamente la primera solución es mejor: queremos trabaja a nivel de empresa
-
-nuevo conjunto de datos a nivel de empresa-periodo (con summarize), en lugar de empleado-periodo (filas redundantes)
-
--->
+```{r}
+empleados |>
+  group_by(anio, mes) |>
+  mutate(ventas_totales = sum(ventas)) |>
+  arrange(desc(ventas_totales)) |>            # mas lento por más filas
+  slice_head(n=1)                             # columnas innecesarias
+```
+:::
 
 <!--
 e. Encontrar los nombres y apellidos de los diez empleados con más ventas (mayor número total de ventas) entre julio de 2002 (incluido) y junio de 2006 (incluido).
-```{r echo=F, eval=F}
+```{r}
 # solución
-empleados %>%
-  filter((anio == 2002 & mes >=7) | (anio>=2003 & anio<=2005) | (anio == 2006 & mes <=6)) %>%
-  group_by(ID) %>% #, nombre, apellido1, apellido2) %>%      # OJO: si no se incluyen
-  summarize(ventas_totales = sum(ventas)) %>% ungroup() %>%
-  arrange(desc(ventas_totales)) %>% 
-  head(10)
-
-empleados %>%
-  filter((anio == 2002 & mes >=7) | (anio>=2003 & anio<=2005) | (anio == 2006 & mes <=6)) %>%
-  group_by(ID) %>%      # OJO: si no se incluyen
-  mutate(ventas_totales = sum(ventas)) %>% ungroup() %>%
-  arrange(desc(ventas_totales)) %>% 
-  head(10)
 
 
 # solución
-empleados %>%
-  filter((anio == 2002 & mes >=7) | (anio>=2003 & anio<=2005) | (anio == 2006 & mes <=6)) %>%
-  group_by(ID, apellido1, apellido2, nombre) %>%      # OJO: si no se incluyen
-  summarize(ventas_totales = sum(ventas)) %>% ungroup() %>%
-  arrange(desc(ventas_totales)) %>% 
-  head(10) 
-
-%>% 
+empleados |>
+  filter((anio == 2002 & mes >=7) | (anio>=2003 & anio<=2005) | (anio == 2006 & mes <=6)) |>
+  group_by(ID, apellido1, apellido2, nombre) |>      # OJO: si no se incluyen
+  summarize(ventas_totales = sum(ventas)) |> ungroup() |>
+  arrange(desc(ventas_totales)) |>
+  head(10) |>
   select(starts_with("apellido"), nombre)
 
-
-# alternativa: usar 
-# slice_max(ventas_totales, n=10) 
+# alternativa: usar
+# slice_max(ventas_totales, n=10)
 ```
 -->
 
-<!--
-PASOS: primero extraer SOLO las filas del período relevante (última parte del enunciado, pero primer paso)
+### Apartado 1.e)
 
-condición lógica: varios OR y AND
+- Representar la evolución temporal de las ventas anuales totales realizadas por los hombres y por las mujeres de la empresa.
 
-group_by: debemos incluir apellidos o no se mantienen en el summarize
+- Presentar un gráfico de barras con el número de hombres y de mujeres empleados en la empresa en cada año.
 
-si usamos mutate en lugar de summarize, no solo filas redundantes: la solución puede dar mal.
+- Presentar una tabla con la media de ventas anuales de hombres y de mujeres en los años 2000, 2005 y 2010.
 
--->
-
-e. Representar la evolución temporal de las ventas anuales totales realizadas por los hombres y por las mujeres de la empresa.
-
-    Presentar un gráfico de barras con el número de hombres y de mujeres empleados en la empresa en cada año.
-
-    Presentar una tabla con la media de ventas anuales de hombres y de mujeres en los años 2000, 2005 y 2010.
-
+::: {.content-visible when-profile="soluciones"}
 ```{r}
-#| echo: false
-
-datosAnioGenero <- empleados %>%
-  group_by(anio, genero) %>%
+datosAnioGenero <- empleados |>
+  group_by(anio, genero) |>
   summarize(ventas_totales = sum(ventas),
             num = n(),
-            num2 = n_distinct(ID), 
-            ventas_medias = mean(ventas)) %>%
+            num2 = n_distinct(ID),
+            ventas_medias = mean(ventas)) |>
   ungroup()
+```
 
-##########################################################################
-
-ggplot(data = datosAnioGenero, aes(x = anio, y = ventas_totales)) +
-  geom_line(color = genero) +
+```{r}
+# Gráfico 1: Evolución temporal de ventas
+ggplot(data = datosAnioGenero, aes(x = anio, y = ventas_totales, color = genero)) +
+  geom_line() +
   labs(title = "Evolución temporal de las ventas anuales por género",
-       x = "Año",
-       y = "Ventas totales")
+       x = "Año", y = "Ventas totales", color = "Género")
+```
 
-##########################################################################
-
-## gráfico de barras como Excel: con frecuencias calculadas
+```{r}
+# Gráfico 2: Número de empleados únicos por género
 ggplot(data = datosAnioGenero) +
-  geom_bar(aes(x = anio, y = num, fill = genero), 
-           stat = "identity", 
-           position = "dodge") +
-  labs(title = "Número de empleados por género",
-       x = "Año",
-       y = "Número de empleados")
+  geom_bar(aes(x = anio, y = num2, fill = genero),
+           stat = "identity", position = "dodge") +
+  labs(title = "Número de empleados únicos por género",
+       x = "Año", y = "Número de empleados", fill = "Género")
+```
 
-## gráfico de barras, calculando las frecuncias
-ggplot(data=empleados) + 
-  geom_bar(aes(x=anio, fill=genero), 
-           # stat = "count",
-           position="dodge") +
-  labs(title = "Número de empleados por género",
-       x = "Año",
-       y = "Número de empleados")
-
-#### Realmente queremos ESTO: empleados únicos
-ggplot(data = datosAnioGenero) +
-  geom_bar(aes(x = anio, y = num2, fill = genero), 
-           stat = "identity", 
-           position = "dodge") +
-  labs(title = "Número de empleados por género",
-       x = "Año",
-       y = "Número de empleados")
-
-##########################################################################
-
-datosAnioGenero %>% 
-  filter(anio %in% c(2000, 2005, 2010)) %>%
-  select(genero, anio, ventas_medias) %>%
+```{r}
+# Tabla: Media de ventas en años específicos
+tabla_ventas <- datosAnioGenero |>
+  filter(anio %in% c(2000, 2005, 2010)) |>
+  select(genero, anio, ventas_medias) |>
   pivot_wider(names_from = anio, values_from = ventas_medias)
-  # pivot_wider(names_from = genero, values_from = ventas_medias)
+
+tabla_ventas
+
+# avanzado (no se pide)
+tabla_ventas |>
+  kbl(format = "html",
+      caption = "Media de ventas anuales por género (años seleccionados)",
+      digits = 2) |>
+  kable_paper("hover", full_width = FALSE)
 ```
+:::
 
-<!--
-
-# Pregunta 2
-
-Cargar los datos de vuelos `flights` de la biblioteca `nycflights13`. 
-
-Calcular para cada compañía (`carrier`) el número total de vuelos, el retraso medio en la salida, el número de destinos únicos a los que vuela, y el número de aviones únicos utilizados. Mostrar el histograma del número de destinos únicos.
-
-```{r echo=F, eval=F}
-library(nycflights13)
-df <- flights %>%
-  group_by(carrier) %>%
-  summarise(
-    total_flights = n(), 
-    mean_delay = mean(dep_delay, na.rm = TRUE),
-    num_dests = n_distinct(dest), 
-    num_planes = n_distinct(tailnum)
-  ) %>%
-  arrange(desc(total_flights))
-df
-
-
-table(df$num_dests)
-hist(df$num_dests)
-hist(df$num_dests, breaks = c(-1:6,seq(10,70,1)))
-
-# ggplot(data = df) +
-#   geom_histogram(aes(x = num_dests))
-```
-
--->
-
-<!--
-
-group_by + summarize: pasamos de datos a nivel de vuelo a datos (información) a nivel de compañía
-
--->
-
-<!--
-5. Usando el conjunto de datos obtenido en el apartado anterior, obtener los siguientes gráficos:
-
-    * Un gráfico de caja (`boxplot`) del retraso medio.
-    
-    * Un histograma del número de aviones.
-    
-    * La densidad del número total de vuelos.
-    
-```{r echo=FALSE, eval=FALSE}
-ggplot(data = df) +
-  geom_boxplot(aes(y = mean_delay))
-#boxplot(df$mean_delay)
-
-ggplot(data = df) +
-  geom_histogram(aes(x = num_planes))
-#hist(df$num_planes)
-
-ggplot(data = df) +
-  geom_density(aes(x = total_flights))
-#plot(density(df$total_flights))
-```
--->
-
-
-<!--
-# Pregunta 2
-
-* Elegir UN conjunto de datos de la web Gapminder, [aquí](http://www.gapminder.org/data/). Descargar los datos en formato .xlsx y leerlos en R. Por ejemplo, "Consumption CO2 emissions (millions tonnes)" y "Expenditure per student, tertiary (% of GDP per person)".
-
-```{r}
-#| echo: false
-library(tidyverse)
-library(rio)
-expend <- import("data/expenditure_per_student_tertiary_percent_of_gdp_per_person.csv")
-co2    <- import("data/co2_cons.csv")
-
-expend <- import("data/expenditure_per_student_tertiary_percent_of_gdp_per_person.csv", header = TRUE)
-co2    <- import("data/co2_cons.csv", header = TRUE)
-
-expend <- read_csv("data/expenditure_per_student_tertiary_percent_of_gdp_per_person.csv")
-co2    <- read_csv("data/co2_cons.csv")
-```
-
-* Transformar el conjunto de datos a una tabla de datos ordenados con tres variables: país, año y valor de la variable que habéis elegido.
-
-    * NOTA: prestad atención a los tipos de las variables!
-
-```{r}
-#| echo: false
-expendLargo <- expend %>% 
-  pivot_longer(-country, names_to = "year", values_to= "gasto")
-
-expendLargo <- expendLargo %>%
-  mutate(year = parse_number(year))
-```
-
-```{r}
-#| echo: false
-# problemas al pivotar porque en algunos años  
-# se tiene 2k o 2M en lugar de dos mil o dos millones
-co2Largo <- co2 %>% pivot_longer(cols =  -country,
-                                  names_to = "year",
-                                  values_to = "co2",
-                    #              values_transform = as.character) %>%
-                    #mutate(year = (parse_number(year)))
-                    values_transform = as.numeric)
-```
-
-* Representar la evolución temporal de la variable con `ggplot`, usando el color para distinguir entre estos países: "India", "Finland", "Argentina", "Spain", "Angola" y "Canada". Explicar *brevemente* si preferís los datos originales o los ordenados para el gráfico.
-
-```{r}
-#| echo: false
-#| eval: false
-expendLargo %>% 
-  filter(country %in% c("India", "Finland", "Argentina", "Spain", "Angola", "Canada")) %>% 
-  filter(year > 1990) %>%
-  ggplot(aes(x=year, y=gasto)) +
-  geom_line(aes(color=country))
-```
-
-```{r}
-#| echo: false
-#| eval: false
-co2Largo %>% 
-  filter(country %in% c("India", "Finland", "Argentina", "Spain", "Angola", "Canada")) %>% 
-  filter(year > 1990) %>%
-  ggplot(aes(x=year, y=co2)) +
-  geom_line(aes(color=country))
-```
--->
-
+---
 
 <!--
 # Pregunta 2
@@ -496,59 +310,59 @@ Para todos los análisis siempre excluimos la oficina principal. NOTAD que en R,
 library(rio)
 library(tidyverse)
 
-ChaseBank <- import("https://raw.githubusercontent.com/albarran/00datos/main/ChaseBank.csv") %>% 
-              filter(`Main Office` == 0) 
+ChaseBank <- import("https://raw.githubusercontent.com/albarran/00datos/main/ChaseBank.csv") |>
+              filter(`Main Office` == 0)
 ```
 
-a. Presenta una tabla con el nombre, ciudad y estado de las tres oficinas con más depósitos en cada año. 
+a. Presenta una tabla con el nombre, ciudad y estado de las tres oficinas con más depósitos en cada año.
 
 ```{r}
 #| echo: false
 #| eval: false
-ChaseBank %>% 
-  pivot_longer(cols = starts_with("20"), 
-               names_to = "year", values_to = "deposits") %>% 
-  mutate(year = parse_number(year)) %>% 
-  group_by(year) %>% 
-  arrange(desc(deposits)) %>% 
-  slice_head(n = 3) %>%
+ChaseBank |>
+  pivot_longer(cols = starts_with("20"),
+               names_to = "year", values_to = "deposits") |>
+  mutate(year = parse_number(year)) |>
+  group_by(year) |>
+  arrange(desc(deposits)) |>
+  slice_head(n = 3) |>
   select(`Branch Name`, City, State, year, deposits)
 ```
 
 
-a. En cada año, ¿qué sucursal ha tenido la mayor tasa de crecimiento en la cantidad total de depósitos (respecto al anterior)? 
+a. En cada año, ¿qué sucursal ha tenido la mayor tasa de crecimiento en la cantidad total de depósitos (respecto al anterior)?
 
     * NOTA: en R, la función `lag()` permite acceder al valor de la fila anterior.
 
 ```{r}
 #| echo: false
 
-ChaseBankLargo <- ChaseBank %>% 
-  select(`Branch Name`, `Branch Number`, City:Zipcode, starts_with("20")) %>% 
-  pivot_longer(cols = starts_with("20"), 
-               names_to = "year", values_to = "deposits") %>% 
-  mutate(year = parse_number(year)) 
+ChaseBankLargo <- ChaseBank |>
+  select(`Branch Name`, `Branch Number`, City:Zipcode, starts_with("20")) |>
+  pivot_longer(cols = starts_with("20"),
+               names_to = "year", values_to = "deposits") |>
+  mutate(year = parse_number(year))
 
-ChaseBankLargo2 <- 
-  ChaseBankLargo %>% 
-    group_by(`Branch Number`) %>% 
-    arrange(`Branch Number`, year) %>%
-    mutate(tasa_crecim = 
-             if_else(lag(deposits)==0, 
-                     NA, 
+ChaseBankLargo2 <-
+  ChaseBankLargo |>
+    group_by(`Branch Number`) |>
+    arrange(`Branch Number`, year) |>
+    mutate(tasa_crecim =
+             if_else(lag(deposits)==0,
+                     NA,
                      100*(deposits - lag(deposits)) / lag(deposits)))
 
-ChaseBankLargo2 %>%
-   group_by(year) %>%
-   arrange(desc(tasa_crecim)) %>% 
+ChaseBankLargo2 |>
+   group_by(year) |>
+   arrange(desc(tasa_crecim)) |>
    slice_head(n=1)
 
 
-ChaseBankLargo2 %>%
-  group_by(`Branch Name`, City, State) %>%
-  summarise(media_tasa  = mean(tasa_crecim, na.rm = TRUE)) %>%
-  ungroup() %>%
-  arrange(desc(media_tasa))  %>% 
+ChaseBankLargo2 |>
+  group_by(`Branch Name`, City, State) |>
+  summarise(media_tasa  = mean(tasa_crecim, na.rm = TRUE)) |>
+  ungroup() |>
+  arrange(desc(media_tasa))  |>
    slice_head(n=1)
 ```
 
@@ -567,38 +381,38 @@ b. ¿Qué sucursal ha tenido un mayor crecimiento en los depósitos acumulado en
 ```{r}
 #| echo: false
 #| eval: false
-ChaseBank2 <- ChaseBank %>% 
-  select(`Branch Name`, `Branch Number`, City:Zipcode, starts_with("20")) %>% 
-  pivot_longer(cols = starts_with("20"), 
-               names_to = "year", values_to = "deposits") %>% 
-  mutate(year = parse_number(year)) %>% 
-  group_by(`Branch Number`) %>% 
-  arrange(`Branch Number`, year) %>%
+ChaseBank2 <- ChaseBank |>
+  select(`Branch Name`, `Branch Number`, City:Zipcode, starts_with("20")) |>
+  pivot_longer(cols = starts_with("20"),
+               names_to = "year", values_to = "deposits") |>
+  mutate(year = parse_number(year)) |>
+  group_by(`Branch Number`) |>
+  arrange(`Branch Number`, year) |>
   mutate(deposits = if_else(deposits == 0, NA, deposits),
     tasa_crecim = 100*(deposits - lag(deposits)) / lag(deposits))
 
 
- ChaseBank2 %>%
-   group_by(year) %>%
-   arrange(desc(tasa_crecim)) %>% 
+ ChaseBank2 |>
+   group_by(year) |>
+   arrange(desc(tasa_crecim)) |>
    slice_head(n=1)
 
 
- ChaseBank2 %>%
-   group_by(`Branch Name`, City, State) %>%
-  summarise(media_tasa  = mean(tasa_crecim, na.rm = TRUE)) %>%
+ ChaseBank2 |>
+   group_by(`Branch Name`, City, State) |>
+  summarise(media_tasa  = mean(tasa_crecim, na.rm = TRUE)) |>
   arrange(desc(media_tasa))
 
 
- 
+
 ```
 
 ```{r}
-temp <- ChaseBank2 %>% filter(max(deposits==0)==T)
+temp <- ChaseBank2 |> filter(max(deposits==0)==T)
 ```
 
 
-   a.3. Para cada estado, ¿cuál es la oficina en que más dinero depositaron los clientes en cada año? 
+   a.3. Para cada estado, ¿cuál es la oficina en que más dinero depositaron los clientes en cada año?
 
 
 
@@ -608,3 +422,178 @@ b. Para cada estado, queremos saber:
   b.3. Representar gráficamente la cantidad de depósitos en el tiempo para cada estado.
 
 -->
+
+
+## Ejercicio 2
+
+Además del archivo del Ejercicio 1, disponemos de [este archivo Excel](https://raw.githubusercontent.com/albarran/00datos/main/regionEmpleado.xlsx) con dos hojas: `regiones`, con la clave de las regiones donde la empresa tiene sedes y el nombre completo de cada región, y `regionEmpleado`, con el identificador de cada individuo y la región a la que pertenece.
+
+::: {.content-visible when-profile="soluciones"}
+```{r}
+regiones <- import("https://raw.githubusercontent.com/albarran/00datos/main/regionEmpleado.xlsx",
+                   sheet = "regiones")
+regionEmpleado <- import("https://raw.githubusercontent.com/albarran/00datos/main/regionEmpleado.xlsx",
+                         sheet = "regionEmpleado")
+```
+:::
+
+### Apartado 2.a)
+
+Mostrar en una tabla el nombre y apellidos del empleado de cada región con mayores ventas totales en el periodo de tiempo analizado.
+
+::: {.content-visible when-profile="soluciones"}
+```{r}
+## comprobamos si hay observaciones en ambas tablas
+
+table(regionEmpleado$region)
+table(regionEmpleado$ID)
+
+empleados |>
+  anti_join(regionEmpleado, by = "ID") |>
+  distinct(ID)
+
+
+regionEmpleado |>
+  anti_join(empleados, by = "ID") |>
+  distinct(ID)
+
+# solución ineficiente
+t0 <- Sys.time()
+
+empleados |>
+  inner_join(regionEmpleado, by = "ID") |>
+  group_by(ID, nombre, apellido1, apellido2, region) |>
+  summarize(ventas = sum(ventas)) |>  ungroup() |>
+  group_by(region) |>
+  arrange(desc(ventas)) |>
+  slice_head(n = 1) |>
+  select(region, nombre, apellido1, apellido2, ventasT)
+
+Sys.time() - t0
+
+# Solución más eficiente: agrupa primero, luego une
+t0 <- Sys.time()
+
+empleados |>
+  group_by(ID, nombre, apellido1, apellido2) |>
+  summarize(ventasT = sum(ventas)) |>
+  ungroup() |>
+  inner_join(regionEmpleado, by = "ID") |>
+  group_by(region) |>
+  arrange(desc(ventasT)) |>
+  slice_head(n = 1) |>
+  select(region, nombre, apellido1, apellido2, ventasT)
+
+Sys.time() - t0
+```
+:::
+
+### Apartado 2.b)
+
+Mostrar el nombre completo de la región con más ventas cada año.
+
+::: {.content-visible when-profile="soluciones"}
+```{r}
+# Solución más eficiente: agrupa primero, luego une solo lo necesario
+t0 <- Sys.time()
+empleados |>
+  inner_join(regionEmpleado, by = "ID") |>
+  group_by(region, anio) |>
+  summarize(ventasT = sum(ventas)) |>
+  ungroup() |>
+  group_by(anio) |>
+  arrange(desc(ventasT)) |>
+  slice_head(n = 1) |>
+  ungroup() |>
+  inner_join(regiones, by = c("region" = "claveRegion")) |>
+  select(anio, nombreRegion, ventasT)
+Sys.time() - t0
+
+### menos eficiente
+t0 <- Sys.time()
+
+empleados |>
+  inner_join(regionEmpleado, by = "ID")  |>
+  inner_join(regiones, by = c("region" = "claveRegion")) |>
+  group_by(nombreRegion, anio) |>
+  summarize(ventasT = sum(ventas)) |>  ungroup() |>
+  group_by(anio) |>
+  arrange(desc(ventasT)) |>   # slice_max(ventasT)
+  slice_head(n = 1)
+
+Sys.time() - t0
+
+```
+:::
+
+### Apartado 2.c)
+
+Mostrar los nombres y apellidos de los empleados "misteriosos": es decir, aquellos que no sabemos a qué región pertenecen.
+
+::: {.content-visible when-profile="soluciones"}
+```{r}
+# Solución más eficiente con anti_join (recomendado)
+t0 <- Sys.time()
+empleados |>
+  anti_join(regionEmpleado, by = "ID") |>
+  distinct(ID, nombre, apellido1, apellido2)
+Sys.time() - t0
+
+# ineficiente con left_join
+t0 <- Sys.time()
+empleados |>
+  left_join(regionEmpleado, by = "ID") |>
+  filter(is.na(region)) |>
+  distinct(ID, nombre, apellido1, apellido2)
+Sys.time() - t0
+```
+:::
+
+
+::: {.content-visible when-profile="NINGUNO"}
+
+Crea `renderizar.R`:
+
+```r
+# Sin soluciones
+quarto::quarto_render("Tema02ej1.qmd")
+
+# Con soluciones
+quarto::quarto_render("Tema02ej1.qmd", profile = "soluciones")
+```
+
+## Con archivo auxiliar `_quarto.yml`
+
+<https://quarto.org/docs/projects/profiles.html>
+
+Crea un archivo `_quarto.yml` en el mismo directorio:
+
+```yaml
+project:
+  type: default
+
+profile:
+  default:
+    # Sin soluciones
+
+  soluciones:
+    # Con soluciones
+```
+
+```yaml
+project:
+  type: default
+
+profile:
+  group:
+#    - [default, soluciones]
+    - [soluciones, default]
+```
+
+## Desde RStudio
+
+1. Abre el archivo en RStudio
+2. Haz clic en el **botón Render** (sin soluciones)
+3. O haz clic en la **flecha** junto al botón Render y selecciona el perfil "soluciones"
+
+:::
