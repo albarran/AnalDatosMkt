@@ -67,7 +67,7 @@ strip-comments: true
 
   * [Tema 04 - Ejercicio 1](docs/Tema04ej1.qmd)
 
-    - Fecha límite de entrega: **dom., 9-nov., 23:59h**
+    - Fecha límite de entrega: **dom., 16-nov., 23:59h**
 
   * [Tema 04 - Ejercicio 2](docs/Tema04ej2.qmd)
 
