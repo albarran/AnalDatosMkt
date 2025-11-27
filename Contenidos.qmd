@@ -18,6 +18,9 @@ strip-comments: true
 
 <!--
 
+*********************************************************************
+-->
+
 ## Semana 14
 (15-Dic. a 21-Dic.)
 
@@ -28,19 +31,16 @@ strip-comments: true
 
   * [Ejemplo de **Proyecto Final**](docs/Proyect01.qmd)
 
+  * [Tema 09 - Más algoritmos de aprendizaje supervisado](docs/Tema09.qmd)
+
+  * [Tema 09 - Ejemplo 1](docs/Tema09ej1.qmd)
+
 ## Semana 13
 (01-Dic. a 07-Dic.)
 
   * [Tema 08 - Métodos basados en árboles](docs/Tema08.qmd)
 
   * [Tema 08 - Ejemplo 1](docs/Tema08ej1.qmd)
-
-  * [Tema 09 - Más algoritmos de aprendizaje supervisado](docs/Tema09.qmd)
-
-  * [Tema 09 - Ejemplo 1](docs/Tema09ej1.qmd)
-
-*********************************************************************
--->
 
 ## Semana 12
 (24-Nov. a 30-Nov.)
