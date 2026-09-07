@@ -1,0 +1,141 @@
+---
+#subtitle: "Análisis de Datos Multivariantes aplicado al Marketing"
+#subtitle: "Muestreo y Análisis de Datos"
+subtitle: "Técnicas para 'Big Data' en Economía \n\n Universidad de Alicante"
+title    :  "Introducción"
+author: 
+  - "Prof.: Pedro Albarrán"
+institute: "Dpto. de Fundamentos del Análisis Económico. Universidad de Alicante"
+format:
+  revealjs:
+    logo: figure/by-nc-sa2.png
+    titlegraphic: figure/by-nc-sa.png
+    theme:  serif # simple # default # moon # beige # sky #
+    smaller: false
+    scrollable: true
+    embed-resources: true
+    slide-number: true
+    show-slide-number: all
+    transition: slide # concave # 
+    background-transition: fade
+    progress: true
+execute:
+  enabled: false      # (no) ejecutar code chunks
+  eval: false        # por defecto, evalúa y muestra códido de code chunks
+  echo: true
+  warning: false    # pero no los mensajes ni warnings
+  message: false
+knitr:
+  opts_chunk:
+    results: hide     # ni muestra resultados ni figuras
+    fig.show: hide
+lang: es
+strip-comments: true
+toc: false
+# css: styles.css
+---
+
+## Objetivos
+
+- Aprender a **extraer información** de los datos usando técnicas computacionales y estadísticas
+
+:::: {.columns}
+
+::: {.column width="48%"}
+![](figure/feedback-loop.png){width=95% fig-align="center"}
+:::
+
+::: {.column width="48%"}
+![](figure/figure03_Conway.png){width=85% fig-align="center"}
+:::
+
+::::
+
+- Enfoque práctico: usar la información para crear valor (**analítica de negocios**)
+
+
+## La vida diaria se "datifica"
+
+![](figure/datificacion.png){ width=60% fig-align="center"}
+
+- Y esos datos tienen mucho **Volumen** (escala), llegan con **Velocidad** (en tiempo real),
+  con gran **Variedad** (números, texto, mapas, imágenes) y **Veracidad** dudosa (errores, sesgos)
+
+- La V que importa: **Valor**. Y NO está en los datos: está en saber analizarlos
+
+
+## Importancia de los datos
+
+- Clive Humby (2006), el original de la frase famosa:
+
+  > > "Data is the new oil. It's valuable, but if unrefined it cannot really be used."
+
+<!--
+-   Neelie Kroes (Comisaria Europea para la Agenda Digital, 2013):
+
+  > > "Data is the oil of the new economy, [...], the new oil for the digital era"
+-->
+
+- Ahora el "refinado" importa más que nunca: la IA existe porque se analizaron
+  cantidades masivas de datos
+
+- Si caben en tu ordenador, NO es "Big Data". Las técnicas y la forma de pensar
+  de lo que haremos son las mismas
+
+
+## Tipos de análisis de datos
+
+![](figure/tiposAnalisis.png){width=90% fig-align="center"}
+
+- Este es el mapa del curso: **descriptivo y diagnóstico** (datos, exploración, KPIs, el mundo
+  del "Business Intelligence"), **predictivo** (modelos de aprendizaje) y **prescriptivo**
+  (de la predicción a la DECISIÓN)
+
+
+## Aprender a analizar datos
+
+- Es una inversión de futuro en el trabajo: [El País, 08/2023](https://elpais.com/educacion/2023-08-08/el-forzoso-viraje-de-los-economistas-para-no-quedar-arrinconados-por-matematicos-e-ingenieros.html)
+
+- Pero NO es magia, y requiere saber lo que se hace
+
+![](figure/170306.bigdata.jpg){width=55% fig-align="center"}
+
+- [Dan Ariely](https://es.wikipedia.org/wiki/Dan_Ariely) (2013): *"Big data is like teenage sex:
+  everyone talks about it, nobody really knows how to do it, everyone thinks everyone else is
+  doing it, so everyone claims they are doing it."*
+
+<!-- viñeta alternativa: ![](figure/140113.bigdata.jpg){width=60%} -->
+
+
+## Proceso de Análisis de Datos
+
+![](figure/data-science.svg){ width=105% }
+
+- Cada caja es parte del curso: importar y limpiar datos, explorarlos y visualizarlos,
+  modelizar y COMUNICAR resultados
+
+
+## Pensamiento algorítmico
+
+* Se programa, pero lo importante NO es memorizar código: es saber
+
+  1. especificar CON PRECISIÓN un problema
+
+  2. descomponerlo en pasos que un ordenador pueda ejecutar
+
+  3. pensar en los casos especiales (¿datos que faltan? ¿duplicados?)
+
+* Una IA puede escribir código por ti: tu trabajo es saber QUÉ pedir, POR QUÉ
+  y COMPROBAR el resultado. Eso se entrena aquí, y eso se evalúa
+
+
+## Cómo funciona el curso
+
+* Leed en la web de la asignatura:
+
+  + [Evaluación](../Evaluacion.qmd): cómo funcionan las clases (venir con el material trabajado)
+    y cómo se evalúa
+
+  + [Puesta a punto](../PuestaAPunto.qmd): qué instalar LO ANTES POSIBLE (R y Positron)
+
+  + [Contenidos](../Contenidos.qmd): el material de cada semana, siempre actualizado
