@@ -745,6 +745,29 @@ seq(from == 1, to = 5, by = 1)   # ¿por qué?
 * Y aprenderemos a **leer los fallos**: los mensajes de error, y los casos peores en que no hay mensaje pero el resultado no es el que queríamos
 
 
+## Cómo se entrega el trabajo de clase
+
+* Lo que se entrega es el trabajo de las **PRÁCTICAS** de este tema (el resto de cosas que
+  probéis o veamos en pantalla, no)
+
+* Para este tema, ese trabajo va en un guion propio: `Tema00_DNI.R` (con VUESTRO DNI:
+  p.e., `Tema00_12345678X.R`), en la carpeta del curso
+
+    + cada tema tendrá su propia entrega (y su formato); en algunos temas podrá haber más de una
+
+* Si una tarea pide *contestar* algo (no solo código), escribid la respuesta como TEXTO en
+  un comentario del guion
+
+* Cuando se pida, se sube mediante un formulario cuyo enlace se dará en clase en ese momento
+
+* Cuenta el TRABAJO, no la perfección: se valora que lo habéis ido haciendo y razonando
+
+::: {.notes}
+Formulario de "trabajo de clase del tema" (TemaNN_clase), distinto del de ejercicio (TemaNNej).
+El enlace/QR se proyecta solo cuando hay recogida.
+:::
+
+
 ## Tipos de Objetos en R
 
 -  TODO en R es un objeto, cada uno con **distintas propiedades** y, por tanto, distintas formas de trabajar con él
@@ -2399,18 +2422,6 @@ View(datos); str(datos)
 
 -   Una lista es una colección <!--genérica--> de objetos de distinto tipo (a diferencia de un vector)
 
--   Muchas funciones de R devuelven sus **resultados como una lista**: guardan cosas diversas
-    (coeficientes, residuos, opciones...) en un único objeto
-
-    + por eso importa entender cómo se ACCEDE a sus elementos: cuando ejecutemos un contraste
-      o una regresión, extraeremos de ahí lo que necesitemos
-
-```{r}
-res <- t.test(altura)   # el resultado es una lista
-names(res)              # qué contiene
-res$p.value             # accedemos a un elemento
-```
-
 <!--
 ```{r}
 #| echo: false
@@ -2519,6 +2530,21 @@ miLista[2][2]   # lista de longitud 1
 :::
 
 -    `unlist()` convierte una lista en vector, usando la clase que pueda ajustarse a todos los objetos (elementales) <!-- típicamente, caracteres -->
+
+
+## Las listas guardan resultados de funciones
+
+-   Muchas funciones de R devuelven sus **resultados como una lista**: guardan cosas diversas
+    (estadísticos, opciones, datos...) en un único objeto
+
+-   Por eso importa saber ACCEDER a sus elementos: cuando ejecutemos un contraste o una
+    regresión, extraeremos de ahí lo que necesitemos
+
+```{r}
+res <- t.test(altura)   # el resultado es una lista
+names(res)              # qué contiene
+res$p.value             # accedemos a un elemento
+```
 
 
 
@@ -2995,7 +3021,25 @@ export(nsw, "data/nsw.csv")
 
 * O convertir un archivo del disco a otro formato con `convert()`
 
-# Para terminar
+
+## PRÁCTICA en clase: las fichas (4): guardar, cargar, importar
+
+Ahora que hemos visto `save()`/`load()` y `rio`:
+
+1. Guardad las fichas en `datos/fichas.RData` (con `save()`); borrad TODO el espacio de trabajo y recuperadlas con `load()`: ¿está todo?
+
+2. Exportad las fichas a `datos/fichas.csv` (con `export()` de `rio`), abrid el csv con doble clic en el Explorador (Data Explorer) y volved a importarlo con `import()` a un objeto NUEVO
+
+3. Comparad con `str()` el objeto original y el importado: ¿qué le ha pasado al factor? ¿Por qué?
+
+<!-- INTERNO (soluciones):
+save(datos, file="datos/fichas.RData"); rm(list=ls()); load("datos/fichas.RData")
+export(datos, "datos/fichas.csv"); datos2 <- import("datos/fichas.csv"); str(datos2)
+  # el factor vuelve como character/entero: el csv no guarda tipos -> enlaza "el tipo importa"
+Práctica creada 9-sep: guardar/cargar/importar DENTRO del running example (antes solo
+estaba en el ejercicio de reserva), y COLOCADA tras las slides de save/load y rio
+(regla: nunca pedir en práctica lo aún no visto).
+-->
 
 ## Valores ausentes ("missing values"): `NA`
 
