@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Proyecto Final</title>
+<title>Puesta a punto</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -107,7 +107,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Evaluación</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./ProyectoFinal.html" aria-current="page"> 
+    <a class="nav-link" href="./ProyectoFinal.html"> 
 <span class="menu-text">Proyecto Final</span></a>
   </li>  
 </ul>
@@ -126,14 +126,12 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#objetivos" id="toc-objetivos" class="nav-link active" data-scroll-target="#objetivos">Objetivos</a></li>
-  <li><a href="#la-propuesta-qué-tiene-que-tener-sí-o-sí" id="toc-la-propuesta-qué-tiene-que-tener-sí-o-sí" class="nav-link" data-scroll-target="#la-propuesta-qué-tiene-que-tener-sí-o-sí">La propuesta: qué tiene que tener SÍ o SÍ</a></li>
-  <li><a href="#algunas-sugerencias-sobre-temas-y-fuentes-de-datos" id="toc-algunas-sugerencias-sobre-temas-y-fuentes-de-datos" class="nav-link" data-scroll-target="#algunas-sugerencias-sobre-temas-y-fuentes-de-datos">Algunas sugerencias sobre temas y fuentes de datos</a></li>
-  <li><a href="#resultado-final" id="toc-resultado-final" class="nav-link" data-scroll-target="#resultado-final">Resultado final</a></li>
-  <li><a href="#evaluación" id="toc-evaluación" class="nav-link" data-scroll-target="#evaluación">Evaluación</a>
+  <li><a href="#instalación-del-software-del-curso" id="toc-instalación-del-software-del-curso" class="nav-link active" data-scroll-target="#instalación-del-software-del-curso">Instalación del software del curso</a>
   <ul class="collapse">
-  <li><a href="#importante-plagio" id="toc-importante-plagio" class="nav-link" data-scroll-target="#importante-plagio">IMPORTANTE: PLAGIO</a></li>
+  <li><a href="#primero-r-versión-4.6-o-superior" id="toc-primero-r-versión-4.6-o-superior" class="nav-link" data-scroll-target="#primero-r-versión-4.6-o-superior">1. Primero, R (versión 4.6 o superior)</a></li>
+  <li><a href="#después-positron-el-editor" id="toc-después-positron-el-editor" class="nav-link" data-scroll-target="#después-positron-el-editor">2. Después, Positron (el editor)</a></li>
   </ul></li>
+  <li><a href="#comprobación-2-minutos" id="toc-comprobación-2-minutos" class="nav-link" data-scroll-target="#comprobación-2-minutos">Comprobación (2 minutos)</a></li>
   </ul>
 </nav>
     </div>
@@ -142,7 +140,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Proyecto Final</h1>
+<h1 class="title">Puesta a punto</h1>
 <p class="subtitle lead">Universidad de Alicante, Curso 2026-2027 (Primer cuatrimestre)</p>
 </div>
 
@@ -160,73 +158,46 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="objetivos" class="level1">
-<h1>Objetivos</h1>
-<p>Para el proyecto final debéis <strong>proponer un tema</strong> de estudio usando datos y las técnicas vistas en el curso. Podéis plantear un tema propio con datos disponibles por vuestro trabajo, contactos o búsqueda propia; durante el curso se darán también sugerencias de temas y fuentes de datos.</p>
-<p>El resultado debe ser un proyecto de análisis de datos en el ámbito de economía, empresa, negocios o finanzas (<strong>“business analytics”</strong>):</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="docs/figure/data-science-model.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<p>Por tanto, debe explicarse claramente:</p>
-<ol type="1">
-<li><strong>Objetivo</strong> del análisis: qué cuestión se estudia y por qué es importante.</li>
-<li>Datos: qué datos se utilizan, de dónde proceden y por qué son adecuados para el objetivo.</li>
-<li>Procesamiento de los datos (importación, limpieza y transformación), discutiendo por qué es necesario para el análisis.</li>
-<li>Análisis exploratorio: qué información aprendemos de los datos y cómo ayuda a especificar los modelos.</li>
-<li>Modelización: cómo se especifican los modelos para alcanzar el objetivo, cómo se elige el modelo final.</li>
-<li>Comunicación efectiva de los resultados, discutiendo qué implican respecto al <strong>objetivo</strong> planteado.</li>
-</ol>
-</section>
-<section id="la-propuesta-qué-tiene-que-tener-sí-o-sí" class="level1">
-<h1>La propuesta: qué tiene que tener SÍ o SÍ</h1>
-<p>Uno de los objetivos de pediros una propuesta es que PENSÉIS CUIDADOSAMENTE lo que vais a hacer y lo plasméis en un texto breve pero claro y concreto. Así evitamos que, cuando esté a punto de acabar el plazo, las cosas no cuadren (porque no están pensadas) y surjan el agobio o la imposibilidad de entregar.</p>
-<p>Una propuesta aceptable responde con CONCRECIÓN a estas cuatro cosas:</p>
-<ol type="1">
-<li><p><strong>OBJETIVO claro y para qué.</strong> El objetivo NO es “predecir” o “identificar factores” a secas: es para qué quieres predecir o identificar, a quién le sirve (empresa, inversor, política) y cómo se usará el resultado. Si no sabes el objetivo, no sabes qué datos necesitas, cómo limpiarlos ni qué modelos utilizar.</p></li>
-<li><p><strong>Nada de trivialidades.</strong> Es obvio que hay que limpiar, explorar, visualizar y concluir; eso ya se sabe. Lo importante es CÓMO en concreto, y eso depende de tu objetivo.</p></li>
-<li><p><strong>DATOS concretos.</strong> Qué variables exactamente, cuántas observaciones, con qué frecuencia, y si ya has comprobado que están disponibles. “Buscaré datos de X” no es un plan de datos. Piensa si el tamaño muestral es suficiente para lo que quieres hacer.</p></li>
-<li><p><strong>MODELADO concreto.</strong> ¿Tu problema es de REGRESIÓN o de CLASIFICACIÓN? ¿Quieres PREDECIR o IDENTIFICAR FACTORES? Son objetivos distintos que usan los modelos de forma distinta (y si quieres ambos, explica cómo se integran). ¿Qué modelos piensas usar y por qué encajan con tu objetivo? “Y si es necesario, otras técnicas” no es concreto.</p></li>
-<li><p><strong>APLICACIÓN.</strong> El trabajo NO termina obteniendo una predicción o unos coeficientes: debe incluir una breve aplicación de cómo tus resultados determinan una decisión concreta (aprobar o denegar, a quién dirigir la campaña, qué umbral usar según los costes de cada error…). Piensa quién usaría tu modelo y para decidir qué.</p></li>
-</ol>
+<section id="instalación-del-software-del-curso" class="level1">
+<h1>Instalación del software del curso</h1>
+<p>Trabajaréis en clase con vuestro propio ordenador. Instalad LO ANTES POSIBLE lo siguiente (todo gratuito). Es una instalación sencilla: descargar dos programas y ejecutar sus instaladores. <strong>El orden importa: primero R y después Positron</strong> (así Positron encuentra vuestra instalación de R él solo). Al final hay una comprobación rápida.</p>
 <ul>
-<li>Enviad la propuesta cuanto antes (el canal para enviarla se anunciará durante el curso), PERO debéis esperar a mi visto bueno para asegurar que tiene sentido y que los trabajos son diferentes (los datos pueden ser los mismos, pero NO con el mismo objetivo).</li>
+<li>OJO: conviene tener el sistema operativo actualizado antes de instalar nada.</li>
+<li>Considerad traer una regleta a clase si vuestra batería dura poco.</li>
+</ul>
+<section id="primero-r-versión-4.6-o-superior" class="level2">
+<h2 class="anchored" data-anchor-id="primero-r-versión-4.6-o-superior">1. Primero, R (versión 4.6 o superior)</h2>
+<ul>
+<li>Descargad R desde <a href="https://cran.r-project.org/">https://cran.r-project.org/</a>:
+<ul>
+<li>Windows: “Download R for Windows” &gt; “base” &gt; “Download R-4.6.1 for Windows”.</li>
+<li>macOS: “Download R for macOS”; elegid el .pkg de vuestra arquitectura (arm64 para Apple Silicon, x86_64 para Intel). Puede ser necesario instalar XQuartz.</li>
+<li>Linux: seguid las instrucciones de vuestra distribución.</li>
+</ul></li>
 </ul>
 </section>
-<section id="algunas-sugerencias-sobre-temas-y-fuentes-de-datos" class="level1">
-<h1>Algunas sugerencias sobre temas y fuentes de datos</h1>
-<p><strong>OJO</strong>: estas sugerencias NO son “opciones” que se eligen tal cual. Sugieren ideas: con los mismos datos y en el mismo contexto se pueden plantear objetivos muy distintos. Tendréis que concretar y desarrollar la vuestra (ver los cuatro puntos de la propuesta).</p>
-<ol type="1">
-<li><p><strong>Ventas de “Big Mart”</strong>. Datos de ventas de 1.559 productos durante 2013 en 10 tiendas de la cadena americana “Big Mart”, con atributos de cada producto y tienda. Se puede construir un modelo predictivo o de clasificación de las ventas de cada producto en una tienda, y entender qué propiedades de productos y tiendas juegan un papel clave. Los datos están <a href="https://drive.google.com/file/d/1Tcr85g-zl_i1XdgAmljcvrB3Dq3_L9d4/view?usp=sharing">aquí</a>.</p></li>
-<li><p><strong>Black Friday</strong>. “ABC Private Limited” quiere comprender el comportamiento de compra de varios productos y categorías. Hay un resumen de compras de clientes con sus datos demográficos. Un modelo para predecir compras (o clasificar compras de gran volumen) ayuda a crear ofertas personalizadas. Los datos <a href="https://www.dropbox.com/scl/fi/7097vyravm1nmgtq3hu8d/02black.zip?rlkey=qy9jqypyhzcpiav01i9b4jg9k&amp;dl=0">aquí</a>.</p></li>
-<li><p><strong>Concesión de préstamos</strong>. “Dream Housing Finance” quiere automatizar la decisión de elegibilidad de préstamos con los datos del formulario de solicitud, identificando los segmentos de clientes susceptibles de recibirlos. Datos y descripción <a href="https://www.dropbox.com/s/5h7g2vped3qpbkk/03loan.zip?dl=0">aquí</a>.</p></li>
-<li><p><strong>Clasificación de la calidad crediticia</strong>. Datos de una compañía de crédito alemana, <a href="https://archive.ics.uci.edu/ml/datasets/Statlog+%28German+Credit+Data%29">aquí</a>.</p></li>
-<li><p><strong>Servicio de bicicletas</strong>. “Capital BikeShare” ofrece bicicletas compartidas: a dónde van sus usuarios, cuándo viajan, qué paradas son más populares, qué días hay más viajes. Información <a href="https://www.capitalbikeshare.com/system-data">aquí</a>.</p></li>
-<li><p><strong>Renta de los individuos</strong>. Con características demográficas del Censo de EE.UU., construir un modelo predictivo del nivel de renta (mayor o menor de 50 mil dólares anuales), usable por ejemplo para detección de fraude. Datos <a href="https://www.dropbox.com/s/vho16xw59qczqpa/06census.zip?dl=0">aquí</a>.</p></li>
-<li><p><strong>Airbnb</strong>. En este <a href="https://insideairbnb.com/get-the-data/">enlace</a> hay datos de Airbnb para muchas ciudades; se pueden analizar, por ejemplo, los determinantes de la satisfacción de los usuarios. También hay datos de Airbnb en <a href="https://www.kaggle.com/datasets">Kaggle</a>.</p></li>
-<li><p><strong>Predicción de respuesta del cliente</strong>. Datos de una campaña de “mailing” directo con características demográficas e historial de los clientes: predecir su respuesta al contacto para maximizar el importe de una donación. Datos y descripción <a href="https://www.dropbox.com/s/9hfftmdbgrerv6h/13respuesta.zip?dl=0">aquí</a>.</p></li>
-</ol>
-</section>
-<section id="resultado-final" class="level1">
-<h1>Resultado final</h1>
-<p>El resultado será un <strong>informe reproducible</strong> elaborado con las herramientas del curso (las veremos en clase). El trabajo debe ser <strong>mínimamente presentable</strong>: no se trata de “amontonar” resultados, sino de presentar una historia que los datos cuentan usando vuestros conocimientos como <em>universitarios</em>. En particular: NO mostréis salidas en bruto en un documento para un jefe o cliente, NO pongáis tablas que exceden los márgenes ni gráficos ilegibles, y COMENTAD lo que aporta cada resultado al objetivo (no lo obvio).</p>
-<p>Los detalles del formato de entrega y los <strong>plazos</strong> (de la propuesta y de la entrega final) se anunciarán durante el curso con suficiente antelación.</p>
-</section>
-<section id="evaluación" class="level1">
-<h1>Evaluación</h1>
-<p>La nota final valorará <strong>todo el proceso</strong> del análisis, teniendo en cuenta que algunos datos apenas requieren procesamiento mientras que otros requieren mucha limpieza o combinar fuentes. Hacer lo más básico visto en clase con unos datos similares a los de clase es válido, pero no esperéis una nota alta incluso estando perfecto.</p>
-<p>Es MUY IMPORTANTE que el trabajo incluya comentarios adecuados: NO describir lo obvio de una tabla o gráfico, sino explicar por qué es importante, qué implica y qué se puede inferir, siempre en coherencia con el objetivo.</p>
-<p>En la evaluación no continua (y en una submuestra aleatoria de la continua) el trabajo se <strong>defiende presencialmente</strong>: hay que saber explicar cada decisión del propio análisis.</p>
-<section id="importante-plagio" class="level2">
-<h2 class="anchored" data-anchor-id="importante-plagio">IMPORTANTE: PLAGIO</h2>
+<section id="después-positron-el-editor" class="level2">
+<h2 class="anchored" data-anchor-id="después-positron-el-editor">2. Después, Positron (el editor)</h2>
 <ul>
-<li>Seguro que podéis encontrar análisis ya realizados sobre vuestra propuesta, en internet o de estudiantes de cursos anteriores. <em>Yo también.</em></li>
-<li>La detección de plagio supondrá automáticamente el suspenso en todas las convocatorias de la asignatura en este curso académico y el inicio de la apertura de un expediente.</li>
+<li><p>En este curso usamos <strong>Positron</strong>, el entorno de Posit (los creadores de RStudio): funciona igual que un editor moderno estándar (VS Code) y sirve para R y también para Python, que os será útil en el futuro.</p></li>
+<li><p>Descargad desde <a href="https://positron.posit.co/download.html">https://positron.posit.co/download.html</a> el instalador de vuestro sistema y ejecutadlo. Al abrirlo, Positron detecta la instalación de R que hicisteis en el paso 1 (por eso el orden).</p></li>
+<li><p><strong>Si ya usáis VS Code</strong>: podéis seguir perfectamente con él. Instalad las extensiones “R” y “Quarto” y tendréis el mismo flujo de trabajo que veremos en clase; casi todo lo que se diga para Positron aplica igual.</p></li>
+<li><p><strong>Si ya usáis RStudio</strong>: también sirve para casi todo el curso. Tenedlo actualizado. Eso sí, las instrucciones y capturas de clase serán con Positron.</p></li>
 </ul>
-
-
+<p>El resto del software del curso (Quarto y los paquetes de R que vayamos necesitando) lo instalaremos JUNTOS en clase cuando toque: no hace falta que hagáis nada más ahora.</p>
 </section>
+</section>
+<section id="comprobación-2-minutos" class="level1">
+<h1>Comprobación (2 minutos)</h1>
+<ol type="1">
+<li>Abrid Positron.</li>
+<li>Localizad la <strong>Consola</strong> (panel inferior). La primera vez hay que <strong>elegir el intérprete</strong>: pulsad el selector de la esquina superior derecha y elegid <strong>R</strong> (algo como <code>R 4.6.1</code>; si dice 4.6 o superior, bien). OJO: si os aparece <strong>Python</strong>, no es un error, pero no es lo que usamos: cambiad a R en ese mismo selector.</li>
+<li>Escribid en la consola <code>2 + 2</code> y pulsad Enter. Si responde <code>[1] 4</code>, TODO CORRECTO.</li>
+</ol>
+<p>Un aviso para más adelante: cuando abráis una carpeta en Positron por primera vez (lo haremos en clase), preguntará si confiáis en sus archivos (“Do you trust the authors?”): contestad <strong>“Yes, I trust the authors”</strong>; si no, Positron queda en modo restringido y no funciona casi nada.</p>
+<p>Si algo falla, no os atasquéis: traed el mensaje de error EXACTO a clase (o preguntad antes por UACloud).</p>
+
+
 </section>
 
 </main> <!-- /main -->
