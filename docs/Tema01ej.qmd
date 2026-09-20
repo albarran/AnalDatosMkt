@@ -52,7 +52,7 @@ iii. Escribe una **breve** frase introductoria general, una lista que enumere do
 
       Nota: Puedes usar, aquí y en cualquier otra parte del documento, negritas o cursivas cuando lo consideres oportuno.
 
-iv. Guarda el documento con un nombre con el siguiente formato que incluye vuestro número de DNI:  `Tema01ej_123456789.qmd`
+iv. Guarda el documento con un nombre con el siguiente formato, que incluye tu número de DNI:  `T01_E1_<DNI>.qmd` (por ejemplo, `T01_E1_12345678.qmd`)
 
 v. Renderiza tu documento para visualizar el documento html creado.
 
@@ -126,35 +126,16 @@ ii. Incluye la opción `code-fold: true` en la cabecera. Comprobar cómo cambia 
 
 iii. Elige un tema entre [estos](https://bootswatch.com/3/) y aplícalo al documento.
 
-<!-- ENTREGA COMENTADA (15-sep-2026). Pedro: de momento fuera; se pondra cuando exista el
-formulario de 2026-27. El enlace que habia (https://forms.gle/j5dQJwrhDqyoaKRf9) es del CURSO
-PASADO: en el inventario de Drive, `Tema01ej` figura modificado el 19-oct-2025, asi que las
-entregas de este curso habrian ido a la carpeta del anterior.
-OJO al recuperarlo: NO se anuncia por UACloud (eso me lo invente yo).
+::: {.content-hidden}
+ENTREGA OCULTA (21-sep-2026). Pedro: NO se puede decir que haya formulario ni que se vaya a
+entregar; es una sorpresa (la recogida no se anuncia nunca). Se descubre cuando se publique.
 
-## Entrega del ejercicio
+OJO, ESTO YA SE ROMPIO UNA VEZ: no usar comentarios HTML aqui. Los comentarios HTML NO SE
+ANIDAN, asi que abrir uno dentro de otro hace que el cierre del interior cierre tambien el
+exterior, y todo lo de despues sale PUBLICADO. Paso el 21-sep aqui: se vio el texto de
+la entrega, los nombres viejos y un --> suelto. Por eso este bloque va con .content-hidden, que
+Quarto no renderiza y no depende de que nadie cuente guiones.
 
-::: {.callout-important}
-El ejercicio se va haciendo **durante las clases del tema**, apartado a apartado, y se entrega al
-terminarlo. El formulario de entrega se publicará aquí.
+Cuando toque publicar la entrega, copiar la seccion que ya tiene ECO. El id del formulario NO
+se escribe aqui: este repositorio es publico. Esta en 00.TEC (PENDING.md y forms/formularios.gs).
 :::
-
-<!-- INTERNO (15-sep-2026): retirado el enlace https://forms.gle/j5dQJwrhDqyoaKRf9 porque ese
-formulario es del CURSO PASADO (en el inventario de Drive, `Tema01ej` figura modificado el
-19-oct-2025). Publicarlo con ese enlace mandaría las entregas de este curso a la carpeta del
-anterior. Al crear el formulario de 2026-27, sustituir este bloque por el enlace nuevo. -->
-
-Rellenad el formulario de entrega con vuestros datos y subid
-
-  - vuestro archivo de .qmd
-
-  - el resultado de renderizarlo: bien un archivo autocontenido .html (o .pdf o .docx) o bien un archivo .html y el directorio relacionado con el mismo nombre; en ambos casos, se recomienda comprimir todo para enviarlo.
-
-IMPORTANTE: el nombre de los ficheros que subáis DEBE seguir el siguiente formato que incluye vuestro número de DNI: ej.,
-
-  * Tema01ej_123456789.qmd
-
-  * Tema01ej_123456789.html
-
-  * Tema01ej_123456789.zip
--->

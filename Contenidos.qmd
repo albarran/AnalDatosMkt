@@ -147,7 +147,6 @@ Semana 1 al final). Actualiza también las fechas de cada semana.
 
     - El ejercicio se va haciendo **durante las clases del tema**: las transparencias indican
       en qué momento toca cada apartado.
-    - El formulario de entrega se publicará aquí antes de la fecha límite.
 
 ## Semana 1
 (07-Sept. a 11-Sept.)
