@@ -136,6 +136,8 @@ exterior, y todo lo de despues sale PUBLICADO. Paso el 21-sep aqui: se vio el te
 la entrega, los nombres viejos y un --> suelto. Por eso este bloque va con .content-hidden, que
 Quarto no renderiza y no depende de que nadie cuente guiones.
 
-Cuando toque publicar la entrega, copiar la seccion que ya tiene ECO. El id del formulario NO
+Cuando toque publicar la entrega, copiar la seccion que ya tiene ECO, que incluye el aviso de
+plazo: la entrega se cierra al acabar la clase, con 15 minutos de margen desde el final de la
+sesion; lo que llegue mas tarde no se tiene en cuenta. El id del formulario NO
 se escribe aqui: este repositorio es publico. Esta en 00.TEC (PENDING.md y forms/formularios.gs).
 :::
