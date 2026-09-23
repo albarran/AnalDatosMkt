@@ -139,6 +139,15 @@ Semana 1 al final). Actualiza también las fechas de cada semana.
 
 -->
 
+## Semana 3
+(21-Sept. a 25-Sept.)
+
+  * [Tema 02 - Visualización de datos](docs/Tema02.qmd)
+  * [Tema 02 - Ejercicios](docs/Tema02ej.qmd)
+
+    - Los ejercicios se van haciendo **durante las clases del tema**: las transparencias
+      indican en qué momento toca cada uno.
+
 ## Semana 2
 (14-Sept. a 18-Sept.)
 
