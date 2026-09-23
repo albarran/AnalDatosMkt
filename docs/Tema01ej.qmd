@@ -128,18 +128,31 @@ ii. Incluye la opción `code-fold: true` en la cabecera. Comprobar cómo cambia 
 
 iii. Elige un tema entre [estos](https://bootswatch.com/3/) y aplícalo al documento.
 
-::: {.content-hidden}
-ENTREGA OCULTA (21-sep-2026). Pedro: NO se puede decir que haya formulario ni que se vaya a
-entregar; es una sorpresa (la recogida no se anuncia nunca). Se descubre cuando se publique.
+## Entrega del ejercicio
 
-OJO, ESTO YA SE ROMPIO UNA VEZ: no usar comentarios HTML aqui. Los comentarios HTML NO SE
-ANIDAN, asi que abrir uno dentro de otro hace que el cierre del interior cierre tambien el
-exterior, y todo lo de despues sale PUBLICADO. Paso el 21-sep aqui: se vio el texto de
-la entrega, los nombres viejos y un --> suelto. Por eso este bloque va con .content-hidden, que
-Quarto no renderiza y no depende de que nadie cuente guiones.
-
-Cuando toque publicar la entrega, copiar la seccion que ya tiene ECO, que incluye el aviso de
-plazo: la entrega se cierra al acabar la clase, con 15 minutos de margen desde el final de la
-sesion; lo que llegue mas tarde no se tiene en cuenta. El id del formulario NO
-se escribe aqui: este repositorio es publico. Esta en 00.TEC (PENDING.md y forms/formularios.gs).
+::: {.callout-important}
+Este ejercicio se va haciendo **durante las clases del tema**, apartado a apartado, y **se
+entrega** al terminarlo, por el **[formulario de entrega](https://docs.google.com/forms/d/e/1FAIpQLSdQZYXvigWKV8Fl-i0Ae8P9Y2dd0_deWzBjpsGTVZDsemF_2w/viewform)**.
 :::
+
+Subid **un solo `.zip`** con el `.qmd` y el `.html` dentro, llamado **`Tnn_En_DNI.zip`**: `nn` es
+el tema, `n` la entrega y el DNI va **sin la letra**. Aquí, `T01_E1_12345678.zip` con vuestro DNI.
+
+Comprobad que el nombre sea exacto, o la entrega se rechazará. Recibiréis un correo de
+confirmación si la entrega es correcta, o de rechazo si no lo es.
+
+Renderizad con `embed-resources: true` para que el `.html` se vea por sí solo (apartado a.vii).
+
+No se valora que esté perfecto: se valora el progreso y que se vea lo que habéis entendido. Si os
+quedáis a medias, entregad lo que tengáis.
+
+::: {.callout-warning}
+**La entrega se cierra al acabar la clase.** Se admite un margen de **15 minutos** desde el final
+de la sesión; lo que llegue más tarde no se tiene en cuenta. La hora de envío queda registrada.
+:::
+
+<!-- INTERNO (21-sep-2026): formulario de RECOGIDA DE TRABAJO DE CLASE del curso 26-27,
+id 1e4cRNGc88429As0-I2L-MTXaZXyGKC14OEsTx61g8Jg. Es UNO SOLO para todo el curso y las tres
+asignaturas; no hay un formulario por ejercicio (ver 0admin/sistema-evaluacion-2026-27.md §6).
+Nace CERRADO: hay que abrirlo con abrirF1() el dia de la recogida y cerrarlo con cerrarF1().
+El enlace viejo https://forms.gle/j5dQJwrhDqyoaKRf9 era del CURSO PASADO: no reutilizarlo. -->
