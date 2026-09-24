@@ -4087,6 +4087,10 @@ scrollbar-width: thin;
 <span class="menu-text">Índice</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="../ComoTrabajar.html"> 
+<span class="menu-text">Cómo trabajar</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../Datos.html"> 
 <span class="menu-text">Datos</span></a>
   </li>  
@@ -4174,13 +4178,24 @@ scrollbar-width: thin;
 <section id="antes-de-empezar" class="level1">
 <h1>Antes de empezar</h1>
 <p>Estos ejercicios se van haciendo <strong>durante las clases del tema</strong>: las transparencias indican en qué momento toca cada uno.</p>
-<p>Antes de nada, prepara el sitio donde vas a trabajar:</p>
-<ol type="1">
-<li><p>Crea una <strong>carpeta para el tema</strong> y ábrela en Positron (<em>File &gt; Open Folder</em>). Todo lo del tema vive ahí.</p></li>
-<li><p>Dentro, crea un <strong>subdirectorio <code>data</code></strong> y descarga en él los ficheros de datos desde la página <a href="../Datos.html">Datos</a> del curso. Así el código encuentra los datos con <code>load(&quot;data/...&quot;)</code>, sin rutas absolutas y sin depender de dónde esté tu carpeta.</p></li>
-</ol>
-<p>Cada ejercicio va en <strong>su propio documento <code>.qmd</code></strong>, con su cabecera, su primera celda de entorno (la que lleva <code>include: false</code>) y una sección por apartado. Cada uno usa <strong>sus propios datos</strong>, que se cargan en esa primera celda.</p>
-<p>Los documentos se llaman <strong><code>T02_E&lt;n&gt;_&lt;DNI&gt;.qmd</code></strong>, donde <code>&lt;n&gt;</code> es el número del ejercicio y el DNI va sin la letra: <code>T02_E1_12345678.qmd</code> para el ejercicio 1, <code>T02_E2_12345678.qmd</code> para el 2, y así.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Importante
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si no lo has hecho ya, lee <strong><a href="../ComoTrabajar.html">Cómo trabajar en cada tema</a></strong>: la carpeta del tema con su subdirectorio <code>data</code>, cómo se crea el documento, qué va en la cabecera (con <code>embed-resources: true</code>), la primera celda y cómo se entrega. Vale para todo el curso.</p>
+</div>
+</div>
+<p>De este tema, lo que te hace falta:</p>
+<ul>
+<li>Los datos son <code>datosVisualizacion.RData</code> y <code>empresas.RData</code>, de la página <a href="../Datos.html">Datos</a>. Descárgalos en tu subdirectorio <code>data</code>.</li>
+<li><strong>Un documento por ejercicio</strong>, <code>T02_E&lt;n&gt;_&lt;DNI&gt;.qmd</code>: <code>T02_E1_12345678.qmd</code> para el ejercicio 1, <code>T02_E2_12345678.qmd</code> para el 2, y así. Cada uno carga <strong>sus propios datos</strong> en su primera celda.</li>
+</ul>
 </section>
 <section id="ejercicio-1-la-clientela" class="level1">
 <h1>Ejercicio 1: la clientela</h1>
