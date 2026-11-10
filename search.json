@@ -203,6 +203,181 @@
     "text": "Apartado d): el coste decide\n\nUn modelo que clasifique a todos como “sin descuento”: ¿qué exactitud tiene? ¿Qué métrica lo delata?\nLa tienda dice que no dar el descuento a quien lo habría recibido cuesta diez veces más que dárselo a quien no lo necesitaba. Calcula el coste de cada umbral, \\(10 \\cdot FN + FP\\). ¿Cuál eliges?\nEn una frase: ¿por qué 0,5 es una decisión que estás tomando?"
   },
   {
+    "objectID": "docs/Tema04ej1.html",
+    "href": "docs/Tema04ej1.html",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "",
+    "text": "Estos ejercicios se van haciendo durante las clases del tema: las transparencias indican en qué momento toca cada uno.\n\n\n\n\n\n\nImportante\n\n\n\nSi no lo has hecho ya, lee Cómo trabajar en cada tema: la carpeta del tema con su subdirectorio data, cómo se crea el documento, qué va en la cabecera (con embed-resources: true), la primera celda y cómo se entrega. Vale para todo el curso.\n\n\nDe este tema, lo que te hace falta:\n\nLos datos son marketplace.RData, de la página Datos. Descárgalo en tu subdirectorio data. Dentro vienen las tablas de un marketplace tal y como salen de su sistema: pedidos_bruto, vendedores, serie_ventas, ventas_prov y devoluciones.\nEl bloque 4 no usa ese fichero: baja los datos de la web del INE en el momento.\nUn documento por ejercicio, T04_E&lt;n&gt;_&lt;ID&gt;.qmd. Cada uno carga los datos en su primera celda.\n\n\nlibrary(tidyverse)\nload(\"data/marketplace.RData\")\n\n\n\n\n\n\n\nAdvertencia\n\n\n\nEstos datos están sucios a propósito: son un volcado como el que te vas a encontrar. Ninguna cifra que calcules sobre pedidos_bruto sin limpiar es publicable, y la entrega 1 consiste precisamente en documentar por qué."
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-a-qué-es-una-fila",
+    "href": "docs/Tema04ej1.html#apartado-a-qué-es-una-fila",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado a): qué es una fila",
+    "text": "Apartado a): qué es una fila\n\n¿Cuántas filas y cuántas columnas tiene pedidos_bruto? ¿Qué es una fila?\nEl sistema dice haber exportado 1.200 pedidos. ¿Cuántas filas hay? ¿Identifica id_pedido una única fila? Da el número de id_pedido repetidos.\n¿Qué hace vendedores, una fila por qué? ¿Es id_vendedor su clave?"
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-b-el-tipo-manda",
+    "href": "docs/Tema04ej1.html#apartado-b-el-tipo-manda",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado b): el tipo manda",
+    "text": "Apartado b): el tipo manda\n\n¿Qué variables están guardadas con un tipo que no corresponde a lo que miden? Da la lista con el problema concreto de cada una.\nCalcula la media de importe con as.numeric(). ¿Cuántos NA salen, de cuántas filas? ¿Por qué, si todos los valores parecen números?\nMira los valores distintos de cp_envio. ¿Qué le ha pasado al código postal de Alicante, que es 03003? ¿Por qué un código postal no es una cantidad?\n¿En cuántos formatos distintos viene fecha? Cuéntalos sin convertir nada todavía."
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-c-categorías-que-son-la-misma-cosa",
+    "href": "docs/Tema04ej1.html#apartado-c-categorías-que-son-la-misma-cosa",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado c): categorías que son la misma cosa",
+    "text": "Apartado c): categorías que son la misma cosa\n\nCuenta las categorías de canal. El diccionario dice que hay tres: web, app y tienda. ¿Cuántas etiquetas aparecen? ¿Cuáles son la misma?\nHaz lo mismo con provincia en vendedores, y con sector.\nSi agrupas por canal tal cual está, ¿qué le pasa a un informe de ventas por canal?"
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-d-no-todo-lo-que-falta-es-un-dato-que-falta",
+    "href": "docs/Tema04ej1.html#apartado-d-no-todo-lo-que-falta-es-un-dato-que-falta",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado d): no todo lo que falta es un dato que falta",
+    "text": "Apartado d): no todo lo que falta es un dato que falta\n\n¿Cuántos ausentes hay en cada variable?\nEn valoracion hay dos clases de ausencia: unos llegan como NA y otros con un valor centinela. Encuéntralo y di cuántos hay de cada clase. ¿Qué pasa con la valoración media si el centinela se cuela en el cálculo?\ndescuento tiene muchos ausentes y no es un problema de calidad: explica por qué, y en qué se diferencia del caso anterior.\n¿Quién contesta la encuesta de valoración? Si responden más los satisfechos, ¿la media de los que responden es la media de los clientes? Una frase."
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-e-qué-cifra-quedaría-mal",
+    "href": "docs/Tema04ej1.html#apartado-e-qué-cifra-quedaría-mal",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado e): qué cifra quedaría mal",
+    "text": "Apartado e): qué cifra quedaría mal\nPara cada problema que hayas detectado, escribe una frase: qué cifra del informe final saldría mal si no se corrige. Esta es la parte que se corrige con más atención."
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-a-un-solo-bloque-de-limpieza",
+    "href": "docs/Tema04ej1.html#apartado-a-un-solo-bloque-de-limpieza",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado a): un solo bloque de limpieza",
+    "text": "Apartado a): un solo bloque de limpieza\nEscribe un único bloque que deje pedidos listo: tipos arreglados, categorías homogeneizadas, centinelas convertidos en NA de verdad, y los duplicados exactos fuera. Un solo |&gt;, sin tablas intermedias."
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-b-comprobar-que-la-limpieza-ha-hecho-lo-que-crees",
+    "href": "docs/Tema04ej1.html#apartado-b-comprobar-que-la-limpieza-ha-hecho-lo-que-crees",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado b): comprobar que la limpieza ha hecho lo que crees",
+    "text": "Apartado b): comprobar que la limpieza ha hecho lo que crees\n\nFilas antes y después. ¿Cuántos duplicados exactos había?\nTipos de todas las variables, recuento de canal y rango de fecha.\n¿Siguen quedando id_pedido repetidos después de quitar los duplicados exactos? ¿Cuántos?"
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-c-los-duplicados-en-euros",
+    "href": "docs/Tema04ej1.html#apartado-c-los-duplicados-en-euros",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado c): los duplicados en euros",
+    "text": "Apartado c): los duplicados en euros\nCalcula los ingresos totales y el ticket medio antes y después de eliminar los duplicados exactos. Da la diferencia en euros y en porcentaje. Esa es la cifra que habría ido al informe."
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-d-la-clave-repetida",
+    "href": "docs/Tema04ej1.html#apartado-d-la-clave-repetida",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado d): la clave repetida",
+    "text": "Apartado d): la clave repetida\nQuedan pedidos con el mismo id_pedido y distinto importe. Mira un par de ellos.\n\n¿Qué relación hay entre los dos importes del mismo pedido?\nDecide qué hacer con ellos y justifícalo en dos frases. No hay una única respuesta correcta; hay respuestas justificadas y respuestas no justificadas."
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-e-el-atípico-error-o-otra-población",
+    "href": "docs/Tema04ej1.html#apartado-e-el-atípico-error-o-otra-población",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado e): el atípico, ¿error o otra población?",
+    "text": "Apartado e): el atípico, ¿error o otra población?\n\nCalcula el precio por unidad (importe / unidades) y describe su distribución.\nHay pedidos con un importe muy por encima del resto. Para cada uno, mira si las unidades acompañan. ¿Cuáles parecen un cliente mayorista y cuáles un error?\n¿Qué le pasa al ticket medio si los dejas? ¿Y si los quitas todos? ¿Qué harías?"
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-f-la-columna-que-viene-dada",
+    "href": "docs/Tema04ej1.html#apartado-f-la-columna-que-viene-dada",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado f): la columna que viene dada",
+    "text": "Apartado f): la columna que viene dada\nEn vendedores, calcula facturacion_anual / empleados.\n\nDa el mínimo, la mediana y el máximo. ¿Cuántas veces más grande es el máximo que el mínimo?\n¿Es creíble que un vendedor facture eso por empleado? ¿Qué le pasa a esa columna?\nMoraleja en una frase: ¿qué hay que preguntar siempre de una columna que viene en el fichero?"
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-g-una-identidad-que-tiene-que-cumplirse",
+    "href": "docs/Tema04ej1.html#apartado-g-una-identidad-que-tiene-que-cumplirse",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado g): una identidad que tiene que cumplirse",
+    "text": "Apartado g): una identidad que tiene que cumplirse\nEl dominio dice que el importe de un pedido es las unidades por el precio del producto:\n\\[\\texttt{importe} = \\texttt{unidades} \\times \\texttt{precio\\_unit}\\]\nCuando una relación tiene que cumplirse y no se cumple, solo hay dos explicaciones: o los datos están mal, o la relación no es la que creías.\n\nComprueba la identidad en todas las filas, con una tolerancia de un euro. ¿En cuántas se cumple y en cuántas no?\nPara las que no se cumplen, calcula el ratio entre el importe que hay y el que debería haber. ¿Cuántos valores distintos de ratio aparecen? Agrúpalas por ese ratio.\nUno de los grupos tiene un ratio que reconocerás como un tipo impositivo. ¿Qué le ha pasado a esos pedidos? ¿Es un error del importe o es otra cosa? Relaciónalo con el apartado d).\nEl otro grupo tiene un ratio redondo y grande. ¿Qué error es?\nLa identidad también dice algo de las columnas: con dos de las tres se obtiene la tercera. ¿Cuál sobra? ¿Guardarías las tres en una tabla limpia? Una frase.\n\n\n\n\n\n\n\nNota\n\n\n\nEsto es lo que hace un auditor con un balance: sabe que el activo es igual al pasivo más el patrimonio neto, lo comprueba, y donde no cuadra hay un error o una variable redundante. Aquí la identidad es más sencilla, pero el razonamiento es el mismo."
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-a-cinco-indicadores-con-su-definición",
+    "href": "docs/Tema04ej1.html#apartado-a-cinco-indicadores-con-su-definición",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado a): cinco indicadores con su definición",
+    "text": "Apartado a): cinco indicadores con su definición\nElige los cinco y escribe la definición exacta de cada uno: numerador, denominador, periodo, y a qué pregunta de negocio responde. Sin la definición, un indicador no es un indicador."
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-b-la-tabla",
+    "href": "docs/Tema04ej1.html#apartado-b-la-tabla",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado b): la tabla",
+    "text": "Apartado b): la tabla\nCalcúlalos con summarize() y presenta una tabla legible."
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-c-media-o-mediana",
+    "href": "docs/Tema04ej1.html#apartado-c-media-o-mediana",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado c): media o mediana",
+    "text": "Apartado c): media o mediana\nPara el gasto por cliente, decide si das la media o la mediana y justifícalo con la forma de la distribución, no con una preferencia."
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-d-promedios-de-promedios",
+    "href": "docs/Tema04ej1.html#apartado-d-promedios-de-promedios",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado d): promedios de promedios",
+    "text": "Apartado d): promedios de promedios\nUne pedidos con vendedores para tener la provincia de cada pedido.\n\nCalcula el ticket medio de cada provincia y, a partir de esa tabla, la media de los tickets medios provinciales. Compárala con el ticket medio global, el que sale de todos los pedidos a la vez. ¿Coinciden? Mira cuántos pedidos tiene cada provincia antes de contestar por qué.\nLo mismo con el precio por unidad, que es un cociente de dos columnas. Para cada provincia, calcúlalo de dos formas: (i) la media de los cocientes importe / unidades de cada pedido, y\n\nel cociente de las sumas, la suma de los importes entre la suma de las unidades. Presenta las dos columnas juntas con el número de pedidos. ¿Cuál sale mayor, y por qué?\n\n¿Cuál de las dos formas pondrías en el informe, en cada uno de los dos casos? Esta es la trampa que más veces se ve en un cuadro de mando real.\n\n\n\n\n\n\n\nNota\n\n\n\nLas dos cosas están en la transparencia “Trampa 2: promedios de promedios”: que la media de unas medias solo coincide con la media global si todos los grupos tienen el mismo tamaño, y que para agregar un cociente hay que sumar numeradores y denominadores en vez de promediar cocientes."
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-e-la-agregación-puede-invertir-el-resultado",
+    "href": "docs/Tema04ej1.html#apartado-e-la-agregación-puede-invertir-el-resultado",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado e): la agregación puede invertir el resultado",
+    "text": "Apartado e): la agregación puede invertir el resultado\ndevoluciones no son microdatos: viene ya agregada, con los pedidos y los devueltos de cada categoría y canal. Se trabaja igual, pero hay que mirar lo que se suma.\n\nCalcula la tasa de devolución dentro de cada categoría y canal. ¿Qué canal devuelve más, en electrónica? ¿Y en textil?\nCalcula ahora la tasa de cada canal, con todas las categorías juntas. Ojo con cómo se agrega una tasa: no se promedian las tasas, se suman los numeradores y los denominadores. ¿Qué canal devuelve más?\nLas dos respuestas se contradicen y no hay ningún error de cálculo. Explica por qué, en dos frases, mirando cuántos pedidos tiene cada combinación de categoría y canal.\nCalcula además la media de las tasas de cada canal. ¿Qué canal sale peor con esta tercera cifra? Fíjate en que coincide con la respuesta del punto 1 y aun así no sirve: di qué número estaría publicando quien la use.\nSi tuvieras que dar una sola cifra de tasa de devolución por canal para el cuadro de mando, ¿cuál darías, y qué pondrías al lado para que no engañe?"
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-f-la-base-pequeña",
+    "href": "docs/Tema04ej1.html#apartado-f-la-base-pequeña",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado f): la base pequeña",
+    "text": "Apartado f): la base pequeña\nEn ventas_prov tienes las ventas de 2024 y 2025 por provincia.\n\nCalcula la variación porcentual de cada una y ordénalas de mayor a menor.\n¿Qué provincia encabeza el ranking? ¿Cuánto vendió en 2024?\nEscribe el titular que saldría si solo se publica el porcentaje, y al lado lo que hay que publicar junto al porcentaje para que el titular no engañe."
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-g-qué-variación-se-publica",
+    "href": "docs/Tema04ej1.html#apartado-g-qué-variación-se-publica",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado g): qué variación se publica",
+    "text": "Apartado g): qué variación se publica\nPara la serie mensual, calcula la variación del último mes respecto al mes anterior y respecto al mismo mes del año anterior. ¿Cuál de las dos va al informe y por qué? Mira la estacionalidad antes de contestar."
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-h-la-advertencia-al-pie",
+    "href": "docs/Tema04ej1.html#apartado-h-la-advertencia-al-pie",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado h): la advertencia al pie",
+    "text": "Apartado h): la advertencia al pie\nEscribe al pie del cuadro una advertencia sobre la trampa que más amenaza a tus indicadores: composición, base pequeña, estacionalidad o selección en las valoraciones. Una sola, la que de verdad aplique, y di por qué esa."
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-a-el-periodo-en-año-y-trimestre",
+    "href": "docs/Tema04ej1.html#apartado-a-el-periodo-en-año-y-trimestre",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado a): el periodo, en año y trimestre",
+    "text": "Apartado a): el periodo, en año y trimestre\nLee la tabla y añade el año y el trimestre como dos columnas numéricas. Mira antes cómo viene Periodo: en la tabla mensual del IPC que vimos en clase era año, M y mes, y esta tabla es trimestral."
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-b-cuántas-series-esperas-y-cuántas-salen",
+    "href": "docs/Tema04ej1.html#apartado-b-cuántas-series-esperas-y-cuántas-salen",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado b): cuántas series esperas y cuántas salen",
+    "text": "Apartado b): cuántas series esperas y cuántas salen\nQuédate con las series de “Ambos sexos”.\n\n¿Cuántas series obtienes?\n¿Cuántas comunidades autónomas hay en España, contando Ceuta y Melilla?\nExplica la diferencia y corrige el filtro. La pista está en el grupo de edad: mira el nombre completo de un par de series de la misma comunidad."
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-c-la-tasa-nacional-no-es-la-media-de-las-regionales",
+    "href": "docs/Tema04ej1.html#apartado-c-la-tasa-nacional-no-es-la-media-de-las-regionales",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado c): la tasa nacional no es la media de las regionales",
+    "text": "Apartado c): la tasa nacional no es la media de las regionales\nPara el último trimestre disponible, da la tasa de paro nacional, la media simple de las tasas de las comunidades, la mediana, y las tres comunidades con la tasa más alta y las tres con la más baja.\n¿Por qué la media de las tasas regionales no es la tasa nacional? Dos frases. Compáralo con lo que viste en el apartado d) de la entrega 3."
+  },
+  {
+    "objectID": "docs/Tema04ej1.html#apartado-d-qué-variación-se-publica-otra-vez",
+    "href": "docs/Tema04ej1.html#apartado-d-qué-variación-se-publica-otra-vez",
+    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "section": "Apartado d): qué variación se publica, otra vez",
+    "text": "Apartado d): qué variación se publica, otra vez\nPara el total nacional, calcula la variación respecto al trimestre anterior y respecto al mismo trimestre del año anterior. ¿Cuál pondrías en un titular y por qué?"
+  },
+  {
     "objectID": "docs/Tema00ej1.html",
     "href": "docs/Tema00ej1.html",
     "title": "Tema 0. Introducción a R. Ejercicio 1",
@@ -942,21 +1117,28 @@
     "href": "Datos.html",
     "title": "Datos",
     "section": "",
-    "text": "A lo largo de las clases utilizaremos varios conjuntos de datos de ejemplo:\n\nTema 0:\n\nrenta.txt\nsex_data.csv\nbeauty.xls\nnsw.dta\nearn.RData\n\nTema 02 (visualización):\n\ndatosVisualizacion.RData\nempresas.RData\nhotels.csv\n\nTema 03 (datos: tratamiento, limpieza y preparación):\n\nretail_data.RData\nDosTablas.xlsx\n\nTema 04 (análisis exploratorio de datos):\n\nmarketplace.RData\n\nTema 05 (modelización y aprendizaje estadístico):\n\ntienda.csv"
+    "text": "A lo largo de las clases utilizaremos varios conjuntos de datos de ejemplo:\n\nTema 0:\n\nrenta.txt\nsex_data.csv\nbeauty.xls\nnsw.dta\nearn.RData\n\nTema 02 (visualización):\n\ndatosVisualizacion.RData\nempresas.RData\nhotels.csv\n\nTema 03 (datos: tratamiento, limpieza y preparación):\n\nretail_data.RData\nDosTablas.xlsx\n\nTema 04 (análisis exploratorio de datos):\n\nmarketplace.RData\n\nTema 05 (modelización y aprendizaje estadístico):\n\ntienda.csv\n\nTema 06 (regularización), además de tienda.csv:\n\nchurn_clientes.csv"
   },
   {
     "objectID": "Contenidos.html",
     "href": "Contenidos.html",
     "title": "Contenidos",
     "section": "",
-    "text": "(2-Nov. a 6-Nov.)\n\nTema 05 - Modelización y Aprendizaje Estadístico\nTema 05 - Ejercicios del tema\nTema 05 - Anexo"
+    "text": "(9-Nov. a 13-Nov.)\n\nTema 06 - Regularización: Ridge regression y LASSO\nTema 06 - Ejercicios del tema"
+  },
+  {
+    "objectID": "Contenidos.html#semana-10",
+    "href": "Contenidos.html#semana-10",
+    "title": "Contenidos",
+    "section": "",
+    "text": "(9-Nov. a 13-Nov.)\n\nTema 06 - Regularización: Ridge regression y LASSO\nTema 06 - Ejercicios del tema"
   },
   {
     "objectID": "Contenidos.html#semana-9",
     "href": "Contenidos.html#semana-9",
     "title": "Contenidos",
-    "section": "",
-    "text": "(2-Nov. a 6-Nov.)\n\nTema 05 - Modelización y Aprendizaje Estadístico\nTema 05 - Ejercicios del tema\nTema 05 - Anexo"
+    "section": "Semana 9",
+    "text": "Semana 9\n(2-Nov. a 6-Nov.)\n\nTema 05 - Modelización y Aprendizaje Estadístico\nTema 05 - Ejercicios del tema\nTema 05 - Anexo"
   },
   {
     "objectID": "Contenidos.html#semana-8",
@@ -2058,179 +2240,130 @@
     "text": "Un ejemplo con otros datos: descuentos y ventas\n\ndiscount.csv (página Datos): ventas y porcentaje medio de descuento de 404 clientes, con su renta\n\n\ndatos &lt;- read_csv(\"data/discount.csv\")\nlm(sales ~ discount, data = datos) |&gt; coef()\nlm(sales ~ discount + income, data = datos) |&gt; coef()\ndatos |&gt; mutate(renta_baja = income &lt; 7500) |&gt;\n  ggplot(aes(x = discount, y = sales)) + geom_point() +\n  geom_smooth(method = \"lm\") + facet_wrap(~ renta_baja)\n\n\nLa misma estructura que en la tienda: los descuentos mayores fueron a rentas bajas. Separando por renta, la pendiente cambia de signo\nEs un ejercicio de cinco minutos para comprobar que se ha entendido la regla del signo"
   },
   {
-    "objectID": "docs/Tema04ej1.html",
-    "href": "docs/Tema04ej1.html",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
+    "objectID": "docs/Tema06ej1.html",
+    "href": "docs/Tema06ej1.html",
+    "title": "Tema 06 - Regularización",
     "section": "",
-    "text": "Estos ejercicios se van haciendo durante las clases del tema: las transparencias indican en qué momento toca cada uno.\n\n\n\n\n\n\nImportante\n\n\n\nSi no lo has hecho ya, lee Cómo trabajar en cada tema: la carpeta del tema con su subdirectorio data, cómo se crea el documento, qué va en la cabecera (con embed-resources: true), la primera celda y cómo se entrega. Vale para todo el curso.\n\n\nDe este tema, lo que te hace falta:\n\nLos datos son marketplace.RData, de la página Datos. Descárgalo en tu subdirectorio data. Dentro vienen las tablas de un marketplace tal y como salen de su sistema: pedidos_bruto, vendedores, serie_ventas, ventas_prov y devoluciones.\nEl bloque 4 no usa ese fichero: baja los datos de la web del INE en el momento.\nUn documento por ejercicio, T04_E&lt;n&gt;_&lt;ID&gt;.qmd. Cada uno carga los datos en su primera celda.\n\n\nlibrary(tidyverse)\nload(\"data/marketplace.RData\")\n\n\n\n\n\n\n\nAdvertencia\n\n\n\nEstos datos están sucios a propósito: son un volcado como el que te vas a encontrar. Ninguna cifra que calcules sobre pedidos_bruto sin limpiar es publicable, y la entrega 1 consiste precisamente en documentar por qué."
+    "text": "Estos ejercicios se van haciendo durante la clase: las transparencias indican en qué momento toca cada uno.\n\nLos datos son tienda.csv y churn_clientes.csv, de la página Datos. Descárgalos en tu subdirectorio data.\nNecesitas library(glmnet).\nUn documento por entrega, T06_E&lt;n&gt;_&lt;ID&gt;.qmd.\nDonde se pide una semilla, usa tu DNI (sin letra): set.seed(12345678)."
   },
   {
-    "objectID": "docs/Tema04ej1.html#apartado-a-qué-es-una-fila",
-    "href": "docs/Tema04ej1.html#apartado-a-qué-es-una-fila",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado a): qué es una fila",
-    "text": "Apartado a): qué es una fila\n\n¿Cuántas filas y cuántas columnas tiene pedidos_bruto? ¿Qué es una fila?\nEl sistema dice haber exportado 1.200 pedidos. ¿Cuántas filas hay? ¿Identifica id_pedido una única fila? Da el número de id_pedido repetidos.\n¿Qué hace vendedores, una fila por qué? ¿Es id_vendedor su clave?"
+    "objectID": "docs/Tema06ej1.html#apartado-a-qué-hace-lambda",
+    "href": "docs/Tema06ej1.html#apartado-a-qué-hace-lambda",
+    "title": "Tema 06 - Regularización",
+    "section": "Apartado a): qué hace lambda",
+    "text": "Apartado a): qué hace lambda\nCon el modelo lineal ventas ~ log(renta) + edad + mujer + factor(educ) + descuento + zona, ajusta LASSO y Ridge regression con lambda = c(200, 50, 0) y mira coef(). ¿Qué da \\(\\lambda = 0\\)? ¿Qué pasa al subir \\(\\lambda\\)? ¿Cuáles llegan a cero?"
   },
   {
-    "objectID": "docs/Tema04ej1.html#apartado-b-el-tipo-manda",
-    "href": "docs/Tema04ej1.html#apartado-b-el-tipo-manda",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado b): el tipo manda",
-    "text": "Apartado b): el tipo manda\n\n¿Qué variables están guardadas con un tipo que no corresponde a lo que miden? Da la lista con el problema concreto de cada una.\nCalcula la media de importe con as.numeric(). ¿Cuántos NA salen, de cuántas filas? ¿Por qué, si todos los valores parecen números?\nMira los valores distintos de cp_envio. ¿Qué le ha pasado al código postal de Alicante, que es 03003? ¿Por qué un código postal no es una cantidad?\n¿En cuántos formatos distintos viene fecha? Cuéntalos sin convertir nada todavía."
+    "objectID": "docs/Tema06ej1.html#apartado-b-elegir-lambda",
+    "href": "docs/Tema06ej1.html#apartado-b-elegir-lambda",
+    "title": "Tema 06 - Regularización",
+    "section": "Apartado b): elegir lambda",
+    "text": "Apartado b): elegir lambda\nCon tu DNI como semilla y el modelo flexible de la tienda (polinomios e interacciones de todas las variables), elige \\(\\lambda\\) en LASSO con cv.glmnet(). ¿Cuántas columnas quedan con lambda.min y con lambda.1se?"
   },
   {
-    "objectID": "docs/Tema04ej1.html#apartado-c-categorías-que-son-la-misma-cosa",
-    "href": "docs/Tema04ej1.html#apartado-c-categorías-que-son-la-misma-cosa",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado c): categorías que son la misma cosa",
-    "text": "Apartado c): categorías que son la misma cosa\n\nCuenta las categorías de canal. El diccionario dice que hay tres: web, app y tienda. ¿Cuántas etiquetas aparecen? ¿Cuáles son la misma?\nHaz lo mismo con provincia en vendedores, y con sector.\nSi agrupas por canal tal cual está, ¿qué le pasa a un informe de ventas por canal?"
+    "objectID": "docs/Tema06ej1.html#apartado-c-comparar-con-mco",
+    "href": "docs/Tema06ej1.html#apartado-c-comparar-con-mco",
+    "title": "Tema 06 - Regularización",
+    "section": "Apartado c): comparar con MCO",
+    "text": "Apartado c): comparar con MCO\nCon el modelo flexible, compara el error de validación cruzada de MCO, Ridge regression y LASSO, con la misma semilla."
   },
   {
-    "objectID": "docs/Tema04ej1.html#apartado-d-no-todo-lo-que-falta-es-un-dato-que-falta",
-    "href": "docs/Tema04ej1.html#apartado-d-no-todo-lo-que-falta-es-un-dato-que-falta",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado d): no todo lo que falta es un dato que falta",
-    "text": "Apartado d): no todo lo que falta es un dato que falta\n\n¿Cuántos ausentes hay en cada variable?\nEn valoracion hay dos clases de ausencia: unos llegan como NA y otros con un valor centinela. Encuéntralo y di cuántos hay de cada clase. ¿Qué pasa con la valoración media si el centinela se cuela en el cálculo?\ndescuento tiene muchos ausentes y no es un problema de calidad: explica por qué, y en qué se diferencia del caso anterior.\n¿Quién contesta la encuesta de valoración? Si responden más los satisfechos, ¿la media de los que responden es la media de los clientes? Una frase."
+    "objectID": "docs/Tema06ej1.html#apartado-a-el-modelo-de-predicción",
+    "href": "docs/Tema06ej1.html#apartado-a-el-modelo-de-predicción",
+    "title": "Tema 06 - Regularización",
+    "section": "Apartado a): el modelo de predicción",
+    "text": "Apartado a): el modelo de predicción\nLa empresa quiere saber, con lo que conoce de cada cliente, cuáles tienen más probabilidad de irse. Ajusta LASSO y Ridge regression con cv.glmnet(), dibuja el AUC frente a \\(\\lambda\\) y compáralos. Para vigilar a los clientes, ¿qué lista corta de señales de alarma darías? ¿Compensa quedarse con menos variables?"
   },
   {
-    "objectID": "docs/Tema04ej1.html#apartado-e-qué-cifra-quedaría-mal",
-    "href": "docs/Tema04ej1.html#apartado-e-qué-cifra-quedaría-mal",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado e): qué cifra quedaría mal",
-    "text": "Apartado e): qué cifra quedaría mal\nPara cada problema que hayas detectado, escribe una frase: qué cifra del informe final saldría mal si no se corrige. Esta es la parte que se corrige con más atención."
+    "objectID": "docs/Tema06ej1.html#apartado-b-a-quién-hacer-una-oferta",
+    "href": "docs/Tema06ej1.html#apartado-b-a-quién-hacer-una-oferta",
+    "title": "Tema 06 - Regularización",
+    "section": "Apartado b): a quién hacer una oferta",
+    "text": "Apartado b): a quién hacer una oferta\nA los clientes con más riesgo se les puede ofrecer \\(k\\) meses gratis, lo que supone para la empresa perder \\(k\\) meses de cuota. Si un cliente abandona, la pérdida es un año de cuota, así que la oferta compensa si su probabilidad de abandono \\(p\\) cumple \\(12\\,p &gt; k\\).\n\n¿Cuántos meses gratis, como máximo, compensa ofrecer a un cliente con \\(p = 0{,}7\\)?\nUsando predict(..., type = \"response\") con el modelo del apartado a) para obtener la probabilidad predicha de abandono de cada cliente de la muestra, ¿a cuántos clientes harías una oferta de 6 meses?"
   },
   {
-    "objectID": "docs/Tema04ej1.html#apartado-a-un-solo-bloque-de-limpieza",
-    "href": "docs/Tema04ej1.html#apartado-a-un-solo-bloque-de-limpieza",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado a): un solo bloque de limpieza",
-    "text": "Apartado a): un solo bloque de limpieza\nEscribe un único bloque que deje pedidos listo: tipos arreglados, categorías homogeneizadas, centinelas convertidos en NA de verdad, y los duplicados exactos fuera. Un solo |&gt;, sin tablas intermedias."
+    "objectID": "docs/Tema06ej1.html#apartado-c-cuánto-gastar-en-satisfacción",
+    "href": "docs/Tema06ej1.html#apartado-c-cuánto-gastar-en-satisfacción",
+    "title": "Tema 06 - Regularización",
+    "section": "Apartado c): cuánto gastar en satisfacción",
+    "text": "Apartado c): cuánto gastar en satisfacción\nLa empresa también estudia medidas para subir la satisfacción de sus clientes y así evitar que se vayan. Como estas medidas son costosas, quiere saber cuánto compensa gastarse en ellas. Estima con glm() un logit con las variables que deja lambda.1se (post-LASSO). Considerando de nuevo que, si un cliente se va, la pérdida es un año de cuota (12 × precio_mensual), ¿cuánto le compensa gastar a la empresa por cliente para subir su satisfacción un punto? Pista: ¿cuánto cambia la probabilidad de abandono si la satisfacción sube un punto? Discute si se puede interpretar esa cifra como el efecto de un cambio en la satisfacción."
   },
   {
-    "objectID": "docs/Tema04ej1.html#apartado-b-comprobar-que-la-limpieza-ha-hecho-lo-que-crees",
-    "href": "docs/Tema04ej1.html#apartado-b-comprobar-que-la-limpieza-ha-hecho-lo-que-crees",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado b): comprobar que la limpieza ha hecho lo que crees",
-    "text": "Apartado b): comprobar que la limpieza ha hecho lo que crees\n\nFilas antes y después. ¿Cuántos duplicados exactos había?\nTipos de todas las variables, recuento de canal y rango de fecha.\n¿Siguen quedando id_pedido repetidos después de quitar los duplicados exactos? ¿Cuántos?"
+    "objectID": "docs/Tema06.html#el-problema-muchas-variables-candidatas",
+    "href": "docs/Tema06.html#el-problema-muchas-variables-candidatas",
+    "title": "Tema 06 - Regularización",
+    "section": "El problema: muchas variables candidatas",
+    "text": "El problema: muchas variables candidatas\n\n\nEscenario típico en economía y empresa: predecir ventas, salarios o abandonos de clientes con muchas variables, interacciones y polinomios\nEl problema es elegir las variables relevantes, porque más variables hacen el modelo más complejo (Tema 05):\n\nmenos sesgo, pero más varianza\nsi es demasiado complejo, sobreajusta: error bajo en entrenamiento y alto en prueba\n\nPara comparar modelos hay que estimar el error de prueba:\n\ndirectamente, con validación cruzada: costosa en cálculo, y cada estimación usa menos datos\nindirectamente, añadiendo un ajuste por número de parámetros \\(k\\) al error de entrenamiento: \\(R^2\\) ajustado, AIC o BIC \\[\n\\small\nAIC = \\frac{1}{n}\\left(SCR + 2k\\,\\widehat{\\sigma}^2\\right) \\qquad\nBIC = \\frac{1}{n}\\left(SCR + \\log(n)\\, k\\,\\widehat{\\sigma}^2\\right)\n\\] donde \\(\\widehat{\\sigma}^2\\) es la varianza estimada del error\n\nSeleccionar así exige estimar y comparar \\(2^k\\) modelos, uno por combinación de variables. La regularización estima un solo modelo con todas\n\n\n\n\nMCO no tiene solución única con más regresores que observaciones. Tres enfoques: selección de variables y MCO; regularización, que es este tema; reducción de dimensión (PCR, PLS).\nCada parámetro añadido cuesta \\(2\\widehat{\\sigma}^2\\) en AIC y \\(\\log(n)\\,\\widehat{\\sigma}^2\\) en BIC; con 404 datos, \\(\\log n \\approx 6{,}0\\). Menor es mejor; BIC penaliza más y elige modelos más pequeños. \\(\\widehat{\\sigma}^2\\) suele salir del modelo más grande. \\(R^2\\) ajustado \\(= 1 - [SCR/(n-k-1)]/[SCT/(n-1)]\\).\nR da AIC() y BIC() en la forma \\(-2 \\log L + 2k\\) del anexo del Tema 05: cambian los números, no la idea. Solo comparan modelos de la misma \\(y\\) con los mismos datos.\nLa selección paso a paso recorre solo una parte de los \\(2^k\\) subconjuntos.\nCon tienda (verificado el 2-nov-2026): modelo lineal, AIC 6.500 y BIC 6.536; modelo flexible, AIC 5.946 y BIC 6.526."
   },
   {
-    "objectID": "docs/Tema04ej1.html#apartado-c-los-duplicados-en-euros",
-    "href": "docs/Tema04ej1.html#apartado-c-los-duplicados-en-euros",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado c): los duplicados en euros",
-    "text": "Apartado c): los duplicados en euros\nCalcula los ingresos totales y el ticket medio antes y después de eliminar los duplicados exactos. Da la diferencia en euros y en porcentaje. Esa es la cifra que habría ido al informe."
+    "objectID": "docs/Tema06.html#los-datos-la-tienda-con-un-modelo-flexible",
+    "href": "docs/Tema06.html#los-datos-la-tienda-con-un-modelo-flexible",
+    "title": "Tema 06 - Regularización",
+    "section": "Los datos: la tienda con un modelo flexible",
+    "text": "Los datos: la tienda con un modelo flexible\n\n\nVolvemos a los 404 clientes de tienda del Tema 05: el gasto anual (ventas) y sus seis variables candidatas\nEn la práctica 3 del Tema 05 probábamos formas a mano; ahora una fórmula las incluye todas:\n\npolinomios de grado 4 en edad y en log(renta), y una columna por nivel de estudios con factor(educ)\ncon ( ... )^2, todas las interacciones de dos en dos\n\n\n\ntienda &lt;- read_csv(\"data/tienda.csv\") |&gt;\n  mutate(zona = factor(zona, levels = c(\"pueblo\", \"ciudad\", \"capital\")))\nformula &lt;- ventas ~ (poly(edad, 4) + poly(log(renta), 4) +\n                       factor(educ) + mujer + descuento + zona)^2\n\n\nSon 143 coeficientes, más la constante, para 404 clientes: todos tienen sentido a priori, y muchos sobrarán\n\n\n\n\n18 coeficientes son efectos de una sola variable y 125 son interacciones.\nfactor(educ) hace con los estudios lo mismo que zona: una columna 0/1 por nivel, con 8 años como referencia.\nLos coeficientes de poly() están en otra escala (Tema 05): aquí no se interpretan, solo se usan para predecir."
   },
   {
-    "objectID": "docs/Tema04ej1.html#apartado-d-la-clave-repetida",
-    "href": "docs/Tema04ej1.html#apartado-d-la-clave-repetida",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado d): la clave repetida",
-    "text": "Apartado d): la clave repetida\nQuedan pedidos con el mismo id_pedido y distinto importe. Mira un par de ellos.\n\n¿Qué relación hay entre los dos importes del mismo pedido?\nDecide qué hacer con ellos y justifícalo en dos frases. No hay una única respuesta correcta; hay respuestas justificadas y respuestas no justificadas."
+    "objectID": "docs/Tema06.html#qué-es-la-regularización",
+    "href": "docs/Tema06.html#qué-es-la-regularización",
+    "title": "Tema 06 - Regularización",
+    "section": "¿Qué es la regularización?",
+    "text": "¿Qué es la regularización?\n\nMCO elige los coeficientes que minimizan la SCR. La regularización le suma una penalización por el tamaño de los coeficientes:\n\\[\n\\min_{\\beta}\\ SCR(\\beta) + \\lambda \\, P(\\beta)\n\\]\n\n\\(P(\\beta)\\) mide el tamaño de los coeficientes\n\\(\\lambda \\geq 0\\) es el peso de la penalización (de momento, lo tomamos como dado)\nla constante (la media de \\(Y\\)) no se penaliza: solo el efecto de las \\(X\\)\n\nCastigar los coeficientes grandes simplifica el modelo: más sesgo y menos varianza, pero puede compensar cuando MCO sobreajusta (p. ej., con muchas variables)\n\ncon \\(\\lambda = 0\\) es MCO\nal subir \\(\\lambda\\), los coeficientes se encogen hacia cero\n\nFrente a seleccionar variables, se estima un solo modelo con todas ellas para cada valor de \\(\\lambda\\)\nEstá orientada a predecir: los coeficientes están sesgados hacia cero a propósito y no sirven para afirmar nada sobre el impacto de cambiar una \\(X\\) sobre \\(Y\\) (y menos su efecto causal)\n\n\n\nFrente a AIC y BIC: estos penalizan cuántos coeficientes hay, con un peso fijo; la regularización penaliza cuánto miden, con un peso \\(\\lambda\\) que se elegirá con los datos.\nForma equivalente: minimizar SCR sujeto a que la penalización no pase de un límite.\nglmnet minimiza \\(SCR/(2n) + \\lambda \\cdot\\) penalización, así que su \\(\\lambda\\) no está en la escala de esta fórmula (viñeta de glmnet)."
   },
   {
-    "objectID": "docs/Tema04ej1.html#apartado-e-el-atípico-error-o-otra-población",
-    "href": "docs/Tema04ej1.html#apartado-e-el-atípico-error-o-otra-población",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado e): el atípico, ¿error o otra población?",
-    "text": "Apartado e): el atípico, ¿error o otra población?\n\nCalcula el precio por unidad (importe / unidades) y describe su distribución.\nHay pedidos con un importe muy por encima del resto. Para cada uno, mira si las unidades acompañan. ¿Cuáles parecen un cliente mayorista y cuáles un error?\n¿Qué le pasa al ticket medio si los dejas? ¿Y si los quitas todos? ¿Qué harías?"
+    "objectID": "docs/Tema06.html#ridge-regression-y-lasso",
+    "href": "docs/Tema06.html#ridge-regression-y-lasso",
+    "title": "Tema 06 - Regularización",
+    "section": "Ridge regression y LASSO",
+    "text": "Ridge regression y LASSO\n\n\n\nRidge regression\n\\[\n\\small P(\\beta) = \\sum_{j=1}^{k}\\beta_j^2\n\\]\n\nPenaliza la suma de los cuadrados\nEncoge los coeficientes hacia cero, pero ninguno llega a cero \\(\\Rightarrow\\) todas las variables se mantienen\nFunciona mejor si muchas variables aportan algo\n\n\nLASSO (least absolute shrinkage and selection operator)\n\\[\n\\small P(\\beta) = \\sum_{j=1}^{k}|\\beta_j|\n\\]\n\nPenaliza la suma de los valores absolutos\nEncoge los coeficientes, y algunos llegan exactamente a cero\nFunciona mejor si pocas variables importan y muchas sobran \\(\\Rightarrow\\) modelo más interpretable\n\n\n\nLa red elástica combina las dos eligiendo un peso \\(\\alpha\\) entre 0 y 1: \\(\\ \\small \\lambda\\left[\\alpha \\sum_j |\\beta_j| + (1-\\alpha) \\sum_j \\beta_j^2\\right]\\)\nLASSO selecciona variables: alternativa a los contrastes de significatividad (sin formalización estadística)\nPara hablar de efectos, se reestima por MCO o logit (u otro método, si pensamos que no se cumple \\(E(u|X) = 0\\)) solo con las variables que elige LASSO (post-LASSO)\n\nelegir variables y estimar con los mismos datos es como trabajar sin muestra de prueba: entre otros problemas de fiabilidad, los p-valores salen demasiado optimistas\npor eso, en la práctica, se usan versiones más elaboradas\n\n\n\n\n\nQue LASSO elimine una variable no demuestra que no importe: entre variables correlacionadas se queda con una.\nLa región de LASSO tiene esquinas sobre los ejes, y por eso la solución cae en cero; la de Ridge regression es redonda. figure/lasso.png lo muestra.\nCon variables muy correlacionadas, LASSO tiende a quedarse con una; Ridge regression reparte el efecto. La red elástica hace algo intermedio. Cuál gana en unos datos concretos se decide por validación cruzada.\nglmnet escribe la parte de Ridge regression como \\((1-\\alpha)\\sum_j\\beta_j^2/2\\).\nPost-LASSO: Belloni y Chernozhukov (2013, Bernoulli). Los coeficientes dejan de estar encogidos. Sus errores estándar y p-valores habituales suponen que el modelo se fijó antes de ver los datos; aquí la selección los usó, y salen demasiado optimistas. Además, LASSO puede descartar un control que predice poco \\(Y\\) pero mucho la variable de interés, y queda sesgo por omisión. La doble selección (abajo) resuelve las dos cosas. Si no se cumple \\(E(u|X) = 0\\), el post-LASSO se combina con otro método de identificación: variables instrumentales, diferencias en diferencias, regresión discontinua o un experimento natural (Parte VI del Tema 05).\nDoble selección (Belloni, Chernozhukov y Hansen 2014, REStud): LASSO de \\(Y\\) sobre los controles y LASSO del tratamiento sobre los controles; MCO con la unión. Evita perder un control que predice poco \\(Y\\) pero mucho el tratamiento. Generalización: double/debiased machine learning (Chernozhukov et al. 2018, Econometrics Journal)."
   },
   {
-    "objectID": "docs/Tema04ej1.html#apartado-f-la-columna-que-viene-dada",
-    "href": "docs/Tema04ej1.html#apartado-f-la-columna-que-viene-dada",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado f): la columna que viene dada",
-    "text": "Apartado f): la columna que viene dada\nEn vendedores, calcula facturacion_anual / empleados.\n\nDa el mínimo, la mediana y el máximo. ¿Cuántas veces más grande es el máximo que el mínimo?\n¿Es creíble que un vendedor facture eso por empleado? ¿Qué le pasa a esa columna?\nMoraleja en una frase: ¿qué hay que preguntar siempre de una columna que viene en el fichero?"
+    "objectID": "docs/Tema06.html#estandarizar-las-variables",
+    "href": "docs/Tema06.html#estandarizar-las-variables",
+    "title": "Tema 06 - Regularización",
+    "section": "Estandarizar las variables",
+    "text": "Estandarizar las variables\n\n\nMCO es equivariante a escala: si una variable cambia de unidades (p. ej., a miles de euros = euros/1.000), su coeficiente se reescala en sentido contrario (×1.000) \\(\\Rightarrow\\) las predicciones y la SCR no cambian\nCon regularización, la función objetivo (SCR + penalización) sí depende de las unidades:\n\nal reescalar el coeficiente, la SCR no cambia, pero la penalización sí\nla penalización recompensa coeficientes cercanos a cero, y eso depende de las unidades: con la renta en miles, el mismo efecto tiene un coeficiente 1.000 veces mayor y se castiga más\npor eso cambia toda la solución, también las predicciones\n\nPara castigar a todos los coeficientes por igual, deben estar en la misma escala: antes de regularizar, se estandarizan las variables explicativas, para que todas tengan media 0 y desviación típica 1:\n\n\\[\n\\Large \\tilde{x}_{ij} = \\dfrac{x_{ij} - \\bar{x}_j}{\\text{sd}(x_j)}\n\\]\n\n\n\nLa equivarianza a escala vale para cualquier estimador que solo mire el ajuste, como el logit por máxima verosimilitud.\nFuentes: ISLR 2.ª ed. §6.2.1 («scale equivariant») y ESL 2.ª ed. §3.4.1. ESL: la constante queda fuera de la penalización porque penalizarla haría depender el resultado del origen de \\(Y\\).\nComprobado el 2-nov-2026 con LASSO, lambda = 300 y standardize = FALSE: efecto de 1.000 euros de renta, 462 con la renta en euros y 169 en miles; estandarizando, 164 en los dos casos.\nglmnet estandariza por defecto (standardize = TRUE), también las columnas 0/1, y devuelve los coeficientes en las unidades originales."
   },
   {
-    "objectID": "docs/Tema04ej1.html#apartado-g-una-identidad-que-tiene-que-cumplirse",
-    "href": "docs/Tema04ej1.html#apartado-g-una-identidad-que-tiene-que-cumplirse",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado g): una identidad que tiene que cumplirse",
-    "text": "Apartado g): una identidad que tiene que cumplirse\nEl dominio dice que el importe de un pedido es las unidades por el precio del producto:\n\\[\\texttt{importe} = \\texttt{unidades} \\times \\texttt{precio\\_unit}\\]\nCuando una relación tiene que cumplirse y no se cumple, solo hay dos explicaciones: o los datos están mal, o la relación no es la que creías.\n\nComprueba la identidad en todas las filas, con una tolerancia de un euro. ¿En cuántas se cumple y en cuántas no?\nPara las que no se cumplen, calcula el ratio entre el importe que hay y el que debería haber. ¿Cuántos valores distintos de ratio aparecen? Agrúpalas por ese ratio.\nUno de los grupos tiene un ratio que reconocerás como un tipo impositivo. ¿Qué le ha pasado a esos pedidos? ¿Es un error del importe o es otra cosa? Relaciónalo con el apartado d).\nEl otro grupo tiene un ratio redondo y grande. ¿Qué error es?\nLa identidad también dice algo de las columnas: con dos de las tres se obtiene la tercera. ¿Cuál sobra? ¿Guardarías las tres en una tabla limpia? Una frase.\n\n\n\n\n\n\n\nNota\n\n\n\nEsto es lo que hace un auditor con un balance: sabe que el activo es igual al pasivo más el patrimonio neto, lo comprueba, y donde no cuadra hay un error o una variable redundante. Aquí la identidad es más sencilla, pero el razonamiento es el mismo."
+    "objectID": "docs/Tema06.html#ridge-regression-y-lasso-en-r-glmnet",
+    "href": "docs/Tema06.html#ridge-regression-y-lasso-en-r-glmnet",
+    "title": "Tema 06 - Regularización",
+    "section": "Ridge regression y LASSO en R: glmnet()",
+    "text": "Ridge regression y LASSO en R: glmnet()\n\nglmnet() estima Ridge regression y LASSO. A diferencia de lm(), no usa una fórmula: pide las variables explicativas en una matriz x y la respuesta en un vector y\nmodel.matrix() construye esa matriz a partir de la fórmula, con una columna por cada término:\n\n\nx &lt;- model.matrix(formula, data = tienda)\ny &lt;- tienda$ventas\n\n\nEn glmnet(x, y, alpha, lambda):\n\nalpha = 1 es LASSO y alpha = 0, Ridge regression\nlambda es el peso de la penalización\nestandariza las variables por defecto (standardize = TRUE) y devuelve los coeficientes en las unidades originales\n\nDespués de estimar, coef() da los coeficientes para cada valor de \\(\\lambda\\)\n\n\n\nx tiene 144 columnas: la de la constante y las 143 de la fórmula. glmnet() pone su propia constante y a esa columna le da un cero.\nValores intermedios de alpha dan la red elástica."
   },
   {
-    "objectID": "docs/Tema04ej1.html#apartado-a-cinco-indicadores-con-su-definición",
-    "href": "docs/Tema04ej1.html#apartado-a-cinco-indicadores-con-su-definición",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado a): cinco indicadores con su definición",
-    "text": "Apartado a): cinco indicadores con su definición\nElige los cinco y escribe la definición exacta de cada uno: numerador, denominador, periodo, y a qué pregunta de negocio responde. Sin la definición, un indicador no es un indicador."
+    "objectID": "docs/Tema06.html#elegir-el-hiperparámetro-lambda",
+    "href": "docs/Tema06.html#elegir-el-hiperparámetro-lambda",
+    "title": "Tema 06 - Regularización",
+    "section": "Elegir el hiperparámetro \\(\\lambda\\)",
+    "text": "Elegir el hiperparámetro \\(\\lambda\\)\n\n\nDado un \\(\\lambda\\), estimamos los parámetros \\(\\beta\\) que mejor ajustan a los datos, minimizando la SCR penalizada\n\\(\\lambda\\) es un hiperparámetro: un parámetro especial que se elige con los datos, pero aparte del resto de parámetros\n\nel peso \\(\\alpha\\) de la red elástica es otro hiperparámetro\n\n¿Cómo elegimos \\(\\lambda\\) en la regularización?\n\nse fija una rejilla de valores de \\(\\lambda\\)\npara cada uno, se calcula el error medio mediante validación cruzada\nse selecciona el \\(\\lambda^*\\) con menor error medio (probando varios rangos hasta encontrar la forma de U)\nse vuelve a ajustar el modelo con \\(\\lambda^*\\) en toda la muestra de entrenamiento\nse evalúa en la muestra de prueba, nunca usada antes\n\nRegla de un error estándar: cuando varios \\(\\lambda\\) tienen un error medio (estimado) indistinguible, es decir, dentro de un error estándar, se elige el mayor, porque entre modelos similares se prefiere el más simple\n\n\n\n\n\\(\\lambda\\) es crucial para determinar el grado de regularización del modelo: evita el infraajuste y el sobreajuste.\nLa regla de un error estándar aplica el principio de parsimonia.\nCon una muestra de prueba apartada al principio, el modelo elegido se evalúa en ella."
   },
   {
-    "objectID": "docs/Tema04ej1.html#apartado-b-la-tabla",
-    "href": "docs/Tema04ej1.html#apartado-b-la-tabla",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado b): la tabla",
-    "text": "Apartado b): la tabla\nCalcúlalos con summarize() y presenta una tabla legible."
+    "objectID": "docs/Tema06.html#elegir-lambda-en-r-cv.glmnet",
+    "href": "docs/Tema06.html#elegir-lambda-en-r-cv.glmnet",
+    "title": "Tema 06 - Regularización",
+    "section": "Elegir \\(\\lambda\\) en R: cv.glmnet()",
+    "text": "Elegir \\(\\lambda\\) en R: cv.glmnet()\n\n\ncv.glmnet() hace los cuatro primeros pasos con 100 valores de \\(\\lambda\\) (por defecto) y nfolds bloques de validación cruzada\nLASSO con el modelo flexible:\n\n\nset.seed(12345678)\ncv &lt;- cv.glmnet(x, y, alpha = 1, nfolds = 10)\nplot(cv, ylim = c(100000, 400000))\n\n\nEl gráfico muestra el error (MSE) de validación cruzada frente a \\(-\\log(\\lambda)\\), como en el Tema 05: más a la izquierda, mayor \\(\\lambda\\) y más regularización1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCada punto rojo es el error medio de un \\(\\lambda\\), y su barra, \\(\\pm\\) un error estándar\nLas líneas verticales marcan lambda.min (menor error) y lambda.1se (regla de un error estándar)\ncv$cvm guarda el error medio de cada \\(\\lambda\\) de cv$lambda\n\n\n\n\n\nValores: lambda.min 21,3 (34 columnas) y lambda.1se 37,2 (18 columnas). Verificado el 2-nov-2026. print(cv) muestra los dos con su error (MSE).\nEl eje horizontal es \\(-\\log(\\lambda)\\) y el vertical, el MSE; ylim recorta la parte de \\(\\lambda\\) muy grande para que se vean las barras. Es la U del Tema 05.\ncoef(cv, s = \"lambda.1se\") da los coeficientes reestimados con ese \\(\\lambda\\).\nCon la misma semilla, cv.glmnet() sortea los mismos bloques: así se comparan modelos en la PRÁCTICA (1). foldid los fija a mano y da lo mismo.\n\n\nArriba aparecen las columnas que quedan con cada \\(\\lambda\\)."
   },
   {
-    "objectID": "docs/Tema04ej1.html#apartado-c-media-o-mediana",
-    "href": "docs/Tema04ej1.html#apartado-c-media-o-mediana",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado c): media o mediana",
-    "text": "Apartado c): media o mediana\nPara el gasto por cliente, decide si das la media o la mediana y justifícalo con la forma de la distribución, no con una preferencia."
+    "objectID": "docs/Tema06.html#práctica-en-clase-1-la-forma-del-gasto",
+    "href": "docs/Tema06.html#práctica-en-clase-1-la-forma-del-gasto",
+    "title": "Tema 06 - Regularización",
+    "section": "PRÁCTICA en clase (1): la forma del gasto",
+    "text": "PRÁCTICA en clase (1): la forma del gasto\n\nCon vuestro DNI como semilla:\n\nCon el modelo lineal ventas ~ log(renta) + edad + mujer + factor(educ) + descuento + zona, ajustad LASSO y Ridge regression con lambda = c(200, 50, 0) y mirad coef(). ¿Qué da \\(\\lambda = 0\\)? ¿Qué pasa al subir \\(\\lambda\\)? ¿Cuáles llegan a cero?\nCon el modelo flexible de la tienda (polinomios e interacciones de todas las variables), elegid \\(\\lambda\\) en LASSO con cv.glmnet(). ¿Cuántas columnas quedan con lambda.min y con lambda.1se?\nCon el modelo flexible, comparad el error de MCO, Ridge regression y LASSO con la misma semilla\n\n\n\n\n\n\n\n\nNota\n\n\nAhora el ejercicio: entrega 1, apartados a) a c)."
   },
   {
-    "objectID": "docs/Tema04ej1.html#apartado-d-promedios-de-promedios",
-    "href": "docs/Tema04ej1.html#apartado-d-promedios-de-promedios",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado d): promedios de promedios",
-    "text": "Apartado d): promedios de promedios\nUne pedidos con vendedores para tener la provincia de cada pedido.\n\nCalcula el ticket medio de cada provincia y, a partir de esa tabla, la media de los tickets medios provinciales. Compárala con el ticket medio global, el que sale de todos los pedidos a la vez. ¿Coinciden? Mira cuántos pedidos tiene cada provincia antes de contestar por qué.\nLo mismo con el precio por unidad, que es un cociente de dos columnas. Para cada provincia, calcúlalo de dos formas: (i) la media de los cocientes importe / unidades de cada pedido, y\n\nel cociente de las sumas, la suma de los importes entre la suma de las unidades. Presenta las dos columnas juntas con el número de pedidos. ¿Cuál sale mayor, y por qué?\n\n¿Cuál de las dos formas pondrías en el informe, en cada uno de los dos casos? Esta es la trampa que más veces se ve en un cuadro de mando real.\n\n\n\n\n\n\n\nNota\n\n\n\nLas dos cosas están en la transparencia “Trampa 2: promedios de promedios”: que la media de unas medias solo coincide con la media global si todos los grupos tienen el mismo tamaño, y que para agregar un cociente hay que sumar numeradores y denominadores en vez de promediar cocientes."
+    "objectID": "docs/Tema06.html#los-datos-el-abandono-de-clientes",
+    "href": "docs/Tema06.html#los-datos-el-abandono-de-clientes",
+    "title": "Tema 06 - Regularización",
+    "section": "Los datos: el abandono de clientes",
+    "text": "Los datos: el abandono de clientes\n\nchurn_clientes.csv son 600 clientes de un servicio de suscripción. churn dice si abandonaron (Sí o No), y las candidatas son señales que a priori podrían anunciarlo:\n\nuso del servicio, pago, soporte y satisfacción, competencia\nla empresa cliente (tamaño, sector, país) y datos del registro (día, navegador, dispositivo)\n\nQuitamos el identificador y plan_tipo, que repite precio_mensual. El punto de churn ~ . pone todas las demás columnas como explicativas, y glmnet quiere la respuesta como factor\n\n\nchurn &lt;- read_csv(\"data/churn_clientes.csv\") |&gt;\n  select(-id_cliente, -plan_tipo)\nxc &lt;- model.matrix(churn ~ ., data = churn)\nyc &lt;- factor(churn$churn)\nset.seed(12345678)\ncv_logit &lt;- cv.glmnet(xc, yc, family = \"binomial\", alpha = 1,\n                      type.measure = \"auc\", nfolds = 10)\n\n\nRespecto a la regresión cambian dos cosas: family = \"binomial\" estima un logit, y type.measure = \"auc\" elige \\(\\lambda\\) por el AUC (Tema 05)\n\n\n\n362 abandonos de 600 (60,3%). 34 columnas tras crear las dummies, más la de la constante.\nglmnet toma como clase objetivo la última por orden alfabético: Sí.\nLos resultados se obtienen en la PRÁCTICA (2)."
   },
   {
-    "objectID": "docs/Tema04ej1.html#apartado-e-la-agregación-puede-invertir-el-resultado",
-    "href": "docs/Tema04ej1.html#apartado-e-la-agregación-puede-invertir-el-resultado",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado e): la agregación puede invertir el resultado",
-    "text": "Apartado e): la agregación puede invertir el resultado\ndevoluciones no son microdatos: viene ya agregada, con los pedidos y los devueltos de cada categoría y canal. Se trabaja igual, pero hay que mirar lo que se suma.\n\nCalcula la tasa de devolución dentro de cada categoría y canal. ¿Qué canal devuelve más, en electrónica? ¿Y en textil?\nCalcula ahora la tasa de cada canal, con todas las categorías juntas. Ojo con cómo se agrega una tasa: no se promedian las tasas, se suman los numeradores y los denominadores. ¿Qué canal devuelve más?\nLas dos respuestas se contradicen y no hay ningún error de cálculo. Explica por qué, en dos frases, mirando cuántos pedidos tiene cada combinación de categoría y canal.\nCalcula además la media de las tasas de cada canal. ¿Qué canal sale peor con esta tercera cifra? Fíjate en que coincide con la respuesta del punto 1 y aun así no sirve: di qué número estaría publicando quien la use.\nSi tuvieras que dar una sola cifra de tasa de devolución por canal para el cuadro de mando, ¿cuál darías, y qué pondrías al lado para que no engañe?"
-  },
-  {
-    "objectID": "docs/Tema04ej1.html#apartado-f-la-base-pequeña",
-    "href": "docs/Tema04ej1.html#apartado-f-la-base-pequeña",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado f): la base pequeña",
-    "text": "Apartado f): la base pequeña\nEn ventas_prov tienes las ventas de 2024 y 2025 por provincia.\n\nCalcula la variación porcentual de cada una y ordénalas de mayor a menor.\n¿Qué provincia encabeza el ranking? ¿Cuánto vendió en 2024?\nEscribe el titular que saldría si solo se publica el porcentaje, y al lado lo que hay que publicar junto al porcentaje para que el titular no engañe."
-  },
-  {
-    "objectID": "docs/Tema04ej1.html#apartado-g-qué-variación-se-publica",
-    "href": "docs/Tema04ej1.html#apartado-g-qué-variación-se-publica",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado g): qué variación se publica",
-    "text": "Apartado g): qué variación se publica\nPara la serie mensual, calcula la variación del último mes respecto al mes anterior y respecto al mismo mes del año anterior. ¿Cuál de las dos va al informe y por qué? Mira la estacionalidad antes de contestar."
-  },
-  {
-    "objectID": "docs/Tema04ej1.html#apartado-h-la-advertencia-al-pie",
-    "href": "docs/Tema04ej1.html#apartado-h-la-advertencia-al-pie",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado h): la advertencia al pie",
-    "text": "Apartado h): la advertencia al pie\nEscribe al pie del cuadro una advertencia sobre la trampa que más amenaza a tus indicadores: composición, base pequeña, estacionalidad o selección en las valoraciones. Una sola, la que de verdad aplique, y di por qué esa."
-  },
-  {
-    "objectID": "docs/Tema04ej1.html#apartado-a-el-periodo-en-año-y-trimestre",
-    "href": "docs/Tema04ej1.html#apartado-a-el-periodo-en-año-y-trimestre",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado a): el periodo, en año y trimestre",
-    "text": "Apartado a): el periodo, en año y trimestre\nLee la tabla y añade el año y el trimestre como dos columnas numéricas. Mira antes cómo viene Periodo: en la tabla mensual del IPC que vimos en clase era año, M y mes, y esta tabla es trimestral."
-  },
-  {
-    "objectID": "docs/Tema04ej1.html#apartado-b-cuántas-series-esperas-y-cuántas-salen",
-    "href": "docs/Tema04ej1.html#apartado-b-cuántas-series-esperas-y-cuántas-salen",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado b): cuántas series esperas y cuántas salen",
-    "text": "Apartado b): cuántas series esperas y cuántas salen\nQuédate con las series de “Ambos sexos”.\n\n¿Cuántas series obtienes?\n¿Cuántas comunidades autónomas hay en España, contando Ceuta y Melilla?\nExplica la diferencia y corrige el filtro. La pista está en el grupo de edad: mira el nombre completo de un par de series de la misma comunidad."
-  },
-  {
-    "objectID": "docs/Tema04ej1.html#apartado-c-la-tasa-nacional-no-es-la-media-de-las-regionales",
-    "href": "docs/Tema04ej1.html#apartado-c-la-tasa-nacional-no-es-la-media-de-las-regionales",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado c): la tasa nacional no es la media de las regionales",
-    "text": "Apartado c): la tasa nacional no es la media de las regionales\nPara el último trimestre disponible, da la tasa de paro nacional, la media simple de las tasas de las comunidades, la mediana, y las tres comunidades con la tasa más alta y las tres con la más baja.\n¿Por qué la media de las tasas regionales no es la tasa nacional? Dos frases. Compáralo con lo que viste en el apartado d) de la entrega 3."
-  },
-  {
-    "objectID": "docs/Tema04ej1.html#apartado-d-qué-variación-se-publica-otra-vez",
-    "href": "docs/Tema04ej1.html#apartado-d-qué-variación-se-publica-otra-vez",
-    "title": "Tema 04 - Análisis Exploratorio de Datos",
-    "section": "Apartado d): qué variación se publica, otra vez",
-    "text": "Apartado d): qué variación se publica, otra vez\nPara el total nacional, calcula la variación respecto al trimestre anterior y respecto al mismo trimestre del año anterior. ¿Cuál pondrías en un titular y por qué?"
+    "objectID": "docs/Tema06.html#práctica-en-clase-2-señales-de-abandono",
+    "href": "docs/Tema06.html#práctica-en-clase-2-señales-de-abandono",
+    "title": "Tema 06 - Regularización",
+    "section": "PRÁCTICA en clase (2): señales de abandono",
+    "text": "PRÁCTICA en clase (2): señales de abandono\n\nLa empresa quiere saber, con lo que conoce de cada cliente, cuáles tienen más probabilidad de irse. Con churn y vuestro DNI como semilla:\n\nAjustad LASSO y Ridge regression con cv.glmnet(), dibujad el AUC frente a \\(\\lambda\\) y comparadlos. Para vigilar a los clientes, ¿qué lista corta de señales de alarma daríais? ¿Compensa quedarse con menos variables?\nA los clientes con más riesgo se les puede ofrecer \\(k\\) meses gratis, lo que supone para la empresa perder \\(k\\) meses de cuota. Si un cliente abandona, la pérdida es un año de cuota, así que la oferta compensa si su probabilidad de abandono \\(p\\) cumple \\(12\\,p &gt; k\\).\n\n¿Cuántos meses gratis, como máximo, compensa ofrecer a un cliente con \\(p = 0{,}7\\)?\nUsando predict(..., type = \"response\") con el modelo del punto 1 para obtener la probabilidad predicha de abandono de cada cliente de la muestra, ¿a cuántos clientes haríais una oferta de 6 meses?\n\n\nLa empresa también estudia medidas para subir la satisfacción de sus clientes y así evitar que se vayan. Como estas medidas son costosas, quiere saber cuánto compensa gastarse en ellas:\n\nEstimad con glm() un logit con las variables que deja lambda.1se (post-LASSO). Considerando de nuevo que, si un cliente se va, la pérdida es un año de cuota (12 × precio_mensual), ¿cuánto le compensa gastar a la empresa por cliente para subir su satisfacción un punto? Pista: ¿cuánto cambia la probabilidad de abandono si la satisfacción sube un punto? Discutid si se puede interpretar esa cifra como el efecto de un cambio en la satisfacción\n\n\n\n\n\n\n\n\nNota\n\n\nAhora el ejercicio: entrega 2, apartados a) a c)."
   },
   {
     "objectID": "docs/Tema00.html#introducción",
