@@ -1183,46 +1183,368 @@
     "text": "Buenas Prácticas (cont.)\nEficiencia:\n\nRealizar transformaciones (seleccionar, filtrar, crear columnas) temprano, unir tarde\n\n\nventas_2023_prod &lt;- ventas |&gt;\n  filter(año == 2023) |&gt;    # reduce tamaño\n  left_join(productos, by = \"id_producto\")\n\nventas_2023_prod_lento &lt;- ventas |&gt;\n  left_join(productos, by = \"id_producto\") |&gt;\n  filter(año == 2023)\n\n\nSeleccionar solo columnas necesarias\n\n\nRecursos Adicionales\n\nDocumentación: ?dplyr, ?tidyr\nCheat Sheets: https://posit.co/resources/cheatsheets/\nLibros:\n\n“R for Data Science” (Wickham & Grolemund)\n“Advanced R” (Wickham)\n\nComunidad: Stack Overflow, Posit Community"
   },
   {
-    "objectID": "docs/Tema01ej.html",
-    "href": "docs/Tema01ej.html",
-    "title": "Tema 01 - Ejercicio de Quarto",
+    "objectID": "docs/Tema07anexo.html#esto-es-material-de-consulta",
+    "href": "docs/Tema07anexo.html#esto-es-material-de-consulta",
+    "title": "Tema 07 - Anexo",
+    "section": "Esto es material de consulta",
+    "text": "Esto es material de consulta\n\nLo que hay aquí amplía el Tema 07: las dos capas de elegir y evaluar, la comparación con cv.glmnet() del Tema 06, la correspondencia con scikit-learn en Python, los errores más frecuentes y otros pasos de receta\nSe consulta cuando hace falta en un trabajo; en clase no se ve"
+  },
+  {
+    "objectID": "docs/Tema07anexo.html#dos-capas",
+    "href": "docs/Tema07anexo.html#dos-capas",
+    "title": "Tema 07 - Anexo",
+    "section": "Dos capas",
+    "text": "Dos capas\n\n\n\n\n\n\n\n\n\n\nElegir \\(\\lambda\\) y evaluar el modelo elegido son dos usos de los datos, y piden dos capas\nEn el tema, la capa de fuera es una partición (initial_split()): la prueba se usa una vez. Dentro del entrenamiento, los bloques (vfold_cv()) eligen \\(\\lambda\\)\nEs el esquema de la figura: cada remuestra tiene una parte de análisis, con la que se estima, y otra de evaluación, en la que se mide\nLa capa de fuera también puede ser una validación cruzada en lugar de initial_split(): es la validación cruzada anidada\n\n\n\n\n\nFigura de tmwr §10.2. Nombres: training/testing para la partición inicial, analysis()/assessment() para cada remuestra; nested_cv() llama igual a los dos niveles y guarda los internos en la columna inner_resamples.\nCon la validación cruzada anidada, el promedio externo estima el error del procedimiento completo, elección de \\(\\lambda\\) incluida, sin sesgo de optimización. Fuentes: artículo «Nested resampling» de tidymodels.org; Cawley y Talbot (2010, JMLR); Varma y Simon (2006); ejemplo «Nested versus non-nested cross-validation» de scikit-learn.\nCómo se haría con nested_cv(), con el código, las cifras de tienda y transparencias: notes/Tema07/validacion-anidada.qmd."
+  },
+  {
+    "objectID": "docs/Tema07anexo.html#los-mismos-pasos-con-cv.glmnet",
+    "href": "docs/Tema07anexo.html#los-mismos-pasos-con-cv.glmnet",
+    "title": "Tema 07 - Anexo",
+    "section": "Los mismos pasos con cv.glmnet()",
+    "text": "Los mismos pasos con cv.glmnet()\n\n\n\n\n\n\n\n\n\nPaso\nTema 06, con glmnet\nTema 07, con tidymodels\n\n\n\n\nPartir\nsample() (Tema 05)\ninitial_split()\n\n\nBloques\nnfolds dentro de cv.glmnet()\nvfold_cv()\n\n\nPreprocesado, modelo y flujo\nmodel.matrix() y glmnet(x, y, alpha)\nfórmula o recipe(), linear_reg() y workflow()\n\n\nAfinar\ncv.glmnet(), plot(), lambda.min, lambda.1se\ntune_grid(), autoplot(), select_best(), select_by_one_std_err()\n\n\nFinalizar y evaluar\ncoef(cv, s = ), predict()\nfinalize_workflow(), last_fit(), collect_metrics()\n\n\nMétricas\na mano\nrmse(), mae(), roc_auc(), sens()…\n\n\n\n\nEn el Tema 06, cv.glmnet() hizo los bloques sobre los 404 clientes y midió el error del \\(\\lambda\\) elegido en esos mismos bloques: es optimista, porque \\(\\lambda^*\\) se eligió por dar el mínimo (sesgo de optimización), y no quedaba prueba para evaluar\nLo que cv.glmnet() daba en cvm y cvsd es mean y std_err de collect_metrics(); plot(cv) es autoplot(), con el eje en \\(-\\log(\\lambda)\\), así que la U sale al revés\nCon cv.glmnet() sobre los 404 clientes, \\(\\lambda\\) salía 21,3 y 37,2 (mínimo y un error estándar); en el Tema 07, con solo el entrenamiento, 20,0 y 31,6"
+  },
+  {
+    "objectID": "docs/Tema07anexo.html#la-misma-gramática-en-python",
+    "href": "docs/Tema07anexo.html#la-misma-gramática-en-python",
+    "title": "Tema 07 - Anexo",
+    "section": "La misma gramática en Python",
+    "text": "La misma gramática en Python\n\n\nEn Python, lo equivalente a tidymodels es scikit-learn. La lógica es idéntica y cambian los nombres:\n\n\n\n\n\n\n\n\n\nPaso\ntidymodels (R)\nscikit-learn (Python)\n\n\n\n\nPartir\ninitial_split(prop = 0.8)\ntrain_test_split(test_size = 0.2)\n\n\nBloques\nvfold_cv(v = 10), strata =\nKFold(10), StratifiedKFold(10)\n\n\nPreprocesado que aprende\nrecipe(), step_normalize(), prep(), bake()\nStandardScaler(), .fit(), .transform()\n\n\nModelo\nlinear_reg(penalty, mixture = 1) con glmnet\nLasso(alpha); LogisticRegression(penalty = \"l1\", C)\n\n\nFlujo\nworkflow(receta, modelo)\nPipeline([(\"sc\", StandardScaler()), (\"m\", Lasso())])\n\n\nRejilla y afinado\ngrid_regular(), tune_grid(grid, metrics)\nGridSearchCV(param_grid, cv, scoring)\n\n\nMejor y reajuste\nselect_best(), finalize_workflow(), last_fit()\nbest_params_, refit = True, .score(X_test, y_test)\n\n\nMétricas\nrmse(), roc_auc(), sens()\nmean_squared_error, roc_auc_score, recall_score\n\n\nCamino de \\(\\lambda\\) barato\ncv.glmnet() (Tema 06)\nLassoCV, LogisticRegressionCV\n\n\n\n\n\n\nDiferencias que importan: scikit-learn no trae la regla de un error estándar; LogisticRegression parametriza con \\(C = 1/\\lambda\\) y regulariza por defecto; los hiperparámetros de un paso del Pipeline se nombran paso__parametro (m__alpha); el Pipeline dentro de GridSearchCV evita la fuga de información igual que la receta dentro del flujo.\nFuentes: guías oficiales de scikit-learn (model_selection, grid_search, compose). Comprobado el 6-nov-2026 que en CRAN no hay una réplica de la API de scikit-learn; reticulate permite llamarla desde R."
+  },
+  {
+    "objectID": "docs/Tema07anexo.html#errores-frecuentes",
+    "href": "docs/Tema07anexo.html#errores-frecuentes",
+    "title": "Tema 07 - Anexo",
+    "section": "Errores frecuentes",
+    "text": "Errores frecuentes\n\n\n\n\n\n\n\n\n\nCuidado con\nQué pasa\nCómo evitarlo\n\n\n\n\nEl orden de los niveles de un factor, p.e. churn con «No» y «Sí» en orden alfabético\nLas métricas toman el primer nivel como el suceso: el AUC sale 0,25 en vez de 0,75\nFijar el orden antes de partir: factor(churn, levels = c(\"Sí\", \"No\"))\n\n\nCrear un factor dentro de la fórmula, p.e. factor(educ)\nFalla en los bloques donde falta algún nivel\nCrearlo antes de partir: mutate(educ = factor(educ))\n\n\nElegir sin decir la métrica, p.e. select_best(ajuste)\nAvisa y elige con la primera métrica\nselect_best(ajuste, metric = \"rmse\")\n\n\nEvaluar sin decir las métricas, p.e. last_fit() sin metrics\nCalcula las de por defecto, que pueden no ser las usadas al afinar\nlast_fit(..., metrics = metric_set(roc_auc, accuracy))"
+  },
+  {
+    "objectID": "docs/Tema07anexo.html#otros-pasos-de-receta",
+    "href": "docs/Tema07anexo.html#otros-pasos-de-receta",
+    "title": "Tema 07 - Anexo",
+    "section": "Otros pasos de receta",
+    "text": "Otros pasos de receta\n\n\nValores ausentes (Tema 04): dos salidas, cada una con sus problemas\n\nquitar las filas, con drop_na() antes de partir\nimputar, con un paso de la receta: el valor de relleno se aprende en el entrenamiento\nhay muchas formas de imputar: media (step_impute_mean()), mediana, moda, regresión (step_impute_linear()), observaciones parecidas (step_impute_knn())…\n\nstep_dummy() quita por defecto una categoría, la de referencia, como en la regresión\n\notros modelos usan una columna por categoría: step_dummy(one_hot = TRUE)\n\nstep_normalize() deja cada variable con media 0 y desviación típica 1, las del entrenamiento\n\nalgunos motores, como glmnet, ya estandarizan por dentro\n\nstep_other() junta en «other» las categorías con pocos casos\nstep_nzv() y step_corr() quitan variables casi constantes o muy correlacionadas\n\n\n\nTodos los pasos: https://recipes.tidymodels.org/reference/\n\n\n\nTodo verificado el 6-nov-2026, y las cifras de tienda y churn de nuevo el 11-nov-2026, con las versiones del curso: tidymodels 1.5.0, recipes 1.4.0, dials 1.4.4, tune 2.1.0, rsample 1.3.2, yardstick 1.4.0, glmnet 5.0.\nLas funciones antiguas y sus sustitutas, para el profesor: notes/Tema07/cambios-tidymodels.md."
+  },
+  {
+    "objectID": "docs/Tema02ej.html",
+    "href": "docs/Tema02ej.html",
+    "title": "Tema 02 - Visualización de datos",
     "section": "",
-    "text": "Crea una carpeta para el ejercicio y ábrela en Positron (File &gt; Open Folder); crea un nuevo documento .qmd (File &gt; New File… &gt; Quarto Document). Adapta el encabezado para que tenga, al menos, un título y tu nombre como autor o autora. (Puedes eliminar el resto del contenido para los siguientes apartados, dejando espacio tras la cabecera).\nCrea una primera sección del documento, p.e., con el nombre “Apartado a)”. Para cada apartado posterior debes crear una nueva sección correspondiente al apartado.\nEscribe una breve frase introductoria general, una lista que enumere dos variables de las fichas de clientes que usamos en clase (p.e., altura y gasto), incluye un enlace a una página web e inserta una imagen.\nNota: Puedes usar, aquí y en cualquier otra parte del documento, negritas o cursivas cuando lo consideres oportuno.\nGuarda el documento con este formato de nombre, que incluye tu identificador: T01_E1_&lt;ID&gt;.qmd (por ejemplo, T01_E1_12345678.qmd)\nCon DNI, los 8 números quitando la letra del final. Con NIE, la letra del principio y los números, quitando la del final. Con pasaporte u otro documento, entero, sin quitar nada. Es lo mismo que escribirás en el formulario de entrega, que te avisa si no cuadra.\nRenderiza tu documento para visualizar el documento html creado.\nComprueba que en el mismo directorio donde tienes el archivo .qmd se ha creado un archivo con extensión html; nota que también se ha creado un subdirectorio del mismo nombre que contiene todo lo necesario para visualizar el archivo html.\nCambia a otro formato de salida en el encabezado YAML y genera otro documento de salida. Las opciones son docx, typst y pdf; docx y typst no necesitan instalar nada.\nModifica el bloque YAML que ya tienes: no añadas un segundo bloque ---, porque entonces no renderiza.\nComprueba de nuevo que tienes un archivo de salida (.pdf o .docx) en el mismo directorio donde está el archivo .qmd.\nBorra el documento html y el subdirectorio con el mismo nombre generados previamente. Cambia la opción de YAML para que se genere un html autocontenido. Comprueba que puedes visualizar el archivo. Comentar."
+    "text": "Estos ejercicios se van haciendo durante las clases del tema: las transparencias indican en qué momento toca cada uno.\n\n\n\n\n\n\nImportante\n\n\n\nSi no lo has hecho ya, lee Cómo trabajar en cada tema: la carpeta del tema con su subdirectorio data, cómo se crea el documento, qué va en la cabecera (con embed-resources: true), la primera celda y cómo se entrega. Vale para todo el curso.\n\n\nDe este tema, lo que te hace falta:\n\nLos datos son datosVisualizacion.RData y empresas.RData, de la página Datos. Descárgalos en tu subdirectorio data.\nUn documento por ejercicio, T02_E&lt;n&gt;_&lt;ID&gt;.qmd: T02_E1_12345678.qmd para el ejercicio 1, T02_E2_12345678.qmd para el 2, y así. Cada uno carga sus propios datos en su primera celda."
   },
   {
-    "objectID": "docs/Tema01ej.html#apartado-a",
-    "href": "docs/Tema01ej.html#apartado-a",
-    "title": "Tema 01 - Ejercicio de Quarto",
+    "objectID": "docs/Tema02ej.html#apartado-a",
+    "href": "docs/Tema02ej.html#apartado-a",
+    "title": "Tema 02 - Visualización de datos",
+    "section": "Apartado a)",
+    "text": "Apartado a)\n\nDibuja la relación entre ingresos y gasto con geom_point().\nPinta TODOS los puntos de rojo, de verdad (que no aparezca ninguna leyenda).\nEjecuta esto y describe qué ves: ¿de qué color salen los puntos? ¿qué dice la leyenda? ¿por qué?\n\n\nggplot(clientes, aes(x = ingresos, y = gasto)) +\n  geom_point(aes(color = \"red\"))\n\n\nDistingue el segmento por color y el canal por forma. Y ahora añade además size = edad. ¿Se lee el gráfico con tres variables encima? ¿Cuántas cosas a la vez puede leer quien lo mira? Quédate con la versión que sí se lee y di por qué.\nAñade size = 4 dentro de aes() y luego fuera. Una de las dos no tiene sentido: ¿cuál y por qué? En una frase, ¿qué regla te sirve para decidirlo?"
+  },
+  {
+    "objectID": "docs/Tema02ej.html#apartado-b-capas-con-sus-propios-datos",
+    "href": "docs/Tema02ej.html#apartado-b-capas-con-sus-propios-datos",
+    "title": "Tema 02 - Visualización de datos",
+    "section": "Apartado b): capas con sus propios datos",
+    "text": "Apartado b): capas con sus propios datos\nSobre el gráfico del apartado a), con el segmento por color.\n\nEtiqueta a quienes más gastan. Como solo quieres unas pocas fichas, esa capa lleva sus propios datos, igual que hicimos en clase con los países:\n\ntop &lt;- clientes[clientes$gasto &gt; 8000, ]\n\ny encima una capa geom_text_repel(data = top, aes(label = cliente)).\n¿Por qué esa capa necesita sus propios datos, y qué pasaría si le dieras clientes entero?"
+  },
+  {
+    "objectID": "docs/Tema02ej.html#apartado-c-el-gráfico-cuenta-por-ti",
+    "href": "docs/Tema02ej.html#apartado-c-el-gráfico-cuenta-por-ti",
+    "title": "Tema 02 - Visualización de datos",
+    "section": "Apartado c): el gráfico cuenta por ti",
+    "text": "Apartado c): el gráfico cuenta por ti\n\nNúmero de clientes de cada segmento, con geom_bar(). ¿Dónde está la tabla de frecuencias que has usado?\nLo mismo, pero con la PROPORCIÓN que representa cada segmento, sin calcular nada aparte: tienes el patrón con after_stat(prop) en las transparencias.\n\n\nEn una frase: ¿qué significa que un geom “tiene una estadística por defecto”?"
+  },
+  {
+    "objectID": "docs/Tema02ej.html#apartado-d-distribuciones",
+    "href": "docs/Tema02ej.html#apartado-d-distribuciones",
+    "title": "Tema 02 - Visualización de datos",
+    "section": "Apartado d): distribuciones",
+    "text": "Apartado d): distribuciones\n\nDistribución de los ingresos con geom_histogram(), probando bins = 10, bins = 40 y binwidth = 3. ¿Cuál de las tres le enseñarías a dirección y por qué?\nCon una de esas tres se ve un grupo de clientes de ingresos muy bajos y con las otras no. ¿Con cuál, y qué te dice eso sobre elegir los intervalos?\nCompara el gasto entre segmento con un geom_boxplot()."
+  },
+  {
+    "objectID": "docs/Tema02ej.html#apartado-e-contexto-y-aspecto",
+    "href": "docs/Tema02ej.html#apartado-e-contexto-y-aspecto",
+    "title": "Tema 02 - Visualización de datos",
+    "section": "Apartado e): contexto y aspecto",
+    "text": "Apartado e): contexto y aspecto\n\nVuelve al gráfico del apartado a) y añádele una recta de tendencia con geom_smooth(method = \"lm\", se = FALSE). ¿Qué dice esa recta que no dijera la nube de puntos?\nDivídelo en facetas por canal. ¿Se lee mejor así o con el color? ¿Por qué?\nAñade una línea de referencia horizontal en el gasto medio, discontinua, y anótala con annotate() para que se entienda qué marca.\nPonle labs() completo: título, ejes con sus unidades y un caption con la fuente.\nPrueba al menos dos temas y quédate con uno. Prueba también uno profesional, de ggthemes:\n\nlibrary(ggthemes)\nmi_grafico + theme_economist()"
+  },
+  {
+    "objectID": "docs/Tema04anexo.html#esto-es-material-de-consulta",
+    "href": "docs/Tema04anexo.html#esto-es-material-de-consulta",
+    "title": "Tema 04 - Anexo: herramientas y fuentes",
+    "section": "Esto es material de consulta",
+    "text": "Esto es material de consulta\n\nLo que hay aquí amplía el Tema 04: herramientas que automatizan la detección de problemas, más trampas de los KPI, la API del INE, los formatos en que llegan los microdatos, cómo leer una columna vacía y una lista de comprobación del AED\nSe consulta cuando hace falta en un trabajo; en clase no se ve"
+  },
+  {
+    "objectID": "docs/Tema04anexo.html#herramientas-que-automatizan-la-detección-1",
+    "href": "docs/Tema04anexo.html#herramientas-que-automatizan-la-detección-1",
+    "title": "Tema 04 - Anexo: herramientas y fuentes",
+    "section": "Herramientas que automatizan la detección",
+    "text": "Herramientas que automatizan la detección\n\nEstas funciones recorren todas las variables y ahorran los primeros diez minutos\n\n\nlibrary(modelsummary)\npedidos |&gt; datasummary_skim()                  # numéricas\npedidos |&gt; datasummary_skim(type = \"categorical\")\n\nlibrary(skimr)\npedidos |&gt; skim()\n\nlibrary(janitor)\npedidos_bruto |&gt; get_dupes(id_pedido)          # duplicados de clave\n\n\nTambién existen informes completos automáticos (DataExplorer::create_report(), dlookr) y se pueden pedir a una IA generativa\nLimitaciones: producen mucho ruido, no conocen el contexto y no distinguen un error de un dato extremo legítimo\nRegla: la automatización acelera la detección; la decisión sigue siendo del analista, que es quien conoce el negocio\n\n\n\nÚtiles para uso propio, no para un informe final: cien gráficos sin priorizar no comunican nada.\nUna IA no sabe que en este sector el ROE típico es 8-12%: eso lo aportáis vosotros."
+  },
+  {
+    "objectID": "docs/Tema04anexo.html#la-api-del-ine-la-petición",
+    "href": "docs/Tema04anexo.html#la-api-del-ine-la-petición",
+    "title": "Tema 04 - Anexo: herramientas y fuentes",
+    "section": "La API del INE: la petición",
+    "text": "La API del INE: la petición\n\n\nEl INE ofrece un servicio web que devuelve los datos de una tabla en formato JSON. La petición tiene esta forma:\n\nhttps://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/{id_tabla}?nult={n}\n\n{id_tabla} es el identificador de la tabla publicada en INEbase, y nult el número de periodos más recientes que se piden\n\n\nlibrary(jsonlite)\n\n# Tabla 50902: IPC nacional, índice general y grupos ECOICOP\nurl_ipc &lt;- \"https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/50902?nult=36\"\nipc_json &lt;- fromJSON(url_ipc, simplifyVector = FALSE)\n\n# Tabla 65335: tasa de paro por sexo y comunidad autonoma, trimestral\n# (identificador comprobado en INEbase). Otras utiles: 74999 y 14506\n# (paro por grupos de edad y por comunidad).\n# url_epa &lt;- \"https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/65335?nult=20\"\n\n\nExiste además un paquete de R que envuelve esta API (ineapir): consultad su documentación antes de usarlo en un trabajo\nRegla del curso: nunca copiéis un identificador de tabla sin comprobar en la web del INE qué contiene exactamente"
+  },
+  {
+    "objectID": "docs/Tema04anexo.html#del-json-a-una-tabla-ordenada",
+    "href": "docs/Tema04anexo.html#del-json-a-una-tabla-ordenada",
+    "title": "Tema 04 - Anexo: herramientas y fuentes",
+    "section": "Del JSON a una tabla ordenada",
+    "text": "Del JSON a una tabla ordenada\n\n\nLa respuesta es una lista de series; cada serie tiene un nombre y sus observaciones. Hay que dejarla como los datos ordenados del Tema 03\n\n\nipc &lt;- tibble(serie = map_chr(ipc_json, \"Nombre\"),\n              datos = map(ipc_json, \"Data\")) |&gt;\n  filter(str_detect(serie, \"Variación anual\"),\n         str_detect(serie, \"Índice general|Alimentos\")) |&gt;\n  unnest_longer(datos) |&gt;\n  mutate(anio  = map_int(datos, \"Anyo\"),\n         mes   = map_int(datos, \"FK_Periodo\"),\n         fecha = as.Date(sprintf(\"%d-%02d-01\", anio, mes)),\n         valor = map_dbl(datos, \"Valor\")) |&gt;\n  select(serie, fecha, valor) |&gt; arrange(serie, fecha)\n\n\nLa fecha se construye con el año y el periodo que vienen etiquetados. El campo Fecha trae milisegundos desde 1970 en hora local: convertirlo suponiendo UTC desplaza cada observación un mes atrás, y el error es silencioso\nY entonces, y solo entonces, se responde a la pregunta\n\n\nggplot(ipc, aes(x = fecha, y = valor, color = serie)) +\n  geom_line() + geom_hline(yintercept = 0)\n\n\n\n\nFK_Periodo es el mes en una tabla mensual; en una trimestral NO lo es. Comprobarlo siempre antes de reutilizar este código con otra tabla.\nResultado de referencia (descarga de enero de 2023): variación anual del índice general 5,9% frente al 15,4% de alimentos y bebidas no alcohólicas. La brecha se cierra a lo largo de 2023-2024.\nEse contraste es exactamente lo que no se ve en el titular del IPC general."
+  },
+  {
+    "objectID": "docs/Tema04anexo.html#dentro-del-zip-hay-varios-formatos",
+    "href": "docs/Tema04anexo.html#dentro-del-zip-hay-varios-formatos",
+    "title": "Tema 04 - Anexo: herramientas y fuentes",
+    "section": "Dentro del zip hay varios formatos",
+    "text": "Dentro del zip hay varios formatos\n\n\nEl mismo zip trae los datos en ancho fijo (.txt), en texto separado por tabuladores, en .RData, en parquet y en los formatos de SAS, SPSS y Stata, más el diccionario en JSON\nEn clase leemos el texto separado, y no es por gusto:\n\nEs lo que os vais a encontrar fuera: la mayoría de las fuentes no os regalan un .RData\nObliga a mirar los tipos, que es medio análisis exploratorio\n\n\n\nlibrary(tidyverse)\nepa &lt;- read_delim(\"CSV/EPA_2026T2.tab\", delim = \"\\t\",\n                  col_types = cols(.default = col_character()))\n\n\nQue existan los otros formatos conviene saberlo: load() para el .RData (cómodo pero solo sirve en R) y arrow::read_parquet() para el parquet (el formato que hay que conocer cuando el fichero no cabe en memoria)\nQuien solo sabe abrir el .RData se queda bloqueado el día que la fuente no lo publique. Y lo leemos como texto porque los códigos del INE son texto: \"03\" no es el número 3"
+  },
+  {
+    "objectID": "docs/Tema04anexo.html#si-se-lee-el-.rdata-los-espacios-que-no-se-ven",
+    "href": "docs/Tema04anexo.html#si-se-lee-el-.rdata-los-espacios-que-no-se-ven",
+    "title": "Tema 04 - Anexo: herramientas y fuentes",
+    "section": "Si se lee el .RData: los espacios que no se ven",
+    "text": "Si se lee el .RData: los espacios que no se ven\n\n\nEn el .RData, AOI vacía (menores de 16 años) llega como dos espacios; en el .tab leído con read_delim(), como NA\n\n\nepa |&gt; count(AOI)                    # \"  \", \"03\", \"04\", \"05\", \"06\", \"07\", \"08\", \"09\"\nsum(epa$AOI == \"\")                   # 0: NINGUNA fila cumple eso\nsum(trimws(epa$AOI) == \"\")           # 15.850: los menores de 16\n\n\nQuien filtra con AOI != \"\" cree haber quitado a los menores y no ha quitado a nadie. No hay error ni aviso, y la tasa de actividad sale mal:\n\n\n\n\nFichero completo\nTasa de actividad\n\n\n\n\nfilter(AOI != \"\")\n51,22%\n\n\nfilter(trimws(AOI) != \"\")\n59,29%\n\n\n\n\nOcho puntos por dos espacios. trimws() quita los espacios de los extremos (como str_trim() del Tema 04); con el .RData hay que aplicarlo a los códigos antes de compararlos:\n\n\nepa &lt;- epa |&gt; mutate(AOI = trimws(AOI), NCONY = trimws(NCONY), NPERS = trimws(NPERS))"
+  },
+  {
+    "objectID": "docs/Tema04anexo.html#qué-significa-una-columna-vacía",
+    "href": "docs/Tema04anexo.html#qué-significa-una-columna-vacía",
+    "title": "Tema 04 - Anexo: herramientas y fuentes",
+    "section": "Qué significa una columna vacía",
+    "text": "Qué significa una columna vacía\n\n\nUna columna vacía no dice por qué está vacía, y la diferencia decide qué hacer con ella:\n\n\n\n\n\n\n\n\n\nVariable (fichero completo)\nVacía\nQué significa\n\n\n\n\nRELLB1, TRAANT\n100%\nrelleno del formato: se tiran\n\n\nOCUPLU1\n98,7%\nno aplicable: solo quien tiene segundo empleo\n\n\nSITU, PARCO1\n56,8%\nno aplicable: solo los ocupados\n\n\n\n\nTirar OCUPLU1 por “tener demasiados ausentes” es tirar la respuesta a una pregunta que sí se hizo"
+  },
+  {
+    "objectID": "docs/Tema04anexo.html#elección-del-periodo-y-efecto-base",
+    "href": "docs/Tema04anexo.html#elección-del-periodo-y-efecto-base",
+    "title": "Tema 04 - Anexo: herramientas y fuentes",
+    "section": "Elección del periodo y efecto base",
+    "text": "Elección del periodo y efecto base\n\nCon serie_ventas del Tema 04, el titular “las ventas han crecido un 65% en 2025” sale de comparar enero con diciembre:\n\n\nserie_ventas |&gt;\n  filter(mes &gt;= as.Date(\"2025-01-01\")) |&gt;\n  summarize(crecimiento = last(ventas) / first(ventas) - 1)\n\n\nEse 65% mide la distancia entre el mes más flojo y la campaña de Navidad. Casi cualquier tendencia se fabrica eligiendo el punto de partida: mostrad la serie completa\nEfecto base: crecer un 20% en 2021 tras caer un 22% en 2020 es recuperar parte de lo perdido. Con dos tasas consecutivas, mirad el nivel: 100 × 0,78 × 1,20 = 93,6, por debajo del punto de salida"
+  },
+  {
+    "objectID": "docs/Tema04anexo.html#composición-un-ejemplo-con-datos-oficiales",
+    "href": "docs/Tema04anexo.html#composición-un-ejemplo-con-datos-oficiales",
+    "title": "Tema 04 - Anexo: herramientas y fuentes",
+    "section": "Composición: un ejemplo con datos oficiales",
+    "text": "Composición: un ejemplo con datos oficiales\n\nLa paradoja de Simpson del Tema 04 (la app devuelve más en cada categoría y menos en el total) es el problema central del análisis con datos observacionales: el agregado mezcla el efecto que interesa con el efecto de quién está en cada grupo\nEl salario medio subió durante la crisis de 2008-2013 en varios países mientras casi nadie tenía subidas: los empleos destruidos fueron los de menor salario, y eso elevó la media de los que quedaron\nOtro: una comparación de rentabilidad entre sectores sin controlar el tamaño de las empresas mide sobre todo tamaño\nQué hacer, igual que con los canales: comparar dentro de grupos homogéneos (mismo puesto, mismo tamaño), o ponderar todos los periodos con la misma composición. El Tema 05 lo formaliza: comparar “todo lo demás igual” es lo que hace una regresión"
+  },
+  {
+    "objectID": "docs/Tema04anexo.html#buenas-prácticas-del-aed",
+    "href": "docs/Tema04anexo.html#buenas-prácticas-del-aed",
+    "title": "Tema 04 - Anexo: herramientas y fuentes",
+    "section": "Buenas prácticas del AED",
+    "text": "Buenas prácticas del AED\n\n\n\nEn la limpieza\n\nLos datos en bruto no se modifican nunca: la limpieza es un script reproducible\nCada corrección lleva escrito el motivo y la regla aplicada, no solo el código\nContar filas antes y después de cada paso, y comprobar que el cambio es el esperado\nLos ausentes y los atípicos se investigan antes de tratarse: por qué faltan, por qué son extremos\n\nCon microdatos\n\nEl diseño de registro se lee antes de escribir código; se replica una cifra publicada antes de calcular la propia; la suma de los pesos tiene que dar una población reconocible\n\n\nEn la descriptiva\n\nPrimero la pregunta, después el estadístico. Si ninguna decisión cambia, sobra\nCon distribuciones asimétricas, nunca un solo número: centro, dispersión y forma\nToda tasa lleva su denominador y su nivel al lado\nAntes de comparar grupos, mirar la composición de cada grupo\n\nErrores más caros: convertir con as.numeric() sin mirar, promediar promedios, comparar meses consecutivos en series estacionales y confiar en una media calculada sobre quienes decidieron responder"
+  },
+  {
+    "objectID": "Evaluacion.html",
+    "href": "Evaluacion.html",
+    "title": "Evaluación",
     "section": "",
-    "text": "Crea una carpeta para el ejercicio y ábrela en Positron (File &gt; Open Folder); crea un nuevo documento .qmd (File &gt; New File… &gt; Quarto Document). Adapta el encabezado para que tenga, al menos, un título y tu nombre como autor o autora. (Puedes eliminar el resto del contenido para los siguientes apartados, dejando espacio tras la cabecera).\nCrea una primera sección del documento, p.e., con el nombre “Apartado a)”. Para cada apartado posterior debes crear una nueva sección correspondiente al apartado.\nEscribe una breve frase introductoria general, una lista que enumere dos variables de las fichas de clientes que usamos en clase (p.e., altura y gasto), incluye un enlace a una página web e inserta una imagen.\nNota: Puedes usar, aquí y en cualquier otra parte del documento, negritas o cursivas cuando lo consideres oportuno.\nGuarda el documento con este formato de nombre, que incluye tu identificador: T01_E1_&lt;ID&gt;.qmd (por ejemplo, T01_E1_12345678.qmd)\nCon DNI, los 8 números quitando la letra del final. Con NIE, la letra del principio y los números, quitando la del final. Con pasaporte u otro documento, entero, sin quitar nada. Es lo mismo que escribirás en el formulario de entrega, que te avisa si no cuadra.\nRenderiza tu documento para visualizar el documento html creado.\nComprueba que en el mismo directorio donde tienes el archivo .qmd se ha creado un archivo con extensión html; nota que también se ha creado un subdirectorio del mismo nombre que contiene todo lo necesario para visualizar el archivo html.\nCambia a otro formato de salida en el encabezado YAML y genera otro documento de salida. Las opciones son docx, typst y pdf; docx y typst no necesitan instalar nada.\nModifica el bloque YAML que ya tienes: no añadas un segundo bloque ---, porque entonces no renderiza.\nComprueba de nuevo que tienes un archivo de salida (.pdf o .docx) en el mismo directorio donde está el archivo .qmd.\nBorra el documento html y el subdirectorio con el mismo nombre generados previamente. Cambia la opción de YAML para que se genere un html autocontenido. Comprueba que puedes visualizar el archivo. Comentar."
+    "text": "Nota: información adicional sobre segunda convocatoria y posibles contingencias en la guía docente de la asignatura.\nIMPORTANTE: quien quiera acogerse a la evaluación NO continua debe comunicarlo en este formulario. Si no, se aplica la evaluación continua.\nPlazo: viernes 20 de noviembre de 2026, 23:59.\n\n\n\n\nModalidad ordinaria de la asignatura (salvo opción expresa por evaluación no continua comunicada en plazo antes del 20 de noviembre). No contempla examen final.\nDinámica presencial y participación activa: el valor de estas sesiones reside en la intervención activa en las discusiones del aula. La entrega de ejercicios carece de valor sin haber intervenido activamente en el debate (lo que implica asistir a clase, si bien la sola presencia física resulta insuficiente). Trabajar los materiales de forma autónoma es fundamental para el seguimiento del curso, pero a efectos de evaluación no sustituye la participación en el aula.\nCálculo sobre el 80% de las sesiones: la calificación del trabajo de clase y de la participación se obtiene a partir del 80% de las mejores sesiones de cada estudiante, descartando hasta un 20% de calificaciones inferiores (incluyendo ausencias o sesiones sin intervención activa). Superar ese 20% de inasistencia o falta de participación reduce directamente la media de este bloque. Al estar vinculadas a la dinámica presencial del cuatrimestre, estas calificaciones no son recuperables en el segundo periodo de evaluación.\nEstructura de la calificación:\n\nTrabajo empírico final (50%): ver Proyecto Final.\nEjercicios durante el periodo de clases (35%):\n\nUn ejercicio largo individual, para realizar fuera de clase (15%).\nUna prueba presencial breve (10%), sobre los temas vistos en clase del Tema 5 en adelante. Se avisará con antelación.\nEl trabajo desarrollado en clase (10%): lo que produzcáis en las sesiones podrá recogerse al acabar la clase (en cualquier sesión). Se valora el progreso y la comprensión, no la perfección.\n\nParticipación (15%):\n\nMini-tests breves en clase: preguntas de comprensión sobre el material que habréis trabajado ANTES de cada sesión (ver “Cómo funciona el curso” más abajo).\nPreguntas y pequeños ejercicios en clase.\n\n\n\n\n\n\n\nEjercicios teórico-prácticos (35%). Incluyen:\n\nEl mismo ejercicio largo que en la continua (20%), PERO se defiende presencialmente en el despacho: tendréis que explicar qué habéis hecho, por qué, y responder preguntas sobre vuestro propio código y resultados.\nLa misma prueba presencial que en la continua (15%), en una cita aparte que se avisará con antelación.\n\nTrabajo empírico final (65%), también con defensa presencial.\nSin mini-tests semanales ni trabajo de clase."
   },
   {
-    "objectID": "docs/Tema01ej.html#apartado-b",
-    "href": "docs/Tema01ej.html#apartado-b",
-    "title": "Tema 01 - Ejercicio de Quarto",
-    "section": "Apartado b)",
-    "text": "Apartado b)\n\nCrea, justo debajo de la cabecera, la primera celda del documento: la que prepara el entorno. Ponle la opción include: false, para que se ejecute sin que se vea, y carga en ella la biblioteca AER, que ya usaste en el Tema 00.\nTodo documento de Quarto empieza así: las bibliotecas que necesite el documento se declaran ahí.\nEscribe una línea de texto (NO celda de código) que incluya (entre el texto) código de R para mostrar la media de la variable mpg del conjunto de datos mtcars.\nCrear y dar un nombre a una sub-sección que incluya lo siguiente.\n\nTres celdas, todas con el código summary(mtcars). La primera debe mostrar el código, pero no el resultado; la segunda sólo mostrar el resultado (no el código); la tercera debe mostrar ambos. Antes de cada celda, incluye una frase explicando qué va a pasar.\nCargar la biblioteca Hmisc en una nueva celda de código. Cambia los valores de warning, error y message y renderiza el documento para observar los cambios. Comentar los cambios brevemente y qué forma de presentación prefieres para tu documento.\n\nCrear y dar nombre a otra sub-sección.\n\nAñadir una celda con el código a &lt;- 2, fijando la opción para que NO se evalúe. Añadir otra celda posterior con código b &lt;- 3 + a y que sí se evalúe. Renderizar el documento y comprobar que da un error.\nCambiar las opciones del segundo fragmento para que se pueda renderizar un documento de salida."
+    "objectID": "Evaluacion.html#evaluación-continua",
+    "href": "Evaluacion.html#evaluación-continua",
+    "title": "Evaluación",
+    "section": "",
+    "text": "Modalidad ordinaria de la asignatura (salvo opción expresa por evaluación no continua comunicada en plazo antes del 20 de noviembre). No contempla examen final.\nDinámica presencial y participación activa: el valor de estas sesiones reside en la intervención activa en las discusiones del aula. La entrega de ejercicios carece de valor sin haber intervenido activamente en el debate (lo que implica asistir a clase, si bien la sola presencia física resulta insuficiente). Trabajar los materiales de forma autónoma es fundamental para el seguimiento del curso, pero a efectos de evaluación no sustituye la participación en el aula.\nCálculo sobre el 80% de las sesiones: la calificación del trabajo de clase y de la participación se obtiene a partir del 80% de las mejores sesiones de cada estudiante, descartando hasta un 20% de calificaciones inferiores (incluyendo ausencias o sesiones sin intervención activa). Superar ese 20% de inasistencia o falta de participación reduce directamente la media de este bloque. Al estar vinculadas a la dinámica presencial del cuatrimestre, estas calificaciones no son recuperables en el segundo periodo de evaluación.\nEstructura de la calificación:\n\nTrabajo empírico final (50%): ver Proyecto Final.\nEjercicios durante el periodo de clases (35%):\n\nUn ejercicio largo individual, para realizar fuera de clase (15%).\nUna prueba presencial breve (10%), sobre los temas vistos en clase del Tema 5 en adelante. Se avisará con antelación.\nEl trabajo desarrollado en clase (10%): lo que produzcáis en las sesiones podrá recogerse al acabar la clase (en cualquier sesión). Se valora el progreso y la comprensión, no la perfección.\n\nParticipación (15%):\n\nMini-tests breves en clase: preguntas de comprensión sobre el material que habréis trabajado ANTES de cada sesión (ver “Cómo funciona el curso” más abajo).\nPreguntas y pequeños ejercicios en clase."
   },
   {
-    "objectID": "docs/Tema01ej.html#apartado-c",
-    "href": "docs/Tema01ej.html#apartado-c",
-    "title": "Tema 01 - Ejercicio de Quarto",
-    "section": "Apartado c)",
-    "text": "Apartado c)\n\nCrear una celda con este código, que muestra un gráfico de puntos con los datos de mtcars para las variables disp (tamaño del motor) y mpg (consumo); los gráficos los estudiaremos en el próximo tema, aquí solo nos importa cómo se integran en el documento:\n\n\nplot(mtcars$disp, mtcars$mpg, sub = \"Consumo frente a tamaño del motor\")\n\n\nCrear una nueva celda de código con dos gráficos de caja (boxplot(mtcars$disp) y boxplot(mtcars$mpg)) y usar las opciones de celda para que se muestren uno al lado del otro."
+    "objectID": "Evaluacion.html#evaluación-no-continua",
+    "href": "Evaluacion.html#evaluación-no-continua",
+    "title": "Evaluación",
+    "section": "",
+    "text": "Ejercicios teórico-prácticos (35%). Incluyen:\n\nEl mismo ejercicio largo que en la continua (20%), PERO se defiende presencialmente en el despacho: tendréis que explicar qué habéis hecho, por qué, y responder preguntas sobre vuestro propio código y resultados.\nLa misma prueba presencial que en la continua (15%), en una cita aparte que se avisará con antelación.\n\nTrabajo empírico final (65%), también con defensa presencial.\nSin mini-tests semanales ni trabajo de clase."
   },
   {
-    "objectID": "docs/Tema01ej.html#apartado-d",
-    "href": "docs/Tema01ej.html#apartado-d",
-    "title": "Tema 01 - Ejercicio de Quarto",
-    "section": "Apartado d)",
-    "text": "Apartado d)\n\nCrear una sub-sección. Incluir una nueva celda de código (que sí se evalúe) para mostrar mtcars y summary(mtcars).\nCrear una sub-sección. Incluir un nuevo fragmento de código (que sí se evalúe) y que incluya:\n\ncargar la biblioteca kableExtra para poder usar la función kbl()\nmostrar el resultado de mtcars y summary(mtcars) con la función kbl() con distintas opciones de estilo (una guía completa aquí). Por ejemplo\n\n\n\nkable_styling(kbl(mtcars))\nkable_styling(kbl(summary(mtcars)))\n\nkable_classic(kbl(mtcars), full_width = F)\nkable_minimal(kbl(summary(mtcars)))\n\nComentar las diferencias con el apartado anterior, d.i), y qué forma de presentación prefieres para tu documento."
+    "objectID": "PuestaAPunto.html",
+    "href": "PuestaAPunto.html",
+    "title": "Puesta a punto",
+    "section": "",
+    "text": "Trabajaréis en clase con vuestro propio ordenador. Instalad LO ANTES POSIBLE lo siguiente (todo gratuito). Es una instalación sencilla: descargar dos programas y ejecutar sus instaladores. El orden importa: primero R y después Positron (así Positron encuentra vuestra instalación de R él solo). Al final hay una comprobación rápida.\n\nOJO: conviene tener el sistema operativo actualizado antes de instalar nada.\nConsiderad traer una regleta a clase si vuestra batería dura poco.\n\n\n\n\nDescargad R desde https://cran.r-project.org/:\n\nWindows: “Download R for Windows” &gt; “base” &gt; “Download R-4.6.1 for Windows”.\nmacOS: “Download R for macOS”; elegid el .pkg de vuestra arquitectura (arm64 para Apple Silicon, x86_64 para Intel). Puede ser necesario instalar XQuartz.\nLinux: seguid las instrucciones de vuestra distribución.\n\n\n\n\n\n\nEn este curso usamos Positron, el entorno de Posit (los creadores de RStudio): funciona igual que un editor moderno estándar (VS Code) y sirve para R y también para Python, que os será útil en el futuro.\nDescargad desde https://positron.posit.co/download.html el instalador de vuestro sistema y ejecutadlo. Al abrirlo, Positron detecta la instalación de R que hicisteis en el paso 1 (por eso el orden).\nSi ya usáis VS Code: podéis seguir perfectamente con él. Instalad las extensiones “R” y “Quarto” y tendréis el mismo flujo de trabajo que veremos en clase; casi todo lo que se diga para Positron aplica igual.\nSi ya usáis RStudio: también sirve para casi todo el curso. Tenedlo actualizado. Eso sí, las instrucciones y capturas de clase serán con Positron.\n\nEl resto del software del curso (Quarto y los paquetes de R que vayamos necesitando) lo instalaremos JUNTOS en clase cuando toque: no hace falta que hagáis nada más ahora."
   },
   {
-    "objectID": "docs/Tema01ej.html#apartado-e",
-    "href": "docs/Tema01ej.html#apartado-e",
-    "title": "Tema 01 - Ejercicio de Quarto",
-    "section": "Apartado e)",
-    "text": "Apartado e)\n\nIncluir la opción df-print: paged en la cabecera. Comprobar el efecto antes y después de incluirlo sobre cómo se muestra el conjunto de datos (“data frame”) mtcars en los apartados d.i) y d.ii).\nComentar las diferencias y qué forma de presentación prefieres para tu documento.\nIncluye la opción code-fold: true en la cabecera. Comprobar cómo cambia el documento y comentar brevemente qué forma de presentación prefieres para tu documento.\nElige un tema entre estos y aplícalo al documento."
+    "objectID": "PuestaAPunto.html#primero-r-versión-4.6-o-superior",
+    "href": "PuestaAPunto.html#primero-r-versión-4.6-o-superior",
+    "title": "Puesta a punto",
+    "section": "",
+    "text": "Descargad R desde https://cran.r-project.org/:\n\nWindows: “Download R for Windows” &gt; “base” &gt; “Download R-4.6.1 for Windows”.\nmacOS: “Download R for macOS”; elegid el .pkg de vuestra arquitectura (arm64 para Apple Silicon, x86_64 para Intel). Puede ser necesario instalar XQuartz.\nLinux: seguid las instrucciones de vuestra distribución."
+  },
+  {
+    "objectID": "PuestaAPunto.html#después-positron-el-editor",
+    "href": "PuestaAPunto.html#después-positron-el-editor",
+    "title": "Puesta a punto",
+    "section": "",
+    "text": "En este curso usamos Positron, el entorno de Posit (los creadores de RStudio): funciona igual que un editor moderno estándar (VS Code) y sirve para R y también para Python, que os será útil en el futuro.\nDescargad desde https://positron.posit.co/download.html el instalador de vuestro sistema y ejecutadlo. Al abrirlo, Positron detecta la instalación de R que hicisteis en el paso 1 (por eso el orden).\nSi ya usáis VS Code: podéis seguir perfectamente con él. Instalad las extensiones “R” y “Quarto” y tendréis el mismo flujo de trabajo que veremos en clase; casi todo lo que se diga para Positron aplica igual.\nSi ya usáis RStudio: también sirve para casi todo el curso. Tenedlo actualizado. Eso sí, las instrucciones y capturas de clase serán con Positron.\n\nEl resto del software del curso (Quarto y los paquetes de R que vayamos necesitando) lo instalaremos JUNTOS en clase cuando toque: no hace falta que hagáis nada más ahora."
+  },
+  {
+    "objectID": "ComoTrabajar.html",
+    "href": "ComoTrabajar.html",
+    "title": "Cómo trabajar con tus documentos de Quarto",
+    "section": "",
+    "text": "Esto vale para todos los temas: la forma de organizar la carpeta, de crear el documento y de entregarlo es siempre la misma. Cada enunciado solo dice lo suyo."
+  },
+  {
+    "objectID": "ComoTrabajar.html#una-carpeta-por-tema",
+    "href": "ComoTrabajar.html#una-carpeta-por-tema",
+    "title": "Cómo trabajar con tus documentos de Quarto",
+    "section": "1. Una carpeta por tema",
+    "text": "1. Una carpeta por tema\nCrea una carpeta para el tema y ábrela en Positron con File &gt; Open Folder. A partir de ahí, todo lo del tema vive dentro.\nDentro de esa carpeta, crea un subdirectorio data y descarga ahí los ficheros de datos desde la página Datos.\nTema02/                        &lt;- una por tema: Tema02 para el tema 02, Tema03 para el 03...\n├── data/\n│   ├── datosVisualizacion.RData\n│   └── empresas.RData\n├── T02_E1_12345678.qmd        &lt;- un documento por ejercicio\n├── T02_E1_12345678.html       &lt;- lo que genera al renderizar\n├── T02_E2_12345678.qmd\n└── pruebas.R                  &lt;- opcional: un script para probar cosas\nAdemás de los .qmd, puedes tener scripts .R sueltos para lo que no va al documento: probar una función antes de meterla, guardar lo que hicimos en clase… Llámalos como quieras, pruebas.R o codigo_clase.R. No se entregan: son tuyos.\nPor qué importa la estructura: si los datos están en data/ dentro de la carpeta abierta, el código los encuentra con load(\"data/empresas.RData\"), igual en tu ordenador que en el mío. Con una ruta completa tipo C:/Users/.../Descargas/... el documento solo funciona en tu máquina, y al entregarlo no se puede reproducir."
+  },
+  {
+    "objectID": "ComoTrabajar.html#un-documento-por-ejercicio",
+    "href": "ComoTrabajar.html#un-documento-por-ejercicio",
+    "title": "Cómo trabajar con tus documentos de Quarto",
+    "section": "2. Un documento por ejercicio",
+    "text": "2. Un documento por ejercicio\nSe crea con File &gt; New File… &gt; Quarto Document y se guarda con Ctrl+S, con extensión .qmd, con este nombre:\n\nTnn_En_ID.qmd\nnn es el número del tema, n el del ejercicio, e ID es lo que te identifica. Por ejemplo, el ejercicio 1 del tema 2: T02_E1_12345678.qmd\n\nQué poner en ID, según el documento que tengas:\n\n\n\n\n\n\n\n\nsi tu documento es…\nescribes\nejemplo\n\n\n\n\nDNI\nlos 8 números, quitando la letra del final\n12345678\n\n\nNIE\nla letra del principio y los 7 números, quitando la letra del final\nX1234567\n\n\nPasaporte o cualquier otro\nentero, sin quitar nada\nAB12345CD\n\n\n\nFíjate en el ejemplo del pasaporte: acaba en letra y esa letra no se quita. Solo el DNI y el NIE pierden la última.\nEs lo mismo que escribes en el formulario de entrega, exactamente igual en los dos sitios.\nSi dudas, pruébalo en el formulario: el campo solo admite identificadores de la lista de matriculados, así que si te pasas quitando letras te avisa en el momento y lo corriges ahí mismo. Lo que escribas ahí es lo que tiene que llevar el nombre del fichero."
+  },
+  {
+    "objectID": "ComoTrabajar.html#la-cabecera",
+    "href": "ComoTrabajar.html#la-cabecera",
+    "title": "Cómo trabajar con tus documentos de Quarto",
+    "section": "3. La cabecera",
+    "text": "3. La cabecera\nBorra lo que trae el documento de ejemplo y deja una cabecera así, entre las dos líneas de guiones. Esto es lo mínimo: el resto de opciones (tema, tabla de contenidos, df-print, code-fold…) las vais cambiando según lo que pida cada ejercicio.\n---\ntitle: \"Tema 02, ejercicio 1\"\nauthor: \"Tu nombre\"\nformat:\n  html:\n    embed-resources: true\n---\nembed-resources: true no es opcional. Sin eso, el .html guarda los gráficos en una carpeta aparte, y si mandas solo el html se ve en blanco. Con eso, el html es un único fichero que se abre en cualquier ordenador."
+  },
+  {
+    "objectID": "ComoTrabajar.html#la-primera-celda-preparar-el-entorno",
+    "href": "ComoTrabajar.html#la-primera-celda-preparar-el-entorno",
+    "title": "Cómo trabajar con tus documentos de Quarto",
+    "section": "4. La primera celda: preparar el entorno",
+    "text": "4. La primera celda: preparar el entorno\nJusto debajo de la cabecera va siempre la celda que prepara el entorno. Lleva include: false, así que se ejecuta pero no se ve ni ella ni sus mensajes.\n```{r}\n#| include: false\nrm(list = ls())\nlibrary(ggplot2)\nload(\"data/datosVisualizacion.RData\")\n```\nAhí va todo lo que el documento necesita para funcionar:\n\nTodas las bibliotecas que uses en cualquier celda. Si una library() se te queda en la consola y no en el documento, al renderizar falla.\nrm(list = ls()), para vaciar el espacio de trabajo. No hace falta para renderizar, pero sí para que al ejecutar las celdas a mano te pase lo mismo que al renderizar: si tu código depende sin darte cuenta de un objeto viejo de la consola, así lo descubres tú antes que yo.\nLos datos, si los usas desde el principio. También puedes cargarlos más adelante, en la celda donde toque, si el ejercicio lo pide así; lo importante es que quede claro dónde se han cargado y que estén dentro del documento.\n\nAl renderizar se abre una sesión de R nueva y vacía: el documento no ve nada de lo que tengas en la consola, así que todo lo que necesite tiene que estar dentro de él."
+  },
+  {
+    "objectID": "ComoTrabajar.html#una-sección-por-apartado",
+    "href": "ComoTrabajar.html#una-sección-por-apartado",
+    "title": "Cómo trabajar con tus documentos de Quarto",
+    "section": "5. Una sección por apartado",
+    "text": "5. Una sección por apartado\nCada apartado del enunciado, su sección, para que el documento se lea igual que el enunciado y no haya que adivinar qué responde a qué.\nEn el editor visual, con el desplegable de estilo: Header 2. Si escribes en modo fuente, el encabezado ## delante del título."
+  },
+  {
+    "objectID": "ComoTrabajar.html#renderizar",
+    "href": "ComoTrabajar.html#renderizar",
+    "title": "Cómo trabajar con tus documentos de Quarto",
+    "section": "6. Renderizar",
+    "text": "6. Renderizar\nCon el botón Preview, o Ctrl+Shift+K. Se genera el .html en la misma carpeta.\nRenderiza antes de entregar, no solo al final: si algo no funciona en la sesión limpia (una biblioteca que no cargaste, un objeto que solo existe en tu consola), es ahora cuando quieres enterarte."
+  },
+  {
+    "objectID": "ComoTrabajar.html#entregar",
+    "href": "ComoTrabajar.html#entregar",
+    "title": "Cómo trabajar con tus documentos de Quarto",
+    "section": "7. Entregar",
+    "text": "7. Entregar\nUn solo .zip con el .qmd y el .html dentro, llamado igual que el documento:\n\nTnn_En_ID.zip, por ejemplo T02_E1_12345678.zip\n\nEl nombre tiene que ser exacto, o la entrega se rechaza. Recibirás un correo de confirmación si es correcta, o de rechazo si no lo es, diciéndote qué falla.\nLa entrega se hace siempre por el formulario. Un fichero enviado por correo no cuenta como entregado. Si el formulario te da problemas, dilo en clase o por tutoría.\nNo se valora que esté perfecto: se valora el progreso y que se vea lo que has entendido. Si te quedas a medias, entrega lo que tengas."
+  },
+  {
+    "objectID": "ProyectoFinal.html",
+    "href": "ProyectoFinal.html",
+    "title": "Proyecto Final",
+    "section": "",
+    "text": "Para el proyecto final debéis proponer un tema de estudio usando datos y las técnicas vistas en el curso. Podéis plantear un tema propio con datos disponibles por vuestro trabajo, contactos o búsqueda propia; durante el curso se darán también sugerencias de temas y fuentes de datos.\nEl resultado debe ser un proyecto de análisis de datos en el ámbito de economía, empresa, negocios o finanzas (“business analytics”):\n\n\n\n\n\nPor tanto, debe explicarse claramente:\n\nObjetivo del análisis: qué cuestión se estudia y por qué es importante.\nDatos: qué datos se utilizan, de dónde proceden y por qué son adecuados para el objetivo.\nProcesamiento de los datos (importación, limpieza y transformación), discutiendo por qué es necesario para el análisis.\nAnálisis exploratorio: qué información aprendemos de los datos y cómo ayuda a especificar los modelos.\nModelización: cómo se especifican los modelos para alcanzar el objetivo, cómo se elige el modelo final.\nComunicación efectiva de los resultados, discutiendo qué implican respecto al objetivo planteado."
+  },
+  {
+    "objectID": "ProyectoFinal.html#importante-plagio",
+    "href": "ProyectoFinal.html#importante-plagio",
+    "title": "Proyecto Final",
+    "section": "IMPORTANTE: PLAGIO",
+    "text": "IMPORTANTE: PLAGIO\n\nSeguro que podéis encontrar análisis ya realizados sobre vuestra propuesta, en internet o de estudiantes de cursos anteriores. Yo también.\nLa detección de plagio supondrá automáticamente el suspenso en todas las convocatorias de la asignatura en este curso académico y el inicio de la apertura de un expediente."
+  },
+  {
+    "objectID": "Contenidos.html",
+    "href": "Contenidos.html",
+    "title": "Contenidos",
+    "section": "",
+    "text": "ImportanteAvisos\n\n\n\n\nElección de evaluación, continua o no continua, en este formulario, hasta el viernes 20 de noviembre a las 23:59. Si no se elige, por defecto se sigue la evaluación continua (ver Evaluación)."
+  },
+  {
+    "objectID": "Contenidos.html#semana-10",
+    "href": "Contenidos.html#semana-10",
+    "title": "Contenidos",
+    "section": "Semana 10",
+    "text": "Semana 10\n(9-Nov. a 13-Nov.)\n\nTema 06 - Regularización: Ridge regression y LASSO\nTema 06 - Ejercicios del tema\nEjercicio largo: entrega hasta el domingo 29 de noviembre a las 23:59."
+  },
+  {
+    "objectID": "Contenidos.html#semana-9",
+    "href": "Contenidos.html#semana-9",
+    "title": "Contenidos",
+    "section": "Semana 9",
+    "text": "Semana 9\n(2-Nov. a 6-Nov.)\n\nTema 05 - Modelización y Aprendizaje Estadístico\nTema 05 - Ejercicios del tema\nTema 05 - Anexo\nTema 05 - La regresión logística: estimación y probabilidades predichas"
+  },
+  {
+    "objectID": "Contenidos.html#semana-8",
+    "href": "Contenidos.html#semana-8",
+    "title": "Contenidos",
+    "section": "Semana 8",
+    "text": "Semana 8\n(26-Oct. a 30-Oct.)\n\nTema 05 - Repaso previo: variabilidad muestral y regresión lineal\n\nPara estudiar antes de la primera clase del Tema 05."
+  },
+  {
+    "objectID": "Contenidos.html#semana-7",
+    "href": "Contenidos.html#semana-7",
+    "title": "Contenidos",
+    "section": "Semana 7",
+    "text": "Semana 7\n(19-Oct. a 23-Oct.)\n\nTema 04 - Análisis Exploratorio de Datos\nTema 04 - Ejercicios del tema\n\nEl ejercicio se va haciendo durante las clases del tema: las transparencias indican en qué momento toca cada apartado.\n\nTema 04 - Anexo: herramientas y fuentes"
+  },
+  {
+    "objectID": "Contenidos.html#semana-4",
+    "href": "Contenidos.html#semana-4",
+    "title": "Contenidos",
+    "section": "Semana 4",
+    "text": "Semana 4\n(28-Sept. a 2-Oct.)\n\nTema 03 - Datos: tratamiento, limpieza y preparación\nTema 03 - Ejercicio\n\nEl ejercicio se va haciendo durante las clases del tema: las transparencias indican en qué momento toca cada apartado.\n\nTema 03 - Anexo: chuleta de funciones auxiliares"
+  },
+  {
+    "objectID": "Contenidos.html#semana-3",
+    "href": "Contenidos.html#semana-3",
+    "title": "Contenidos",
+    "section": "Semana 3",
+    "text": "Semana 3\n(21-Sept. a 25-Sept.)\n\nTema 02 - Visualización de datos\nTema 02 - Ejercicios\n\nLos ejercicios se van haciendo durante las clases del tema: las transparencias indican en qué momento toca cada uno."
+  },
+  {
+    "objectID": "Contenidos.html#semana-2",
+    "href": "Contenidos.html#semana-2",
+    "title": "Contenidos",
+    "section": "Semana 2",
+    "text": "Semana 2\n(14-Sept. a 18-Sept.)\n\nTema 01 - Informes reproducibles con Quarto\nTema 01 - Ejercicio de Quarto\n\nEl ejercicio se va haciendo durante las clases del tema: las transparencias indican en qué momento toca cada apartado."
+  },
+  {
+    "objectID": "Contenidos.html#semana-1",
+    "href": "Contenidos.html#semana-1",
+    "title": "Contenidos",
+    "section": "Semana 1",
+    "text": "Semana 1\n(07-Sept. a 11-Sept.)\n\nPuesta a punto: instalar primero R y después Positron\nIntroducción al curso\nTema 00 - Introducción a R y Positron"
+  },
+  {
+    "objectID": "Datos.html",
+    "href": "Datos.html",
+    "title": "Datos",
+    "section": "",
+    "text": "A lo largo de las clases utilizaremos varios conjuntos de datos de ejemplo:\n\nTema 0:\n\nrenta.txt\nsex_data.csv\nbeauty.xls\nnsw.dta\nearn.RData\n\nTema 02 (visualización):\n\ndatosVisualizacion.RData\nempresas.RData\nhotels.csv\n\nTema 03 (datos: tratamiento, limpieza y preparación):\n\nretail_data.RData\nDosTablas.xlsx\n\nTema 04 (análisis exploratorio de datos):\n\nmarketplace.RData\n\nTema 05 (modelización y aprendizaje estadístico):\n\ntienda.csv\n\nTema 06 (regularización), además de tienda.csv:\n\nchurn_clientes.csv\n\nEjercicio largo, bloque II (los datos del bloque I se descargan del INE, ver el enunciado):\n\nGrowthData.csv\n\nEjercicio largo, bloque II (los datos del bloque I se descargan del INE, ver el enunciado):\n\nGrowthData.csv"
+  },
+  {
+    "objectID": "docs/Tema05logitdoc.html",
+    "href": "docs/Tema05logitdoc.html",
+    "title": "Tema 05 - La regresión logística",
+    "section": "",
+    "text": "Este documento acompaña a la Parte V del Tema 05. Explica con más calma cómo se estima la regresión logística, cómo se mide su ajuste y cómo se usan sus probabilidades predichas. Los ejemplos son los de la tienda: 404 clientes, de los que el 14,9 % recibió el descuento."
+  },
+  {
+    "objectID": "docs/Tema05logitdoc.html#por-qué-cambia-el-criterio",
+    "href": "docs/Tema05logitdoc.html#por-qué-cambia-el-criterio",
+    "title": "Tema 05 - La regresión logística",
+    "section": "3.1 Por qué cambia el criterio",
+    "text": "3.1 Por qué cambia el criterio\nMCO elige los coeficientes que minimizan la suma de cuadrados de los residuos (SCR). Cuando el modelo es lineal en los parámetros, el teorema de Gauss-Markov garantiza que, con sus supuestos, MCO es el mejor estimador lineal insesgado: el más preciso entre los que aciertan en promedio. En el logit los parámetros entran dentro de \\(\\Lambda(\\cdot)\\): el modelo es no lineal en los parámetros. Por eso se usa otro método, la máxima verosimilitud, que con el modelo bien especificado da estimadores consistentes (se acercan al valor poblacional al crecer la muestra) y, en muestras grandes, los más precisos. Es lo que hace glm()."
+  },
+  {
+    "objectID": "docs/Tema05logitdoc.html#la-idea-de-la-máxima-verosimilitud",
+    "href": "docs/Tema05logitdoc.html#la-idea-de-la-máxima-verosimilitud",
+    "title": "Tema 05 - La regresión logística",
+    "section": "3.2 La idea de la máxima verosimilitud",
+    "text": "3.2 La idea de la máxima verosimilitud\nSolo sabemos que hay tres tipos de moneda: equilibradas, con probabilidad de cara \\(p = 0{,}5\\); trucadas a favor de cara, con \\(p = 0{,}9\\), y trucadas a favor de cruz, con \\(p = 0{,}2\\). Lanzamos una moneda cuatro veces y salen tres caras y una cruz. Con cada valor de \\(p\\), la probabilidad de lo observado es \\(p \\cdot p \\cdot p \\cdot (1 - p)\\):\n\n\n\n\n\n\n\n\n\\(p\\)\n\\(p \\cdot p \\cdot p \\cdot (1 - p)\\)\nProbabilidad de lo observado\n\n\n\n\n0,2\n\\(0{,}2 \\cdot 0{,}2 \\cdot 0{,}2 \\cdot 0{,}8\\)\n0,0064\n\n\n0,5\n\\(0{,}5 \\cdot 0{,}5 \\cdot 0{,}5 \\cdot 0{,}5\\)\n0,0625\n\n\n0,9\n\\(0{,}9 \\cdot 0{,}9 \\cdot 0{,}9 \\cdot 0{,}1\\)\n0,0729\n\n\n\nEsa probabilidad, vista como función de \\(p\\), es la verosimilitud, \\(L(p) = p \\cdot p \\cdot p \\cdot (1 - p)\\). La máxima verosimilitud elige el \\(p\\) con el que lo observado es más probable: la moneda trucada a favor de cara, \\(p = 0{,}9\\).\nEn la tienda, cada cliente es una tirada, y «cara» es recibir el descuento. La diferencia es que cada cliente tiene su propia probabilidad, que depende de sus características a través del logit, \\(p(x_i) = \\Lambda(\\beta_0 + \\beta_1 x_{i1} + \\dots + \\beta_k x_{ik})\\). Un cliente con descuento aporta \\(p(x_i)\\) y uno sin descuento, \\(1 - p(x_i)\\), así que la verosimilitud es\n\\[\nL(\\beta) = \\prod_{i:\\, y_i = 1} p(x_i) \\prod_{i:\\, y_i = 0} \\bigl(1 - p(x_i)\\bigr),\n\\]\ny el estimador de máxima verosimilitud son los \\(\\beta\\) que la hacen máxima. Si el modelo solo tiene constante, todos los clientes tienen la misma probabilidad, y la estimación es la proporción de clientes con descuento, 0,149.\nEn la práctica se maximiza su logaritmo, la log-verosimilitud:\n\\[\n\\ell(\\beta) = \\log L(\\beta) = \\sum_{i=1}^{n} \\Bigl[\\, y_i \\log p(x_i) + (1 - y_i) \\log\\bigl(1 - p(x_i)\\bigr) \\Bigr].\n\\]\nComo el logaritmo es creciente, el máximo está en los mismos \\(\\beta\\), y el logaritmo convierte multiplicar en sumar, \\(\\log(a \\cdot b) = \\log a + \\log b\\). Eso facilita las cosas por dos razones:\n\nLa verosimilitud tiene un factor por cliente, y la log-verosimilitud, un sumando por cliente, como la SCR. Para buscar el máximo se deriva, y la derivada de una suma es la suma de las derivadas.\nCada factor es una probabilidad menor que 1, así que el producto encoge con cada cliente: con los 404 clientes, la verosimilitud del logit de la renta, la edad y la zona es del orden de \\(10^{-62}\\), y con unos 2.500 clientes R la redondearía a 0 y ya no podría comparar unos \\(\\beta\\) con otros. Su logaritmo es −142,4. Es la misma propiedad que hacía útil el eje logarítmico del Tema 04: multiplicar por 10 pasaba a ser avanzar siempre la misma distancia, y valores de órdenes de magnitud muy distintos cabían en un gráfico.\n\nEl gráfico muestra \\(\\ell\\) para el logit con la renta, moviendo la pendiente y dejando la constante en su valor estimado. Es la misma búsqueda que en MCO, dada la vuelta: allí se elegía la recta con la SCR mínima y aquí la pendiente con la log-verosimilitud máxima, que es la que da glm().\n\n\n\n\n\n\n\n\n\nEl máximo no tiene una fórmula cerrada como la de MCO: glm() lo busca por aproximaciones sucesivas, y summary() dice cuántas hizo («Number of Fisher Scoring iterations»). La máxima verosimilitud sirve para cualquier modelo que diga qué probabilidad (o densidad, si \\(y\\) es continua) tiene cada dato; en el modelo lineal con errores normales, maximizar la verosimilitud es minimizar la SCR, así que MCO es un caso particular."
+  },
+  {
+    "objectID": "docs/Tema05logitdoc.html#footnotes",
+    "href": "docs/Tema05logitdoc.html#footnotes",
+    "title": "Tema 05 - La regresión logística",
+    "section": "Notas",
+    "text": "Notas\n\n\n\\(e^{\\ell/n}\\) es la media geométrica de esas probabilidades. La log-verosimilitud además castiga sin límite un error cometido con mucha seguridad: si el modelo da probabilidad casi cero a un cliente que sí recibió el descuento, \\(\\log p\\) tiende a menos infinito.↩︎"
   },
   {
     "objectID": "docs/Tema05previodoc.html",
@@ -1330,326 +1652,46 @@
     "text": "Notas\n\n\nEl tamaño no las distingue: una base de datos con millones de filas es una muestra si recoge clientes de unos años y unas zonas, y no de todos los que hay o podría haber.↩︎"
   },
   {
-    "objectID": "docs/Tema05logitdoc.html",
-    "href": "docs/Tema05logitdoc.html",
-    "title": "Tema 05 - La regresión logística",
+    "objectID": "docs/Tema01ej.html",
+    "href": "docs/Tema01ej.html",
+    "title": "Tema 01 - Ejercicio de Quarto",
     "section": "",
-    "text": "Este documento acompaña a la Parte V del Tema 05. Explica con más calma cómo se estima la regresión logística, cómo se mide su ajuste y cómo se usan sus probabilidades predichas. Los ejemplos son los de la tienda: 404 clientes, de los que el 14,9 % recibió el descuento."
+    "text": "Crea una carpeta para el ejercicio y ábrela en Positron (File &gt; Open Folder); crea un nuevo documento .qmd (File &gt; New File… &gt; Quarto Document). Adapta el encabezado para que tenga, al menos, un título y tu nombre como autor o autora. (Puedes eliminar el resto del contenido para los siguientes apartados, dejando espacio tras la cabecera).\nCrea una primera sección del documento, p.e., con el nombre “Apartado a)”. Para cada apartado posterior debes crear una nueva sección correspondiente al apartado.\nEscribe una breve frase introductoria general, una lista que enumere dos variables de las fichas de clientes que usamos en clase (p.e., altura y gasto), incluye un enlace a una página web e inserta una imagen.\nNota: Puedes usar, aquí y en cualquier otra parte del documento, negritas o cursivas cuando lo consideres oportuno.\nGuarda el documento con este formato de nombre, que incluye tu identificador: T01_E1_&lt;ID&gt;.qmd (por ejemplo, T01_E1_12345678.qmd)\nCon DNI, los 8 números quitando la letra del final. Con NIE, la letra del principio y los números, quitando la del final. Con pasaporte u otro documento, entero, sin quitar nada. Es lo mismo que escribirás en el formulario de entrega, que te avisa si no cuadra.\nRenderiza tu documento para visualizar el documento html creado.\nComprueba que en el mismo directorio donde tienes el archivo .qmd se ha creado un archivo con extensión html; nota que también se ha creado un subdirectorio del mismo nombre que contiene todo lo necesario para visualizar el archivo html.\nCambia a otro formato de salida en el encabezado YAML y genera otro documento de salida. Las opciones son docx, typst y pdf; docx y typst no necesitan instalar nada.\nModifica el bloque YAML que ya tienes: no añadas un segundo bloque ---, porque entonces no renderiza.\nComprueba de nuevo que tienes un archivo de salida (.pdf o .docx) en el mismo directorio donde está el archivo .qmd.\nBorra el documento html y el subdirectorio con el mismo nombre generados previamente. Cambia la opción de YAML para que se genere un html autocontenido. Comprueba que puedes visualizar el archivo. Comentar."
   },
   {
-    "objectID": "docs/Tema05logitdoc.html#por-qué-cambia-el-criterio",
-    "href": "docs/Tema05logitdoc.html#por-qué-cambia-el-criterio",
-    "title": "Tema 05 - La regresión logística",
-    "section": "3.1 Por qué cambia el criterio",
-    "text": "3.1 Por qué cambia el criterio\nMCO elige los coeficientes que minimizan la suma de cuadrados de los residuos (SCR). Cuando el modelo es lineal en los parámetros, el teorema de Gauss-Markov garantiza que, con sus supuestos, MCO es el mejor estimador lineal insesgado: el más preciso entre los que aciertan en promedio. En el logit los parámetros entran dentro de \\(\\Lambda(\\cdot)\\): el modelo es no lineal en los parámetros. Por eso se usa otro método, la máxima verosimilitud, que con el modelo bien especificado da estimadores consistentes (se acercan al valor poblacional al crecer la muestra) y, en muestras grandes, los más precisos. Es lo que hace glm()."
-  },
-  {
-    "objectID": "docs/Tema05logitdoc.html#la-idea-de-la-máxima-verosimilitud",
-    "href": "docs/Tema05logitdoc.html#la-idea-de-la-máxima-verosimilitud",
-    "title": "Tema 05 - La regresión logística",
-    "section": "3.2 La idea de la máxima verosimilitud",
-    "text": "3.2 La idea de la máxima verosimilitud\nSolo sabemos que hay tres tipos de moneda: equilibradas, con probabilidad de cara \\(p = 0{,}5\\); trucadas a favor de cara, con \\(p = 0{,}9\\), y trucadas a favor de cruz, con \\(p = 0{,}2\\). Lanzamos una moneda cuatro veces y salen tres caras y una cruz. Con cada valor de \\(p\\), la probabilidad de lo observado es \\(p \\cdot p \\cdot p \\cdot (1 - p)\\):\n\n\n\n\n\n\n\n\n\\(p\\)\n\\(p \\cdot p \\cdot p \\cdot (1 - p)\\)\nProbabilidad de lo observado\n\n\n\n\n0,2\n\\(0{,}2 \\cdot 0{,}2 \\cdot 0{,}2 \\cdot 0{,}8\\)\n0,0064\n\n\n0,5\n\\(0{,}5 \\cdot 0{,}5 \\cdot 0{,}5 \\cdot 0{,}5\\)\n0,0625\n\n\n0,9\n\\(0{,}9 \\cdot 0{,}9 \\cdot 0{,}9 \\cdot 0{,}1\\)\n0,0729\n\n\n\nEsa probabilidad, vista como función de \\(p\\), es la verosimilitud, \\(L(p) = p \\cdot p \\cdot p \\cdot (1 - p)\\). La máxima verosimilitud elige el \\(p\\) con el que lo observado es más probable: la moneda trucada a favor de cara, \\(p = 0{,}9\\).\nEn la tienda, cada cliente es una tirada, y «cara» es recibir el descuento. La diferencia es que cada cliente tiene su propia probabilidad, que depende de sus características a través del logit, \\(p(x_i) = \\Lambda(\\beta_0 + \\beta_1 x_{i1} + \\dots + \\beta_k x_{ik})\\). Un cliente con descuento aporta \\(p(x_i)\\) y uno sin descuento, \\(1 - p(x_i)\\), así que la verosimilitud es\n\\[\nL(\\beta) = \\prod_{i:\\, y_i = 1} p(x_i) \\prod_{i:\\, y_i = 0} \\bigl(1 - p(x_i)\\bigr),\n\\]\ny el estimador de máxima verosimilitud son los \\(\\beta\\) que la hacen máxima. Si el modelo solo tiene constante, todos los clientes tienen la misma probabilidad, y la estimación es la proporción de clientes con descuento, 0,149.\nEn la práctica se maximiza su logaritmo, la log-verosimilitud:\n\\[\n\\ell(\\beta) = \\log L(\\beta) = \\sum_{i=1}^{n} \\Bigl[\\, y_i \\log p(x_i) + (1 - y_i) \\log\\bigl(1 - p(x_i)\\bigr) \\Bigr].\n\\]\nComo el logaritmo es creciente, el máximo está en los mismos \\(\\beta\\), y el logaritmo convierte multiplicar en sumar, \\(\\log(a \\cdot b) = \\log a + \\log b\\). Eso facilita las cosas por dos razones:\n\nLa verosimilitud tiene un factor por cliente, y la log-verosimilitud, un sumando por cliente, como la SCR. Para buscar el máximo se deriva, y la derivada de una suma es la suma de las derivadas.\nCada factor es una probabilidad menor que 1, así que el producto encoge con cada cliente: con los 404 clientes, la verosimilitud del logit de la renta, la edad y la zona es del orden de \\(10^{-62}\\), y con unos 2.500 clientes R la redondearía a 0 y ya no podría comparar unos \\(\\beta\\) con otros. Su logaritmo es −142,4. Es la misma propiedad que hacía útil el eje logarítmico del Tema 04: multiplicar por 10 pasaba a ser avanzar siempre la misma distancia, y valores de órdenes de magnitud muy distintos cabían en un gráfico.\n\nEl gráfico muestra \\(\\ell\\) para el logit con la renta, moviendo la pendiente y dejando la constante en su valor estimado. Es la misma búsqueda que en MCO, dada la vuelta: allí se elegía la recta con la SCR mínima y aquí la pendiente con la log-verosimilitud máxima, que es la que da glm().\n\n\n\n\n\n\n\n\n\nEl máximo no tiene una fórmula cerrada como la de MCO: glm() lo busca por aproximaciones sucesivas, y summary() dice cuántas hizo («Number of Fisher Scoring iterations»). La máxima verosimilitud sirve para cualquier modelo que diga qué probabilidad (o densidad, si \\(y\\) es continua) tiene cada dato; en el modelo lineal con errores normales, maximizar la verosimilitud es minimizar la SCR, así que MCO es un caso particular."
-  },
-  {
-    "objectID": "docs/Tema05logitdoc.html#footnotes",
-    "href": "docs/Tema05logitdoc.html#footnotes",
-    "title": "Tema 05 - La regresión logística",
-    "section": "Notas",
-    "text": "Notas\n\n\n\\(e^{\\ell/n}\\) es la media geométrica de esas probabilidades. La log-verosimilitud además castiga sin límite un error cometido con mucha seguridad: si el modelo da probabilidad casi cero a un cliente que sí recibió el descuento, \\(\\log p\\) tiende a menos infinito.↩︎"
-  },
-  {
-    "objectID": "Datos.html",
-    "href": "Datos.html",
-    "title": "Datos",
+    "objectID": "docs/Tema01ej.html#apartado-a",
+    "href": "docs/Tema01ej.html#apartado-a",
+    "title": "Tema 01 - Ejercicio de Quarto",
     "section": "",
-    "text": "A lo largo de las clases utilizaremos varios conjuntos de datos de ejemplo:\n\nTema 0:\n\nrenta.txt\nsex_data.csv\nbeauty.xls\nnsw.dta\nearn.RData\n\nTema 02 (visualización):\n\ndatosVisualizacion.RData\nempresas.RData\nhotels.csv\n\nTema 03 (datos: tratamiento, limpieza y preparación):\n\nretail_data.RData\nDosTablas.xlsx\n\nTema 04 (análisis exploratorio de datos):\n\nmarketplace.RData\n\nTema 05 (modelización y aprendizaje estadístico):\n\ntienda.csv\n\nTema 06 (regularización), además de tienda.csv:\n\nchurn_clientes.csv\n\nEjercicio largo, bloque II (los datos del bloque I se descargan del INE, ver el enunciado):\n\nGrowthData.csv\n\nEjercicio largo, bloque II (los datos del bloque I se descargan del INE, ver el enunciado):\n\nGrowthData.csv"
+    "text": "Crea una carpeta para el ejercicio y ábrela en Positron (File &gt; Open Folder); crea un nuevo documento .qmd (File &gt; New File… &gt; Quarto Document). Adapta el encabezado para que tenga, al menos, un título y tu nombre como autor o autora. (Puedes eliminar el resto del contenido para los siguientes apartados, dejando espacio tras la cabecera).\nCrea una primera sección del documento, p.e., con el nombre “Apartado a)”. Para cada apartado posterior debes crear una nueva sección correspondiente al apartado.\nEscribe una breve frase introductoria general, una lista que enumere dos variables de las fichas de clientes que usamos en clase (p.e., altura y gasto), incluye un enlace a una página web e inserta una imagen.\nNota: Puedes usar, aquí y en cualquier otra parte del documento, negritas o cursivas cuando lo consideres oportuno.\nGuarda el documento con este formato de nombre, que incluye tu identificador: T01_E1_&lt;ID&gt;.qmd (por ejemplo, T01_E1_12345678.qmd)\nCon DNI, los 8 números quitando la letra del final. Con NIE, la letra del principio y los números, quitando la del final. Con pasaporte u otro documento, entero, sin quitar nada. Es lo mismo que escribirás en el formulario de entrega, que te avisa si no cuadra.\nRenderiza tu documento para visualizar el documento html creado.\nComprueba que en el mismo directorio donde tienes el archivo .qmd se ha creado un archivo con extensión html; nota que también se ha creado un subdirectorio del mismo nombre que contiene todo lo necesario para visualizar el archivo html.\nCambia a otro formato de salida en el encabezado YAML y genera otro documento de salida. Las opciones son docx, typst y pdf; docx y typst no necesitan instalar nada.\nModifica el bloque YAML que ya tienes: no añadas un segundo bloque ---, porque entonces no renderiza.\nComprueba de nuevo que tienes un archivo de salida (.pdf o .docx) en el mismo directorio donde está el archivo .qmd.\nBorra el documento html y el subdirectorio con el mismo nombre generados previamente. Cambia la opción de YAML para que se genere un html autocontenido. Comprueba que puedes visualizar el archivo. Comentar."
   },
   {
-    "objectID": "Contenidos.html",
-    "href": "Contenidos.html",
-    "title": "Contenidos",
-    "section": "",
-    "text": "ImportanteAvisos\n\n\n\n\nElección de evaluación, continua o no continua, en este formulario, hasta el viernes 20 de noviembre a las 23:59. Si no se elige, por defecto se sigue la evaluación continua (ver Evaluación)."
+    "objectID": "docs/Tema01ej.html#apartado-b",
+    "href": "docs/Tema01ej.html#apartado-b",
+    "title": "Tema 01 - Ejercicio de Quarto",
+    "section": "Apartado b)",
+    "text": "Apartado b)\n\nCrea, justo debajo de la cabecera, la primera celda del documento: la que prepara el entorno. Ponle la opción include: false, para que se ejecute sin que se vea, y carga en ella la biblioteca AER, que ya usaste en el Tema 00.\nTodo documento de Quarto empieza así: las bibliotecas que necesite el documento se declaran ahí.\nEscribe una línea de texto (NO celda de código) que incluya (entre el texto) código de R para mostrar la media de la variable mpg del conjunto de datos mtcars.\nCrear y dar un nombre a una sub-sección que incluya lo siguiente.\n\nTres celdas, todas con el código summary(mtcars). La primera debe mostrar el código, pero no el resultado; la segunda sólo mostrar el resultado (no el código); la tercera debe mostrar ambos. Antes de cada celda, incluye una frase explicando qué va a pasar.\nCargar la biblioteca Hmisc en una nueva celda de código. Cambia los valores de warning, error y message y renderiza el documento para observar los cambios. Comentar los cambios brevemente y qué forma de presentación prefieres para tu documento.\n\nCrear y dar nombre a otra sub-sección.\n\nAñadir una celda con el código a &lt;- 2, fijando la opción para que NO se evalúe. Añadir otra celda posterior con código b &lt;- 3 + a y que sí se evalúe. Renderizar el documento y comprobar que da un error.\nCambiar las opciones del segundo fragmento para que se pueda renderizar un documento de salida."
   },
   {
-    "objectID": "Contenidos.html#semana-10",
-    "href": "Contenidos.html#semana-10",
-    "title": "Contenidos",
-    "section": "Semana 10",
-    "text": "Semana 10\n(9-Nov. a 13-Nov.)\n\nTema 06 - Regularización: Ridge regression y LASSO\nTema 06 - Ejercicios del tema\nEjercicio largo: entrega hasta el domingo 29 de noviembre a las 23:59."
+    "objectID": "docs/Tema01ej.html#apartado-c",
+    "href": "docs/Tema01ej.html#apartado-c",
+    "title": "Tema 01 - Ejercicio de Quarto",
+    "section": "Apartado c)",
+    "text": "Apartado c)\n\nCrear una celda con este código, que muestra un gráfico de puntos con los datos de mtcars para las variables disp (tamaño del motor) y mpg (consumo); los gráficos los estudiaremos en el próximo tema, aquí solo nos importa cómo se integran en el documento:\n\n\nplot(mtcars$disp, mtcars$mpg, sub = \"Consumo frente a tamaño del motor\")\n\n\nCrear una nueva celda de código con dos gráficos de caja (boxplot(mtcars$disp) y boxplot(mtcars$mpg)) y usar las opciones de celda para que se muestren uno al lado del otro."
   },
   {
-    "objectID": "Contenidos.html#semana-9",
-    "href": "Contenidos.html#semana-9",
-    "title": "Contenidos",
-    "section": "Semana 9",
-    "text": "Semana 9\n(2-Nov. a 6-Nov.)\n\nTema 05 - Modelización y Aprendizaje Estadístico\nTema 05 - Ejercicios del tema\nTema 05 - Anexo\nTema 05 - La regresión logística: estimación y probabilidades predichas"
+    "objectID": "docs/Tema01ej.html#apartado-d",
+    "href": "docs/Tema01ej.html#apartado-d",
+    "title": "Tema 01 - Ejercicio de Quarto",
+    "section": "Apartado d)",
+    "text": "Apartado d)\n\nCrear una sub-sección. Incluir una nueva celda de código (que sí se evalúe) para mostrar mtcars y summary(mtcars).\nCrear una sub-sección. Incluir un nuevo fragmento de código (que sí se evalúe) y que incluya:\n\ncargar la biblioteca kableExtra para poder usar la función kbl()\nmostrar el resultado de mtcars y summary(mtcars) con la función kbl() con distintas opciones de estilo (una guía completa aquí). Por ejemplo\n\n\n\nkable_styling(kbl(mtcars))\nkable_styling(kbl(summary(mtcars)))\n\nkable_classic(kbl(mtcars), full_width = F)\nkable_minimal(kbl(summary(mtcars)))\n\nComentar las diferencias con el apartado anterior, d.i), y qué forma de presentación prefieres para tu documento."
   },
   {
-    "objectID": "Contenidos.html#semana-8",
-    "href": "Contenidos.html#semana-8",
-    "title": "Contenidos",
-    "section": "Semana 8",
-    "text": "Semana 8\n(26-Oct. a 30-Oct.)\n\nTema 05 - Repaso previo: variabilidad muestral y regresión lineal\n\nPara estudiar antes de la primera clase del Tema 05."
-  },
-  {
-    "objectID": "Contenidos.html#semana-7",
-    "href": "Contenidos.html#semana-7",
-    "title": "Contenidos",
-    "section": "Semana 7",
-    "text": "Semana 7\n(19-Oct. a 23-Oct.)\n\nTema 04 - Análisis Exploratorio de Datos\nTema 04 - Ejercicios del tema\n\nEl ejercicio se va haciendo durante las clases del tema: las transparencias indican en qué momento toca cada apartado.\n\nTema 04 - Anexo: herramientas y fuentes"
-  },
-  {
-    "objectID": "Contenidos.html#semana-4",
-    "href": "Contenidos.html#semana-4",
-    "title": "Contenidos",
-    "section": "Semana 4",
-    "text": "Semana 4\n(28-Sept. a 2-Oct.)\n\nTema 03 - Datos: tratamiento, limpieza y preparación\nTema 03 - Ejercicio\n\nEl ejercicio se va haciendo durante las clases del tema: las transparencias indican en qué momento toca cada apartado.\n\nTema 03 - Anexo: chuleta de funciones auxiliares"
-  },
-  {
-    "objectID": "Contenidos.html#semana-3",
-    "href": "Contenidos.html#semana-3",
-    "title": "Contenidos",
-    "section": "Semana 3",
-    "text": "Semana 3\n(21-Sept. a 25-Sept.)\n\nTema 02 - Visualización de datos\nTema 02 - Ejercicios\n\nLos ejercicios se van haciendo durante las clases del tema: las transparencias indican en qué momento toca cada uno."
-  },
-  {
-    "objectID": "Contenidos.html#semana-2",
-    "href": "Contenidos.html#semana-2",
-    "title": "Contenidos",
-    "section": "Semana 2",
-    "text": "Semana 2\n(14-Sept. a 18-Sept.)\n\nTema 01 - Informes reproducibles con Quarto\nTema 01 - Ejercicio de Quarto\n\nEl ejercicio se va haciendo durante las clases del tema: las transparencias indican en qué momento toca cada apartado."
-  },
-  {
-    "objectID": "Contenidos.html#semana-1",
-    "href": "Contenidos.html#semana-1",
-    "title": "Contenidos",
-    "section": "Semana 1",
-    "text": "Semana 1\n(07-Sept. a 11-Sept.)\n\nPuesta a punto: instalar primero R y después Positron\nIntroducción al curso\nTema 00 - Introducción a R y Positron"
-  },
-  {
-    "objectID": "ProyectoFinal.html",
-    "href": "ProyectoFinal.html",
-    "title": "Proyecto Final",
-    "section": "",
-    "text": "Para el proyecto final debéis proponer un tema de estudio usando datos y las técnicas vistas en el curso. Podéis plantear un tema propio con datos disponibles por vuestro trabajo, contactos o búsqueda propia; durante el curso se darán también sugerencias de temas y fuentes de datos.\nEl resultado debe ser un proyecto de análisis de datos en el ámbito de economía, empresa, negocios o finanzas (“business analytics”):\n\n\n\n\n\nPor tanto, debe explicarse claramente:\n\nObjetivo del análisis: qué cuestión se estudia y por qué es importante.\nDatos: qué datos se utilizan, de dónde proceden y por qué son adecuados para el objetivo.\nProcesamiento de los datos (importación, limpieza y transformación), discutiendo por qué es necesario para el análisis.\nAnálisis exploratorio: qué información aprendemos de los datos y cómo ayuda a especificar los modelos.\nModelización: cómo se especifican los modelos para alcanzar el objetivo, cómo se elige el modelo final.\nComunicación efectiva de los resultados, discutiendo qué implican respecto al objetivo planteado."
-  },
-  {
-    "objectID": "ProyectoFinal.html#importante-plagio",
-    "href": "ProyectoFinal.html#importante-plagio",
-    "title": "Proyecto Final",
-    "section": "IMPORTANTE: PLAGIO",
-    "text": "IMPORTANTE: PLAGIO\n\nSeguro que podéis encontrar análisis ya realizados sobre vuestra propuesta, en internet o de estudiantes de cursos anteriores. Yo también.\nLa detección de plagio supondrá automáticamente el suspenso en todas las convocatorias de la asignatura en este curso académico y el inicio de la apertura de un expediente."
-  },
-  {
-    "objectID": "ComoTrabajar.html",
-    "href": "ComoTrabajar.html",
-    "title": "Cómo trabajar con tus documentos de Quarto",
-    "section": "",
-    "text": "Esto vale para todos los temas: la forma de organizar la carpeta, de crear el documento y de entregarlo es siempre la misma. Cada enunciado solo dice lo suyo."
-  },
-  {
-    "objectID": "ComoTrabajar.html#una-carpeta-por-tema",
-    "href": "ComoTrabajar.html#una-carpeta-por-tema",
-    "title": "Cómo trabajar con tus documentos de Quarto",
-    "section": "1. Una carpeta por tema",
-    "text": "1. Una carpeta por tema\nCrea una carpeta para el tema y ábrela en Positron con File &gt; Open Folder. A partir de ahí, todo lo del tema vive dentro.\nDentro de esa carpeta, crea un subdirectorio data y descarga ahí los ficheros de datos desde la página Datos.\nTema02/                        &lt;- una por tema: Tema02 para el tema 02, Tema03 para el 03...\n├── data/\n│   ├── datosVisualizacion.RData\n│   └── empresas.RData\n├── T02_E1_12345678.qmd        &lt;- un documento por ejercicio\n├── T02_E1_12345678.html       &lt;- lo que genera al renderizar\n├── T02_E2_12345678.qmd\n└── pruebas.R                  &lt;- opcional: un script para probar cosas\nAdemás de los .qmd, puedes tener scripts .R sueltos para lo que no va al documento: probar una función antes de meterla, guardar lo que hicimos en clase… Llámalos como quieras, pruebas.R o codigo_clase.R. No se entregan: son tuyos.\nPor qué importa la estructura: si los datos están en data/ dentro de la carpeta abierta, el código los encuentra con load(\"data/empresas.RData\"), igual en tu ordenador que en el mío. Con una ruta completa tipo C:/Users/.../Descargas/... el documento solo funciona en tu máquina, y al entregarlo no se puede reproducir."
-  },
-  {
-    "objectID": "ComoTrabajar.html#un-documento-por-ejercicio",
-    "href": "ComoTrabajar.html#un-documento-por-ejercicio",
-    "title": "Cómo trabajar con tus documentos de Quarto",
-    "section": "2. Un documento por ejercicio",
-    "text": "2. Un documento por ejercicio\nSe crea con File &gt; New File… &gt; Quarto Document y se guarda con Ctrl+S, con extensión .qmd, con este nombre:\n\nTnn_En_ID.qmd\nnn es el número del tema, n el del ejercicio, e ID es lo que te identifica. Por ejemplo, el ejercicio 1 del tema 2: T02_E1_12345678.qmd\n\nQué poner en ID, según el documento que tengas:\n\n\n\n\n\n\n\n\nsi tu documento es…\nescribes\nejemplo\n\n\n\n\nDNI\nlos 8 números, quitando la letra del final\n12345678\n\n\nNIE\nla letra del principio y los 7 números, quitando la letra del final\nX1234567\n\n\nPasaporte o cualquier otro\nentero, sin quitar nada\nAB12345CD\n\n\n\nFíjate en el ejemplo del pasaporte: acaba en letra y esa letra no se quita. Solo el DNI y el NIE pierden la última.\nEs lo mismo que escribes en el formulario de entrega, exactamente igual en los dos sitios.\nSi dudas, pruébalo en el formulario: el campo solo admite identificadores de la lista de matriculados, así que si te pasas quitando letras te avisa en el momento y lo corriges ahí mismo. Lo que escribas ahí es lo que tiene que llevar el nombre del fichero."
-  },
-  {
-    "objectID": "ComoTrabajar.html#la-cabecera",
-    "href": "ComoTrabajar.html#la-cabecera",
-    "title": "Cómo trabajar con tus documentos de Quarto",
-    "section": "3. La cabecera",
-    "text": "3. La cabecera\nBorra lo que trae el documento de ejemplo y deja una cabecera así, entre las dos líneas de guiones. Esto es lo mínimo: el resto de opciones (tema, tabla de contenidos, df-print, code-fold…) las vais cambiando según lo que pida cada ejercicio.\n---\ntitle: \"Tema 02, ejercicio 1\"\nauthor: \"Tu nombre\"\nformat:\n  html:\n    embed-resources: true\n---\nembed-resources: true no es opcional. Sin eso, el .html guarda los gráficos en una carpeta aparte, y si mandas solo el html se ve en blanco. Con eso, el html es un único fichero que se abre en cualquier ordenador."
-  },
-  {
-    "objectID": "ComoTrabajar.html#la-primera-celda-preparar-el-entorno",
-    "href": "ComoTrabajar.html#la-primera-celda-preparar-el-entorno",
-    "title": "Cómo trabajar con tus documentos de Quarto",
-    "section": "4. La primera celda: preparar el entorno",
-    "text": "4. La primera celda: preparar el entorno\nJusto debajo de la cabecera va siempre la celda que prepara el entorno. Lleva include: false, así que se ejecuta pero no se ve ni ella ni sus mensajes.\n```{r}\n#| include: false\nrm(list = ls())\nlibrary(ggplot2)\nload(\"data/datosVisualizacion.RData\")\n```\nAhí va todo lo que el documento necesita para funcionar:\n\nTodas las bibliotecas que uses en cualquier celda. Si una library() se te queda en la consola y no en el documento, al renderizar falla.\nrm(list = ls()), para vaciar el espacio de trabajo. No hace falta para renderizar, pero sí para que al ejecutar las celdas a mano te pase lo mismo que al renderizar: si tu código depende sin darte cuenta de un objeto viejo de la consola, así lo descubres tú antes que yo.\nLos datos, si los usas desde el principio. También puedes cargarlos más adelante, en la celda donde toque, si el ejercicio lo pide así; lo importante es que quede claro dónde se han cargado y que estén dentro del documento.\n\nAl renderizar se abre una sesión de R nueva y vacía: el documento no ve nada de lo que tengas en la consola, así que todo lo que necesite tiene que estar dentro de él."
-  },
-  {
-    "objectID": "ComoTrabajar.html#una-sección-por-apartado",
-    "href": "ComoTrabajar.html#una-sección-por-apartado",
-    "title": "Cómo trabajar con tus documentos de Quarto",
-    "section": "5. Una sección por apartado",
-    "text": "5. Una sección por apartado\nCada apartado del enunciado, su sección, para que el documento se lea igual que el enunciado y no haya que adivinar qué responde a qué.\nEn el editor visual, con el desplegable de estilo: Header 2. Si escribes en modo fuente, el encabezado ## delante del título."
-  },
-  {
-    "objectID": "ComoTrabajar.html#renderizar",
-    "href": "ComoTrabajar.html#renderizar",
-    "title": "Cómo trabajar con tus documentos de Quarto",
-    "section": "6. Renderizar",
-    "text": "6. Renderizar\nCon el botón Preview, o Ctrl+Shift+K. Se genera el .html en la misma carpeta.\nRenderiza antes de entregar, no solo al final: si algo no funciona en la sesión limpia (una biblioteca que no cargaste, un objeto que solo existe en tu consola), es ahora cuando quieres enterarte."
-  },
-  {
-    "objectID": "ComoTrabajar.html#entregar",
-    "href": "ComoTrabajar.html#entregar",
-    "title": "Cómo trabajar con tus documentos de Quarto",
-    "section": "7. Entregar",
-    "text": "7. Entregar\nUn solo .zip con el .qmd y el .html dentro, llamado igual que el documento:\n\nTnn_En_ID.zip, por ejemplo T02_E1_12345678.zip\n\nEl nombre tiene que ser exacto, o la entrega se rechaza. Recibirás un correo de confirmación si es correcta, o de rechazo si no lo es, diciéndote qué falla.\nLa entrega se hace siempre por el formulario. Un fichero enviado por correo no cuenta como entregado. Si el formulario te da problemas, dilo en clase o por tutoría.\nNo se valora que esté perfecto: se valora el progreso y que se vea lo que has entendido. Si te quedas a medias, entrega lo que tengas."
-  },
-  {
-    "objectID": "PuestaAPunto.html",
-    "href": "PuestaAPunto.html",
-    "title": "Puesta a punto",
-    "section": "",
-    "text": "Trabajaréis en clase con vuestro propio ordenador. Instalad LO ANTES POSIBLE lo siguiente (todo gratuito). Es una instalación sencilla: descargar dos programas y ejecutar sus instaladores. El orden importa: primero R y después Positron (así Positron encuentra vuestra instalación de R él solo). Al final hay una comprobación rápida.\n\nOJO: conviene tener el sistema operativo actualizado antes de instalar nada.\nConsiderad traer una regleta a clase si vuestra batería dura poco.\n\n\n\n\nDescargad R desde https://cran.r-project.org/:\n\nWindows: “Download R for Windows” &gt; “base” &gt; “Download R-4.6.1 for Windows”.\nmacOS: “Download R for macOS”; elegid el .pkg de vuestra arquitectura (arm64 para Apple Silicon, x86_64 para Intel). Puede ser necesario instalar XQuartz.\nLinux: seguid las instrucciones de vuestra distribución.\n\n\n\n\n\n\nEn este curso usamos Positron, el entorno de Posit (los creadores de RStudio): funciona igual que un editor moderno estándar (VS Code) y sirve para R y también para Python, que os será útil en el futuro.\nDescargad desde https://positron.posit.co/download.html el instalador de vuestro sistema y ejecutadlo. Al abrirlo, Positron detecta la instalación de R que hicisteis en el paso 1 (por eso el orden).\nSi ya usáis VS Code: podéis seguir perfectamente con él. Instalad las extensiones “R” y “Quarto” y tendréis el mismo flujo de trabajo que veremos en clase; casi todo lo que se diga para Positron aplica igual.\nSi ya usáis RStudio: también sirve para casi todo el curso. Tenedlo actualizado. Eso sí, las instrucciones y capturas de clase serán con Positron.\n\nEl resto del software del curso (Quarto y los paquetes de R que vayamos necesitando) lo instalaremos JUNTOS en clase cuando toque: no hace falta que hagáis nada más ahora."
-  },
-  {
-    "objectID": "PuestaAPunto.html#primero-r-versión-4.6-o-superior",
-    "href": "PuestaAPunto.html#primero-r-versión-4.6-o-superior",
-    "title": "Puesta a punto",
-    "section": "",
-    "text": "Descargad R desde https://cran.r-project.org/:\n\nWindows: “Download R for Windows” &gt; “base” &gt; “Download R-4.6.1 for Windows”.\nmacOS: “Download R for macOS”; elegid el .pkg de vuestra arquitectura (arm64 para Apple Silicon, x86_64 para Intel). Puede ser necesario instalar XQuartz.\nLinux: seguid las instrucciones de vuestra distribución."
-  },
-  {
-    "objectID": "PuestaAPunto.html#después-positron-el-editor",
-    "href": "PuestaAPunto.html#después-positron-el-editor",
-    "title": "Puesta a punto",
-    "section": "",
-    "text": "En este curso usamos Positron, el entorno de Posit (los creadores de RStudio): funciona igual que un editor moderno estándar (VS Code) y sirve para R y también para Python, que os será útil en el futuro.\nDescargad desde https://positron.posit.co/download.html el instalador de vuestro sistema y ejecutadlo. Al abrirlo, Positron detecta la instalación de R que hicisteis en el paso 1 (por eso el orden).\nSi ya usáis VS Code: podéis seguir perfectamente con él. Instalad las extensiones “R” y “Quarto” y tendréis el mismo flujo de trabajo que veremos en clase; casi todo lo que se diga para Positron aplica igual.\nSi ya usáis RStudio: también sirve para casi todo el curso. Tenedlo actualizado. Eso sí, las instrucciones y capturas de clase serán con Positron.\n\nEl resto del software del curso (Quarto y los paquetes de R que vayamos necesitando) lo instalaremos JUNTOS en clase cuando toque: no hace falta que hagáis nada más ahora."
-  },
-  {
-    "objectID": "Evaluacion.html",
-    "href": "Evaluacion.html",
-    "title": "Evaluación",
-    "section": "",
-    "text": "Nota: información adicional sobre segunda convocatoria y posibles contingencias en la guía docente de la asignatura.\nIMPORTANTE: quien quiera acogerse a la evaluación NO continua debe comunicarlo en este formulario. Si no, se aplica la evaluación continua.\nPlazo: viernes 20 de noviembre de 2026, 23:59.\n\n\n\n\nModalidad ordinaria de la asignatura (salvo opción expresa por evaluación no continua comunicada en plazo antes del 20 de noviembre). No contempla examen final.\nDinámica presencial y participación activa: el valor de estas sesiones reside en la intervención activa en las discusiones del aula. La entrega de ejercicios carece de valor sin haber intervenido activamente en el debate (lo que implica asistir a clase, si bien la sola presencia física resulta insuficiente). Trabajar los materiales de forma autónoma es fundamental para el seguimiento del curso, pero a efectos de evaluación no sustituye la participación en el aula.\nCálculo sobre el 80% de las sesiones: la calificación del trabajo de clase y de la participación se obtiene a partir del 80% de las mejores sesiones de cada estudiante, descartando hasta un 20% de calificaciones inferiores (incluyendo ausencias o sesiones sin intervención activa). Superar ese 20% de inasistencia o falta de participación reduce directamente la media de este bloque. Al estar vinculadas a la dinámica presencial del cuatrimestre, estas calificaciones no son recuperables en el segundo periodo de evaluación.\nEstructura de la calificación:\n\nTrabajo empírico final (50%): ver Proyecto Final.\nEjercicios durante el periodo de clases (35%):\n\nUn ejercicio largo individual, para realizar fuera de clase (15%).\nUna prueba presencial breve (10%), sobre los temas vistos en clase del Tema 5 en adelante. Se avisará con antelación.\nEl trabajo desarrollado en clase (10%): lo que produzcáis en las sesiones podrá recogerse al acabar la clase (en cualquier sesión). Se valora el progreso y la comprensión, no la perfección.\n\nParticipación (15%):\n\nMini-tests breves en clase: preguntas de comprensión sobre el material que habréis trabajado ANTES de cada sesión (ver “Cómo funciona el curso” más abajo).\nPreguntas y pequeños ejercicios en clase.\n\n\n\n\n\n\n\nEjercicios teórico-prácticos (35%). Incluyen:\n\nEl mismo ejercicio largo que en la continua (20%), PERO se defiende presencialmente en el despacho: tendréis que explicar qué habéis hecho, por qué, y responder preguntas sobre vuestro propio código y resultados.\nLa misma prueba presencial que en la continua (15%), en una cita aparte que se avisará con antelación.\n\nTrabajo empírico final (65%), también con defensa presencial.\nSin mini-tests semanales ni trabajo de clase."
-  },
-  {
-    "objectID": "Evaluacion.html#evaluación-continua",
-    "href": "Evaluacion.html#evaluación-continua",
-    "title": "Evaluación",
-    "section": "",
-    "text": "Modalidad ordinaria de la asignatura (salvo opción expresa por evaluación no continua comunicada en plazo antes del 20 de noviembre). No contempla examen final.\nDinámica presencial y participación activa: el valor de estas sesiones reside en la intervención activa en las discusiones del aula. La entrega de ejercicios carece de valor sin haber intervenido activamente en el debate (lo que implica asistir a clase, si bien la sola presencia física resulta insuficiente). Trabajar los materiales de forma autónoma es fundamental para el seguimiento del curso, pero a efectos de evaluación no sustituye la participación en el aula.\nCálculo sobre el 80% de las sesiones: la calificación del trabajo de clase y de la participación se obtiene a partir del 80% de las mejores sesiones de cada estudiante, descartando hasta un 20% de calificaciones inferiores (incluyendo ausencias o sesiones sin intervención activa). Superar ese 20% de inasistencia o falta de participación reduce directamente la media de este bloque. Al estar vinculadas a la dinámica presencial del cuatrimestre, estas calificaciones no son recuperables en el segundo periodo de evaluación.\nEstructura de la calificación:\n\nTrabajo empírico final (50%): ver Proyecto Final.\nEjercicios durante el periodo de clases (35%):\n\nUn ejercicio largo individual, para realizar fuera de clase (15%).\nUna prueba presencial breve (10%), sobre los temas vistos en clase del Tema 5 en adelante. Se avisará con antelación.\nEl trabajo desarrollado en clase (10%): lo que produzcáis en las sesiones podrá recogerse al acabar la clase (en cualquier sesión). Se valora el progreso y la comprensión, no la perfección.\n\nParticipación (15%):\n\nMini-tests breves en clase: preguntas de comprensión sobre el material que habréis trabajado ANTES de cada sesión (ver “Cómo funciona el curso” más abajo).\nPreguntas y pequeños ejercicios en clase."
-  },
-  {
-    "objectID": "Evaluacion.html#evaluación-no-continua",
-    "href": "Evaluacion.html#evaluación-no-continua",
-    "title": "Evaluación",
-    "section": "",
-    "text": "Ejercicios teórico-prácticos (35%). Incluyen:\n\nEl mismo ejercicio largo que en la continua (20%), PERO se defiende presencialmente en el despacho: tendréis que explicar qué habéis hecho, por qué, y responder preguntas sobre vuestro propio código y resultados.\nLa misma prueba presencial que en la continua (15%), en una cita aparte que se avisará con antelación.\n\nTrabajo empírico final (65%), también con defensa presencial.\nSin mini-tests semanales ni trabajo de clase."
-  },
-  {
-    "objectID": "docs/Tema04anexo.html#esto-es-material-de-consulta",
-    "href": "docs/Tema04anexo.html#esto-es-material-de-consulta",
-    "title": "Tema 04 - Anexo: herramientas y fuentes",
-    "section": "Esto es material de consulta",
-    "text": "Esto es material de consulta\n\nLo que hay aquí amplía el Tema 04: herramientas que automatizan la detección de problemas, más trampas de los KPI, la API del INE, los formatos en que llegan los microdatos, cómo leer una columna vacía y una lista de comprobación del AED\nSe consulta cuando hace falta en un trabajo; en clase no se ve"
-  },
-  {
-    "objectID": "docs/Tema04anexo.html#herramientas-que-automatizan-la-detección-1",
-    "href": "docs/Tema04anexo.html#herramientas-que-automatizan-la-detección-1",
-    "title": "Tema 04 - Anexo: herramientas y fuentes",
-    "section": "Herramientas que automatizan la detección",
-    "text": "Herramientas que automatizan la detección\n\nEstas funciones recorren todas las variables y ahorran los primeros diez minutos\n\n\nlibrary(modelsummary)\npedidos |&gt; datasummary_skim()                  # numéricas\npedidos |&gt; datasummary_skim(type = \"categorical\")\n\nlibrary(skimr)\npedidos |&gt; skim()\n\nlibrary(janitor)\npedidos_bruto |&gt; get_dupes(id_pedido)          # duplicados de clave\n\n\nTambién existen informes completos automáticos (DataExplorer::create_report(), dlookr) y se pueden pedir a una IA generativa\nLimitaciones: producen mucho ruido, no conocen el contexto y no distinguen un error de un dato extremo legítimo\nRegla: la automatización acelera la detección; la decisión sigue siendo del analista, que es quien conoce el negocio\n\n\n\nÚtiles para uso propio, no para un informe final: cien gráficos sin priorizar no comunican nada.\nUna IA no sabe que en este sector el ROE típico es 8-12%: eso lo aportáis vosotros."
-  },
-  {
-    "objectID": "docs/Tema04anexo.html#la-api-del-ine-la-petición",
-    "href": "docs/Tema04anexo.html#la-api-del-ine-la-petición",
-    "title": "Tema 04 - Anexo: herramientas y fuentes",
-    "section": "La API del INE: la petición",
-    "text": "La API del INE: la petición\n\n\nEl INE ofrece un servicio web que devuelve los datos de una tabla en formato JSON. La petición tiene esta forma:\n\nhttps://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/{id_tabla}?nult={n}\n\n{id_tabla} es el identificador de la tabla publicada en INEbase, y nult el número de periodos más recientes que se piden\n\n\nlibrary(jsonlite)\n\n# Tabla 50902: IPC nacional, índice general y grupos ECOICOP\nurl_ipc &lt;- \"https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/50902?nult=36\"\nipc_json &lt;- fromJSON(url_ipc, simplifyVector = FALSE)\n\n# Tabla 65335: tasa de paro por sexo y comunidad autonoma, trimestral\n# (identificador comprobado en INEbase). Otras utiles: 74999 y 14506\n# (paro por grupos de edad y por comunidad).\n# url_epa &lt;- \"https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/65335?nult=20\"\n\n\nExiste además un paquete de R que envuelve esta API (ineapir): consultad su documentación antes de usarlo en un trabajo\nRegla del curso: nunca copiéis un identificador de tabla sin comprobar en la web del INE qué contiene exactamente"
-  },
-  {
-    "objectID": "docs/Tema04anexo.html#del-json-a-una-tabla-ordenada",
-    "href": "docs/Tema04anexo.html#del-json-a-una-tabla-ordenada",
-    "title": "Tema 04 - Anexo: herramientas y fuentes",
-    "section": "Del JSON a una tabla ordenada",
-    "text": "Del JSON a una tabla ordenada\n\n\nLa respuesta es una lista de series; cada serie tiene un nombre y sus observaciones. Hay que dejarla como los datos ordenados del Tema 03\n\n\nipc &lt;- tibble(serie = map_chr(ipc_json, \"Nombre\"),\n              datos = map(ipc_json, \"Data\")) |&gt;\n  filter(str_detect(serie, \"Variación anual\"),\n         str_detect(serie, \"Índice general|Alimentos\")) |&gt;\n  unnest_longer(datos) |&gt;\n  mutate(anio  = map_int(datos, \"Anyo\"),\n         mes   = map_int(datos, \"FK_Periodo\"),\n         fecha = as.Date(sprintf(\"%d-%02d-01\", anio, mes)),\n         valor = map_dbl(datos, \"Valor\")) |&gt;\n  select(serie, fecha, valor) |&gt; arrange(serie, fecha)\n\n\nLa fecha se construye con el año y el periodo que vienen etiquetados. El campo Fecha trae milisegundos desde 1970 en hora local: convertirlo suponiendo UTC desplaza cada observación un mes atrás, y el error es silencioso\nY entonces, y solo entonces, se responde a la pregunta\n\n\nggplot(ipc, aes(x = fecha, y = valor, color = serie)) +\n  geom_line() + geom_hline(yintercept = 0)\n\n\n\n\nFK_Periodo es el mes en una tabla mensual; en una trimestral NO lo es. Comprobarlo siempre antes de reutilizar este código con otra tabla.\nResultado de referencia (descarga de enero de 2023): variación anual del índice general 5,9% frente al 15,4% de alimentos y bebidas no alcohólicas. La brecha se cierra a lo largo de 2023-2024.\nEse contraste es exactamente lo que no se ve en el titular del IPC general."
-  },
-  {
-    "objectID": "docs/Tema04anexo.html#dentro-del-zip-hay-varios-formatos",
-    "href": "docs/Tema04anexo.html#dentro-del-zip-hay-varios-formatos",
-    "title": "Tema 04 - Anexo: herramientas y fuentes",
-    "section": "Dentro del zip hay varios formatos",
-    "text": "Dentro del zip hay varios formatos\n\n\nEl mismo zip trae los datos en ancho fijo (.txt), en texto separado por tabuladores, en .RData, en parquet y en los formatos de SAS, SPSS y Stata, más el diccionario en JSON\nEn clase leemos el texto separado, y no es por gusto:\n\nEs lo que os vais a encontrar fuera: la mayoría de las fuentes no os regalan un .RData\nObliga a mirar los tipos, que es medio análisis exploratorio\n\n\n\nlibrary(tidyverse)\nepa &lt;- read_delim(\"CSV/EPA_2026T2.tab\", delim = \"\\t\",\n                  col_types = cols(.default = col_character()))\n\n\nQue existan los otros formatos conviene saberlo: load() para el .RData (cómodo pero solo sirve en R) y arrow::read_parquet() para el parquet (el formato que hay que conocer cuando el fichero no cabe en memoria)\nQuien solo sabe abrir el .RData se queda bloqueado el día que la fuente no lo publique. Y lo leemos como texto porque los códigos del INE son texto: \"03\" no es el número 3"
-  },
-  {
-    "objectID": "docs/Tema04anexo.html#si-se-lee-el-.rdata-los-espacios-que-no-se-ven",
-    "href": "docs/Tema04anexo.html#si-se-lee-el-.rdata-los-espacios-que-no-se-ven",
-    "title": "Tema 04 - Anexo: herramientas y fuentes",
-    "section": "Si se lee el .RData: los espacios que no se ven",
-    "text": "Si se lee el .RData: los espacios que no se ven\n\n\nEn el .RData, AOI vacía (menores de 16 años) llega como dos espacios; en el .tab leído con read_delim(), como NA\n\n\nepa |&gt; count(AOI)                    # \"  \", \"03\", \"04\", \"05\", \"06\", \"07\", \"08\", \"09\"\nsum(epa$AOI == \"\")                   # 0: NINGUNA fila cumple eso\nsum(trimws(epa$AOI) == \"\")           # 15.850: los menores de 16\n\n\nQuien filtra con AOI != \"\" cree haber quitado a los menores y no ha quitado a nadie. No hay error ni aviso, y la tasa de actividad sale mal:\n\n\n\n\nFichero completo\nTasa de actividad\n\n\n\n\nfilter(AOI != \"\")\n51,22%\n\n\nfilter(trimws(AOI) != \"\")\n59,29%\n\n\n\n\nOcho puntos por dos espacios. trimws() quita los espacios de los extremos (como str_trim() del Tema 04); con el .RData hay que aplicarlo a los códigos antes de compararlos:\n\n\nepa &lt;- epa |&gt; mutate(AOI = trimws(AOI), NCONY = trimws(NCONY), NPERS = trimws(NPERS))"
-  },
-  {
-    "objectID": "docs/Tema04anexo.html#qué-significa-una-columna-vacía",
-    "href": "docs/Tema04anexo.html#qué-significa-una-columna-vacía",
-    "title": "Tema 04 - Anexo: herramientas y fuentes",
-    "section": "Qué significa una columna vacía",
-    "text": "Qué significa una columna vacía\n\n\nUna columna vacía no dice por qué está vacía, y la diferencia decide qué hacer con ella:\n\n\n\n\n\n\n\n\n\nVariable (fichero completo)\nVacía\nQué significa\n\n\n\n\nRELLB1, TRAANT\n100%\nrelleno del formato: se tiran\n\n\nOCUPLU1\n98,7%\nno aplicable: solo quien tiene segundo empleo\n\n\nSITU, PARCO1\n56,8%\nno aplicable: solo los ocupados\n\n\n\n\nTirar OCUPLU1 por “tener demasiados ausentes” es tirar la respuesta a una pregunta que sí se hizo"
-  },
-  {
-    "objectID": "docs/Tema04anexo.html#elección-del-periodo-y-efecto-base",
-    "href": "docs/Tema04anexo.html#elección-del-periodo-y-efecto-base",
-    "title": "Tema 04 - Anexo: herramientas y fuentes",
-    "section": "Elección del periodo y efecto base",
-    "text": "Elección del periodo y efecto base\n\nCon serie_ventas del Tema 04, el titular “las ventas han crecido un 65% en 2025” sale de comparar enero con diciembre:\n\n\nserie_ventas |&gt;\n  filter(mes &gt;= as.Date(\"2025-01-01\")) |&gt;\n  summarize(crecimiento = last(ventas) / first(ventas) - 1)\n\n\nEse 65% mide la distancia entre el mes más flojo y la campaña de Navidad. Casi cualquier tendencia se fabrica eligiendo el punto de partida: mostrad la serie completa\nEfecto base: crecer un 20% en 2021 tras caer un 22% en 2020 es recuperar parte de lo perdido. Con dos tasas consecutivas, mirad el nivel: 100 × 0,78 × 1,20 = 93,6, por debajo del punto de salida"
-  },
-  {
-    "objectID": "docs/Tema04anexo.html#composición-un-ejemplo-con-datos-oficiales",
-    "href": "docs/Tema04anexo.html#composición-un-ejemplo-con-datos-oficiales",
-    "title": "Tema 04 - Anexo: herramientas y fuentes",
-    "section": "Composición: un ejemplo con datos oficiales",
-    "text": "Composición: un ejemplo con datos oficiales\n\nLa paradoja de Simpson del Tema 04 (la app devuelve más en cada categoría y menos en el total) es el problema central del análisis con datos observacionales: el agregado mezcla el efecto que interesa con el efecto de quién está en cada grupo\nEl salario medio subió durante la crisis de 2008-2013 en varios países mientras casi nadie tenía subidas: los empleos destruidos fueron los de menor salario, y eso elevó la media de los que quedaron\nOtro: una comparación de rentabilidad entre sectores sin controlar el tamaño de las empresas mide sobre todo tamaño\nQué hacer, igual que con los canales: comparar dentro de grupos homogéneos (mismo puesto, mismo tamaño), o ponderar todos los periodos con la misma composición. El Tema 05 lo formaliza: comparar “todo lo demás igual” es lo que hace una regresión"
-  },
-  {
-    "objectID": "docs/Tema04anexo.html#buenas-prácticas-del-aed",
-    "href": "docs/Tema04anexo.html#buenas-prácticas-del-aed",
-    "title": "Tema 04 - Anexo: herramientas y fuentes",
-    "section": "Buenas prácticas del AED",
-    "text": "Buenas prácticas del AED\n\n\n\nEn la limpieza\n\nLos datos en bruto no se modifican nunca: la limpieza es un script reproducible\nCada corrección lleva escrito el motivo y la regla aplicada, no solo el código\nContar filas antes y después de cada paso, y comprobar que el cambio es el esperado\nLos ausentes y los atípicos se investigan antes de tratarse: por qué faltan, por qué son extremos\n\nCon microdatos\n\nEl diseño de registro se lee antes de escribir código; se replica una cifra publicada antes de calcular la propia; la suma de los pesos tiene que dar una población reconocible\n\n\nEn la descriptiva\n\nPrimero la pregunta, después el estadístico. Si ninguna decisión cambia, sobra\nCon distribuciones asimétricas, nunca un solo número: centro, dispersión y forma\nToda tasa lleva su denominador y su nivel al lado\nAntes de comparar grupos, mirar la composición de cada grupo\n\nErrores más caros: convertir con as.numeric() sin mirar, promediar promedios, comparar meses consecutivos en series estacionales y confiar en una media calculada sobre quienes decidieron responder"
-  },
-  {
-    "objectID": "docs/Tema02ej.html",
-    "href": "docs/Tema02ej.html",
-    "title": "Tema 02 - Visualización de datos",
-    "section": "",
-    "text": "Estos ejercicios se van haciendo durante las clases del tema: las transparencias indican en qué momento toca cada uno.\n\n\n\n\n\n\nImportante\n\n\n\nSi no lo has hecho ya, lee Cómo trabajar en cada tema: la carpeta del tema con su subdirectorio data, cómo se crea el documento, qué va en la cabecera (con embed-resources: true), la primera celda y cómo se entrega. Vale para todo el curso.\n\n\nDe este tema, lo que te hace falta:\n\nLos datos son datosVisualizacion.RData y empresas.RData, de la página Datos. Descárgalos en tu subdirectorio data.\nUn documento por ejercicio, T02_E&lt;n&gt;_&lt;ID&gt;.qmd: T02_E1_12345678.qmd para el ejercicio 1, T02_E2_12345678.qmd para el 2, y así. Cada uno carga sus propios datos en su primera celda."
-  },
-  {
-    "objectID": "docs/Tema02ej.html#apartado-a",
-    "href": "docs/Tema02ej.html#apartado-a",
-    "title": "Tema 02 - Visualización de datos",
-    "section": "Apartado a)",
-    "text": "Apartado a)\n\nDibuja la relación entre ingresos y gasto con geom_point().\nPinta TODOS los puntos de rojo, de verdad (que no aparezca ninguna leyenda).\nEjecuta esto y describe qué ves: ¿de qué color salen los puntos? ¿qué dice la leyenda? ¿por qué?\n\n\nggplot(clientes, aes(x = ingresos, y = gasto)) +\n  geom_point(aes(color = \"red\"))\n\n\nDistingue el segmento por color y el canal por forma. Y ahora añade además size = edad. ¿Se lee el gráfico con tres variables encima? ¿Cuántas cosas a la vez puede leer quien lo mira? Quédate con la versión que sí se lee y di por qué.\nAñade size = 4 dentro de aes() y luego fuera. Una de las dos no tiene sentido: ¿cuál y por qué? En una frase, ¿qué regla te sirve para decidirlo?"
-  },
-  {
-    "objectID": "docs/Tema02ej.html#apartado-b-capas-con-sus-propios-datos",
-    "href": "docs/Tema02ej.html#apartado-b-capas-con-sus-propios-datos",
-    "title": "Tema 02 - Visualización de datos",
-    "section": "Apartado b): capas con sus propios datos",
-    "text": "Apartado b): capas con sus propios datos\nSobre el gráfico del apartado a), con el segmento por color.\n\nEtiqueta a quienes más gastan. Como solo quieres unas pocas fichas, esa capa lleva sus propios datos, igual que hicimos en clase con los países:\n\ntop &lt;- clientes[clientes$gasto &gt; 8000, ]\n\ny encima una capa geom_text_repel(data = top, aes(label = cliente)).\n¿Por qué esa capa necesita sus propios datos, y qué pasaría si le dieras clientes entero?"
-  },
-  {
-    "objectID": "docs/Tema02ej.html#apartado-c-el-gráfico-cuenta-por-ti",
-    "href": "docs/Tema02ej.html#apartado-c-el-gráfico-cuenta-por-ti",
-    "title": "Tema 02 - Visualización de datos",
-    "section": "Apartado c): el gráfico cuenta por ti",
-    "text": "Apartado c): el gráfico cuenta por ti\n\nNúmero de clientes de cada segmento, con geom_bar(). ¿Dónde está la tabla de frecuencias que has usado?\nLo mismo, pero con la PROPORCIÓN que representa cada segmento, sin calcular nada aparte: tienes el patrón con after_stat(prop) en las transparencias.\n\n\nEn una frase: ¿qué significa que un geom “tiene una estadística por defecto”?"
-  },
-  {
-    "objectID": "docs/Tema02ej.html#apartado-d-distribuciones",
-    "href": "docs/Tema02ej.html#apartado-d-distribuciones",
-    "title": "Tema 02 - Visualización de datos",
-    "section": "Apartado d): distribuciones",
-    "text": "Apartado d): distribuciones\n\nDistribución de los ingresos con geom_histogram(), probando bins = 10, bins = 40 y binwidth = 3. ¿Cuál de las tres le enseñarías a dirección y por qué?\nCon una de esas tres se ve un grupo de clientes de ingresos muy bajos y con las otras no. ¿Con cuál, y qué te dice eso sobre elegir los intervalos?\nCompara el gasto entre segmento con un geom_boxplot()."
-  },
-  {
-    "objectID": "docs/Tema02ej.html#apartado-e-contexto-y-aspecto",
-    "href": "docs/Tema02ej.html#apartado-e-contexto-y-aspecto",
-    "title": "Tema 02 - Visualización de datos",
-    "section": "Apartado e): contexto y aspecto",
-    "text": "Apartado e): contexto y aspecto\n\nVuelve al gráfico del apartado a) y añádele una recta de tendencia con geom_smooth(method = \"lm\", se = FALSE). ¿Qué dice esa recta que no dijera la nube de puntos?\nDivídelo en facetas por canal. ¿Se lee mejor así o con el color? ¿Por qué?\nAñade una línea de referencia horizontal en el gasto medio, discontinua, y anótala con annotate() para que se entienda qué marca.\nPonle labs() completo: título, ejes con sus unidades y un caption con la fuente.\nPrueba al menos dos temas y quédate con uno. Prueba también uno profesional, de ggthemes:\n\nlibrary(ggthemes)\nmi_grafico + theme_economist()"
+    "objectID": "docs/Tema01ej.html#apartado-e",
+    "href": "docs/Tema01ej.html#apartado-e",
+    "title": "Tema 01 - Ejercicio de Quarto",
+    "section": "Apartado e)",
+    "text": "Apartado e)\n\nIncluir la opción df-print: paged en la cabecera. Comprobar el efecto antes y después de incluirlo sobre cómo se muestra el conjunto de datos (“data frame”) mtcars en los apartados d.i) y d.ii).\nComentar las diferencias y qué forma de presentación prefieres para tu documento.\nIncluye la opción code-fold: true en la cabecera. Comprobar cómo cambia el documento y comentar brevemente qué forma de presentación prefieres para tu documento.\nElige un tema entre estos y aplícalo al documento."
   },
   {
     "objectID": "docs/Tema04.html#qué-es-el-aed-y-para-qué-sirve",
