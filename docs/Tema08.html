@@ -1197,7 +1197,7 @@ display:block!important;
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
-<li>Un <strong>árbol de decisión</strong> es un diagrama de flujo con reglas para segmentar el espacio de los regresores en regiones más simples (<a href="Tema08anexo.html#las-partes-de-un-árbol">más detalles</a>)
+<li>Un <strong>árbol de decisión</strong> es un diagrama de flujo con reglas para segmentar el espacio de los regresores en regiones más simples (<a href="Tema08anexo.html#las-partes-de-un-árbol-y-cómo-se-construye">más detalles</a>)
 <ul>
 <li>cada división deja grupos más homogéneos o «puros»: con la misma clase o la misma media de <span class="math inline">\(y\)</span></li>
 </ul></li>
@@ -1246,7 +1246,7 @@ display:block!important;
 <li>todas las observaciones empiezan en una sola región, con la media de <span class="math inline">\(y\)</span> como predicción</li>
 <li>para <strong>cada</strong> variable <span class="math inline">\(X_j\)</span> y <strong>cada</strong> umbral <span class="math inline">\(s\)</span> se calcula la SCR que quedaría al partir en <span class="math inline">\(\{X_j &lt; s\}\)</span> y <span class="math inline">\(\{X_j \geq s\}\)</span>, con la media de cada parte como predicción</li>
 <li>se hace solo la partición que más baja la SCR, y se repite el paso 2 dentro de cada una de las dos regiones</li>
-<li>se para cuando la región es pequeña (<code>min_n</code>), cuando el árbol llega a una profundidad (<code>tree_depth</code>) o cuando ningún corte mejora bastante</li>
+<li>se para cuando la región es pequeña, cuando el árbol llega a una profundidad o cuando ningún corte mejora bastante</li>
 </ol></li>
 </ul>
 </div><div class="column" style="width:44%;">
@@ -1369,9 +1369,9 @@ display:block!important;
 <div style="font-size: 88%;">
 <ul>
 <li><p>Un árbol que crece sin límite es demasiado complejo: <strong>sobreajusta</strong> (<em>overfitting</em>)</p></li>
-<li><p>La <strong>poda</strong> hace crecer un árbol grande, con <span class="math inline">\(T_0\)</span> nodos terminales, y se queda con el subárbol de <span class="math inline">\(T\)</span> nodos terminales que minimiza <span class="math display">\[
+<li><p>La <strong>poda</strong> hace crecer un árbol grande, <span class="math inline">\(T_0\)</span>, y se queda con el subárbol <span class="math inline">\(T\)</span> que minimiza <span class="math display">\[
 \small \sum_{m=1}^{|T|} \sum_{i \in R_m} (y_i - \bar y_{R_m})^2 + \alpha\, |T|
-\]</span> donde <span class="math inline">\(R_m\)</span> es la región del nodo terminal <span class="math inline">\(m\)</span></p></li>
+\]</span> donde <span class="math inline">\(|T|\)</span> es el número de nodos terminales de <span class="math inline">\(T\)</span> donde <span class="math inline">\(R_m\)</span> es la región del nodo terminal <span class="math inline">\(m\)</span></p></li>
 <li><p><span class="math inline">\(\alpha \geq 0\)</span> es el <strong>coste de complejidad</strong>: penaliza los nodos terminales, como el LASSO el tamaño de los coeficientes</p>
 <ul>
 <li>más nodos terminales ajustan mejor (menos SCR), pero pagan más penalización</li>
@@ -1463,7 +1463,7 @@ display:block!important;
 <li>el corte se elige con <a href="Tema08anexo.html#entropía-y-tasa-de-error">medidas de <strong>pureza</strong></a> de la región; la habitual es el <strong>índice de Gini</strong>: <span class="math display">\[
 \small G_m = \sum_{k=1}^{K} \hat p_{mk}\,(1 - \hat p_{mk})
 \]</span></li>
-<li>vale 0 si todas son de la misma clase y es máximo (0,5 con dos clases) a medias</li>
+<li>vale 0 si todas son de la misma clase y es máximo cuando las clases están repartidas por igual (0,5 con dos clases)</li>
 </ul></li>
 <li>En <code>churn</code>, la raíz tiene un 60 % de abandonos: <span class="math inline">\(G = 2 \times 0{,}60 \times 0{,}40 = 0{,}48\)</span>
 <ul>
@@ -1527,7 +1527,7 @@ display:block!important;
 <li><p><strong>Ventajas</strong></p>
 <ul>
 <li>es un método no paramétrico: no supone ninguna forma funcional, y las no linealidades y las interacciones salen de los cortes sucesivos, sin escribirlas</li>
-<li>no necesita logaritmos, polinomios, dummies ni estandarizar: <code>log(renta)</code> da el mismo árbol, porque el logaritmo no cambia el orden</li>
+<li>no necesita logaritmos, polinomios, dummies ni estandarizar: <code>log(renta)</code> da los mismos grupos, porque el logaritmo no cambia el orden (el corte puede caer en otro punto)</li>
 <li>es fácil de explicar y de visualizar</li>
 </ul></li>
 <li><p><strong>Inconvenientes</strong></p>
@@ -1557,12 +1557,16 @@ display:block!important;
 </section>
 <section id="práctica-en-clase-1-la-regla-de-los-dependientes" class="slide level2 scrollable">
 <h2>PRÁCTICA en clase (1): la regla de los dependientes</h2>
-<div style="font-size: 84%;">
+<div style="font-size: 80%;">
 <p>La cadena de tiendas quiere, además de predecir el gasto, una <strong>regla sencilla</strong> que sus dependientes puedan aplicar sin ordenador: con tres o cuatro preguntas al cliente, decidir si merece una atención especial. Un árbol es exactamente eso. Con vuestro DNI como semilla, <code>part</code> y <code>bloques</code> como en el Tema 07:</p>
 <ol type="1">
 <li><p>Ajustad el árbol de <code>ventas</code> sobre <code>edad</code> con profundidad 2 y comparad sus cortes y sus medias con los tramos de diez años del Tema 05. Traducid cada hoja a una frase de negocio («los clientes de menos de X años gastan de media Y»)</p></li>
 <li><p>Ajustad el árbol con las seis variables y <code>cost_complexity = 0.02</code>, y mostradlo en texto con <code>extract_fit_engine()</code>. ¿Cuántas hojas tiene y cómo se sabe? ¿Qué indica el número delante de cada nodo, y por qué faltan algunos? <span class="ia" aria-hidden="true">Fijad antes la semilla con <code>set.seed(2027)</code>.</span></p></li>
-<li><p>Afinad <code>cost_complexity</code> con <code>tune_grid()</code> sobre <code>bloques</code> y la rejilla <code>grid_regular(cost_complexity(range = c(-4, -0.5)), levels = 15)</code>. ¿Hay U? ¿Cuántas hojas tiene el árbol podado y qué RMSE da en prueba? Dibujadlo con <code>rpart.plot()</code> y escribid la regla de las tres primeras preguntas que haría un dependiente</p></li>
+<li><p>Afinad <code>cost_complexity</code> de <code>decision_tree(cost_complexity = tune(), min_n = 5)</code> con <code>tune_grid()</code> sobre <code>bloques</code> y la rejilla <code>grid_regular(cost_complexity(range = c(-4, -0.5)), levels = 15)</code></p>
+<ul>
+<li>¿Hay U? ¿Cuántas hojas tiene el árbol podado? ¿Qué RMSE da en prueba?</li>
+<li>dibujadlo con <code>rpart.plot()</code> y escribid la regla de las tres primeras preguntas que haría un dependiente</li>
+</ul></li>
 <li><p>Con las seis variables, el primer corte es <code>mujer</code> y no <code>edad</code>, aunque la edad tiene una curva tan clara. ¿Por qué? ¿Recoge el árbol después la curva de la edad, y dónde?</p></li>
 <li><p>Calculad la importancia de las variables del árbol podado del punto 3. <code>edad</code> aparece en más cortes que <code>renta</code>: ¿por qué queda por debajo?</p></li>
 </ol>
@@ -1638,7 +1642,7 @@ display:block!important;
 </ul></li>
 <li>El <strong>bosque aleatorio</strong> (<em>random forest</em>) añade un sorteo: en <strong>cada corte</strong> solo se consideran <code>mtry</code> variables elegidas al azar de las <span class="math inline">\(p\)</span>
 <ul>
-<li>con <code>mtry</code> <span class="math inline">\(= p\)</span> es bagging; por defecto, <span class="math inline">\(\sqrt{p}\)</span> en clasificación y <span class="math inline">\(p/3\)</span> en regresión</li>
+<li>con <code>mtry</code> <span class="math inline">\(= p\)</span> es bagging; <code>ranger</code> toma por defecto <span class="math inline">\(\sqrt{p}\)</span>, redondeada hacia abajo, y otra opción habitual en regresión es <span class="math inline">\(p/3\)</span></li>
 </ul></li>
 <li>Con menos variables en cada corte, dos fuerzas en sentido contrario:
 <ul>
@@ -1690,11 +1694,11 @@ display:block!important;
 </table>
 <ul>
 <li>En la tienda, con tres variables fuertes de seis, pesa más lo segundo: conviene el bagging o casi</li>
-<li>En <code>churn</code> es al revés: con 21 candidatas, muchas sin importancia, gana descorrelacionar y el mejor <code>mtry</code> es pequeño</li>
 </ul>
 </div>
 <aside class="notes">
 <ul>
+<li>En <code>churn</code> es al revés: con 21 candidatas, muchas sin importancia, gana descorrelacionar y el mejor <code>mtry</code> es pequeño. No va en la transparencia: lo preguntan la práctica 4 y la E4 a).</li>
 <li>Es la idea bonita del tema y la única contraintuitiva: quitar información a cada árbol puede mejorar el promedio. Breiman (2001). ISLR §8.2.2: «decorrelating the trees».</li>
 <li>Verificado el 16-nov-2026 con <code>set.seed(12345678)</code> y <code>predict(..., predict.all = TRUE)</code> del motor sobre los 81 de prueba: correlación media entre las predicciones de los 500 árboles 0,90 / 0,81 / 0,69 / 0,41 para mtry 6 / 3 / 2 / 1; RMSE medio de un árbol suelto 592 / 697 / 815 / 1.045; del promedio 435 / 446 / 515 / 824. Primer corte de cada árbol con <code>treeInfo()</code>; con mtry 1, cada variable entre 76 y 90 veces.</li>
 <li><code>churn</code> (21 variables, 500 árboles, 10 bloques, 10 s): AUC 0,724 (1), 0,716 (2), 0,718 (4), 0,708 (6), 0,709 (8), 0,696 (11), 0,690 (21). La diferencia (0,034) es unos dos errores estándar (0,014-0,018): en la dirección esperada. En prueba sale al revés, 0,727 (mtry 1) frente a 0,743 (mtry 21): con 121 clientes de prueba, ruido.</li>
@@ -1722,7 +1726,7 @@ display:block!important;
 <ul>
 <li><code>mtry</code>, el principal: se afina por validación cruzada</li>
 <li><code>min_n</code> se podría afinar, pero no suele hacerse: el promedio ya reduce la varianza de árboles profundos</li>
-<li><code>trees</code> no es un hiperparámetro: más árboles <a href="Tema08anexo.html#bagging-el-número-de-árboles">no sobreajustan</a>; cuantos más, mejor, y al menos suficientes</li>
+<li><code>trees</code> no se afina: más árboles <a href="Tema08anexo.html#bagging-el-número-de-árboles">no sobreajustan</a>; cuantos más, mejor: basta con que el error se estabilice</li>
 </ul></li>
 </ul>
 <div class="columns">
@@ -1755,15 +1759,16 @@ display:block!important;
 </div>
 <ul>
 <li><p>De 1 a 3 el RMSE cae de golpe (717, 481, 444) y de 3 a 6 es una meseta (439 a 444): <code>select_best()</code> da 4, y <code>last_fit()</code> <strong>430</strong> en prueba</p></li>
-<li><p>Con <code>min_n</code> = 1, 5, 20 y 50 salen 427, 431, 468 y 523 en prueba: con un <code>min_n</code> mayor se deja de partir antes, los árboles son más pequeños y el bosque predice peor</p></li>
+<li><p>Con <code>min_n</code> = 1, 5, 20 y 50 salen 426, 430, 467 y 523 en prueba: con un <code>min_n</code> mayor se deja de partir antes, los árboles son más pequeños y el bosque predice peor</p></li>
 </ul>
 </div></div>
 </div>
 <aside class="notes">
 <ul>
+<li><code>trees</code> (23-nov, comprobado por Fable en las fuentes): ISLR2 §8.2.1-8.2.2 («B is not a critical parameter… will not lead to overfitting»; «sufficiently large for the error rate to have settled down»); tmwr §12.2 (el número de árboles del bosque no necesita afinarse, solo ser grande); en boosting sí (ISLR2 §8.2.3, tres «tuning parameters», B el primero). parsnip lo lista como «tuning parameter» del motor, pero ninguna fuente recomienda afinarlo en el bosque. <code>mtry</code> por defecto: <code>ranger</code>, raíz de p redondeada hacia abajo en los dos modos; <code>randomForest</code> e ISLR2 §8.3.3, p/3 en regresión.</li>
 <li><code>mtry</code>, a diferencia de <code>penalty</code> en el Tema 07, no va en logaritmos: <code>grid_regular(mtry(range = c(1, 6)), levels = 6)</code> da 1, 2, …, 6 (comprobado el 23-nov-2026). 10 bloques × 6 valores × 500 árboles en 7 s.</li>
 <li>En <code>churn</code>, AUC de validación cruzada 0,724 con <code>mtry</code> = 1 y 0,690 con bagging.</li>
-<li>Verificado el 16-nov-2026: validación cruzada 717 (1), 481 (2), 444 (3), 439 (4), 441 (5), 442 (6), errores estándar 13 a 21; <code>last_fit()</code> con mtry 4: RMSE 430 y MAE 333. <code>min_n</code> con mtry 4 y 500 árboles, en prueba: 427 (1), 431 (5), 468 (20), 523 (50). <code>ranger</code> pone <code>min_n</code> = 5 en regresión y 1 en clasificación por defecto.</li>
+<li>Verificado el 16-nov-2026: validación cruzada 717 (1), 481 (2), 444 (3), 439 (4), 441 (5), 442 (6), errores estándar 13 a 21; <code>last_fit()</code> con mtry 4: RMSE 430 y MAE 333. <code>min_n</code> con mtry 4 y 500 árboles, en prueba (<code>set.seed(12345678)</code> antes de cada <code>last_fit()</code>, 24-nov-2026): 426 (1), 430 (5), 467 (20), 523 (50). <code>ranger</code> pone <code>min_n</code> = 5 en regresión y 1 en clasificación por defecto.</li>
 <li>Con varios hiperparámetros a la vez (<code>mtry</code> y <code>min_n</code>), <code>grid_space_filling()</code> (reparte un número fijo de puntos por todo el espacio; en el Tema 07 solo salió en notas) o <code>grid_regular(levels = c(6, 3))</code>.</li>
 <li><code>set_engine(&quot;ranger&quot;, seed = 1)</code> fija la semilla dentro del motor; <code>set.seed()</code> antes hace lo mismo y es lo que ya saben.</li>
 </ul>
@@ -1786,7 +1791,7 @@ display:block!important;
 <li><p>Un bosque de 500 árboles no se puede dibujar; lo que se aprende de él es la <strong>importancia</strong> de cada variable: cuánto la usa el algoritmo para predecir</p></li>
 <li><p>Dos formas de medirla:</p>
 <ul>
-<li><strong>por permutación</strong>: se barajan los valores de <span class="math inline">\(X_j\)</span> y se mira cuánto empeora la predicción; si no empeora, el bosque no la usaba</li>
+<li><strong>por permutación</strong>: se barajan los valores de <span class="math inline">\(X_j\)</span> y se mira cuánto empeora la predicción; si apenas empeora, la variable aporta poco a la predicción</li>
 <li><strong>por impureza</strong>: la de un árbol, sumada en todos los árboles del bosque</li>
 </ul></li>
 </ul>
@@ -1818,8 +1823,7 @@ display:block!important;
 </div>
 </div>
 <ul>
-<li><p><code>mujer</code>, <code>renta</code> y <code>edad</code> mandan; <code>descuento</code> queda la <strong>última</strong>, aunque en el Tema 05 su efecto era +500 euros</p></li>
-<li><p>El descuento lo tiene el 15 % de los clientes, los de renta baja: un corte por <code>renta</code> ya recoge casi todo lo que aporta a la predicción</p></li>
+<li><code>mujer</code>, <code>renta</code> y <code>edad</code> mandan; <code>descuento</code> queda la <strong>última</strong></li>
 </ul>
 </div></div>
 </div>
@@ -1850,7 +1854,8 @@ display:block!important;
 <li><p>El bosque gana predicción a costa de <strong>interpretación</strong></p></li>
 <li><p>La importancia dice qué usa el algoritmo para predecir, y nada sobre qué pasaría al cambiar la variable: predecir y estimar efectos son preguntas distintas</p>
 <ul>
-<li>el descuento apenas importa para predecir, porque <code>renta</code> ya lleva su información; pero tiene efecto: +500 euros en el Tema 05</li>
+<li>el descuento queda el último en importancia: lo tiene el 15 % de los clientes, los de renta baja, y un corte por <code>renta</code> ya recoge casi todo lo que aporta a la predicción</li>
+<li>pero tiene efecto: +500 euros en el Tema 05</li>
 </ul></li>
 <li><p>Para <strong>interpretar</strong>, como en el Tema 05, hacen falta otras cosas:</p>
 <ul>
@@ -1909,7 +1914,7 @@ display:block!important;
 </ul></li>
 <li>la predicción final es <span class="math inline">\(\hat f_B(x) = \bar y + \eta \sum_{b=1}^{B} g_b(x)\)</span></li>
 </ol></li>
-<li><span class="math inline">\(\eta\)</span> es el freno, normalmente entre 0,01 y 0,3: cada árbol corrige solo una parte del error, y el modelo aprende <strong>despacio</strong>
+<li><span class="math inline">\(\eta\)</span> es el freno, normalmente entre 0,01 y 0,1: cada árbol corrige solo una parte del error, y el modelo aprende <strong>despacio</strong>
 <ul>
 <li>como añadir términos a una regresión para explicar lo que dejó sin explicar</li>
 </ul></li>
@@ -1952,7 +1957,7 @@ display:block!important;
 <span id="cb6-2"><a aria-label="2"></a>                       <span class="at">learn_rate =</span> <span class="fl">0.1</span>) <span class="sc">|&gt;</span></span>
 <span id="cb6-3"><a aria-label="3"></a>  <span class="fu">set_engine</span>(<span class="st">&quot;xgboost&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">set_mode</span>(<span class="st">&quot;regression&quot;</span>)</span>
 <span id="cb6-4"><a aria-label="4"></a>flujo_x <span class="ot">&lt;-</span> <span class="fu">workflow</span>(ventas <span class="sc">~</span> ., boosting)</span>
-<span id="cb6-5"><a aria-label="5"></a>rejilla_x <span class="ot">&lt;-</span> <span class="fu">grid_regular</span>(</span>
+<span id="cb6-5"><a aria-label="5"></a>rejilla_x <span class="ot">&lt;-</span> <span class="fu">grid_regular</span>(  <span class="co"># rango en log10: de 10^1 a 10^3,2</span></span>
 <span id="cb6-6"><a aria-label="6"></a>  <span class="fu">trees</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">3.2</span>), <span class="at">trans =</span> <span class="fu">transform_log10</span>()),</span>
 <span id="cb6-7"><a aria-label="7"></a>  <span class="at">levels =</span> <span class="dv">8</span>)  <span class="co"># de 10 a 1.584</span></span>
 <span id="cb6-8"><a aria-label="8"></a>ajuste_x <span class="ot">&lt;-</span> <span class="fu">tune_grid</span>(flujo_x, <span class="at">resamples =</span> bloques,</span>
@@ -2023,7 +2028,7 @@ display:block!important;
 </tr>
 <tr class="odd">
 <td style="text-align: right;">0,1</td>
-<td style="text-align: right;"><strong>390</strong></td>
+<td style="text-align: right;"><strong>391</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">0,3</td>
@@ -2053,7 +2058,7 @@ display:block!important;
 </tr>
 <tr class="even">
 <td style="text-align: right;">2</td>
-<td style="text-align: right;"><strong>390</strong></td>
+<td style="text-align: right;"><strong>391</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">3</td>
@@ -2085,7 +2090,7 @@ display:block!important;
 </div>
 <aside class="notes">
 <ul>
-<li>Verificado el 23-nov-2026 con la tienda (10 bloques, <code>xgboost</code>, 180 árboles): <code>learn_rate</code> 646 (0,01), 467 (0,0316), 390 (0,1), 410 (0,316), 482 (1), con <code>grid_regular(learn_rate(range = c(-2, 0)), levels = 5)</code> (<code>learn_rate()</code> ya va en logaritmos); <code>tree_depth</code> 545 (1), 390 (2), 409 (3), 421 (4). En prueba, <span class="math inline">\(\eta\)</span> = 0,01: 682 con 180 árboles, 401 con 1.000 y 351 con 3.000; <span class="math inline">\(\eta\)</span> = 1: 473 con 10, 425 con 100, 440 con 180, 451 con 1.000 y 453 con 3.000. Profundidad 8 (16-nov): 471.</li>
+<li>Verificado el 23-nov-2026 con la tienda (10 bloques, <code>xgboost</code>, 180 árboles): <code>learn_rate</code> 646 (0,01), 467 (0,0316), 391 (0,1; 390,5 frente a 390,6 en la rejilla de <code>trees</code>, ruido numérico de <code>xgboost</code>), 410 (0,316), 482 (1), con <code>grid_regular(learn_rate(range = c(-2, 0)), levels = 5)</code> (<code>learn_rate()</code> ya va en logaritmos); <code>tree_depth</code> 545 (1), 391 (2), 409 (3), 421 (4). En prueba, <span class="math inline">\(\eta\)</span> = 0,01: 682 con 180 árboles, 401 con 1.000 y 351 con 3.000; <span class="math inline">\(\eta\)</span> = 1: 473 con 10, 425 con 100, 440 con 180, 451 con 1.000 y 453 con 3.000. Profundidad 8 (16-nov): 471.</li>
 <li>En <code>churn</code>, 200 árboles: <span class="math inline">\(\eta\)</span> 0,698 (0,01), 0,718 (0,03), 0,708 (0,1), 0,699 (0,3), 0,710 (1); profundidad 0,732 (1), 0,708 (2), 0,684 (3), 0,702 (8). Ahí gana el tocón: las señales de abandono son casi aditivas, y con 479 clientes cualquier interacción es ruido. La profundidad no se decide a priori.</li>
 <li>ISLR §8.2.3: «slow learners»; ESL §10.12 (<em>shrinkage</em>).</li>
 </ul>
@@ -2104,11 +2109,11 @@ display:block!important;
 <section id="práctica-en-clase-3-boosting" class="slide level2 scrollable">
 <h2>PRÁCTICA en clase (3): boosting</h2>
 <div style="font-size: 84%;">
-<p>Dirección quiere saber si el boosting mejora al bosque en la predicción del gasto, con <code>boost_tree()</code> y sus tres hiperparámetros afinados. Con vuestro DNI como semilla, <code>part</code> y <code>bloques</code>:</p>
+<p>Dirección quiere saber si el boosting mejora al bosque en la predicción del gasto. Con vuestro DNI como semilla, <code>part</code> y <code>bloques</code>:</p>
 <ol type="1">
 <li><p>Afinad <code>trees</code> con la rejilla de la transparencia. ¿Cuál es el mejor valor? ¿Qué pasa con 1.584 árboles? Comparadlo con lo que pasaba con <code>trees</code> en el bosque de la práctica 2. <span class="ia" aria-hidden="true">Añadid <code>tree_method = &quot;exact&quot;</code> en <code>set_engine()</code>.</span></p></li>
 <li><p>Con el mejor <code>trees</code>, ajustad el boosting con <code>learn_rate</code> = 0,01 y medid su RMSE de prueba. Repetidlo con 1.000 y 3.000 árboles, y después con <code>learn_rate</code> = 1. ¿Qué pasa en cada caso al aumentar los árboles, y por qué?</p></li>
-<li><p>Evaluad en prueba el mejor boosting con <code>last_fit()</code> y ponedlo al lado del árbol podado, del bosque y del LASSO del Tema 07 (340 euros con esta semilla). ¿Por qué el LASSO sigue ganando en la tienda, y en qué datos esperaríais lo contrario?</p></li>
+<li><p>Evaluad en prueba el mejor boosting con <code>last_fit()</code> y ponedlo al lado del árbol podado, del bosque y del LASSO del Tema 07 (340 euros con la semilla 12345678; con la vuestra, el RMSE de <code>final</code> del Tema 07). ¿Cuál gana en la tienda, y por qué? ¿En qué datos esperaríais lo contrario?</p></li>
 </ol>
 </div>
 <div class="callout callout-note callout-titled callout-style-default">
@@ -2162,19 +2167,20 @@ display:block!important;
 </table>
 </div><div class="column" style="width:58%;">
 <ul>
-<li>Para <strong>predecir</strong>, el LASSO gana por poco: le dimos una forma muy flexible (polinomios, escalones, interacciones) y eligió dentro de ella
+<li><p>Para <strong>predecir</strong>, el LASSO gana por poco: le dimos una forma muy flexible (polinomios, escalones, interacciones) y eligió dentro de ella</p>
 <ul>
-<li>aquí esa aproximación funciona; en otros datos, no</li>
+<li>aquí esa aproximación funciona; en otros datos puede no funcionar</li>
 <li>sin escribir ninguna forma, el boosting queda a 18 euros</li>
 </ul></li>
-<li>Para <strong>interpretar</strong>, el boosting está como el bosque: importancia, y después un modelo que se lea</li>
+<li><p>Para <strong>interpretar</strong>, el boosting está como el bosque: importancia, y después un modelo que se lea</p></li>
+<li><p>Los mismos modelos en Python, en el <a href="Tema08anexo.html#los-mismos-modelos-en-python">anexo</a></p></li>
 </ul>
 </div></div>
 </div>
 <aside class="notes">
 <ul>
-<li>Todas las cifras en los mismos 81 clientes de prueba de la tienda y 121 de <code>churn</code>, con la partición y los bloques del Tema 07. Verificadas el 16-nov-2026. Lineal: <code>last_fit(workflow(ventas ~ ., linear_reg()))</code>, 755. LASSO: 339,6 (Tema 07). Árbol podado: 530. Bosque: mtry 4 por VC, 430. Boosting: 180 árboles, 358. <code>churn</code>: logit <code>glm</code> 0,747; LASSO 0,749 (Tema 07); árbol con 3 hojas 0,705; bosque mtry 1 por VC (500 árboles) 0,727 (el bagging, 0,743); boosting 87 árboles por VC 0,774 (0,722 de validación cruzada).</li>
-<li>Honestidad con el resultado: con 404 y 600 observaciones y pocas variables, la ventaja de los métodos de árboles es modesta, y en la tienda el modelo paramétrico bien especificado gana. Los árboles rinden cuando hay muchas variables, interacciones desconocidas y muchas observaciones. Con <code>churn</code> el AUC de prueba tiene un error estándar de unos 0,04 (121 clientes): 0,774 frente a 0,749 es sugerente, sin ser concluyente, y el orden del bosque y el bagging se invierte entre validación cruzada y prueba.</li>
+<li>Todas las cifras en los mismos 81 clientes de prueba de la tienda y 121 de <code>churn</code>, con la partición y los bloques del Tema 07. Verificadas el 16-nov-2026. Lineal: <code>last_fit(workflow(ventas ~ ., linear_reg()))</code>, 755. LASSO: 339,6 (Tema 07). Árbol podado: 530. Bosque: mtry 4 por VC, 430. Boosting: 180 árboles, 358. <code>churn</code>: logit <code>glm</code> 0,747; LASSO 0,749 (Tema 07); árbol con 3 hojas 0,705; bosque mtry 1 por VC (500 árboles) 0,727 (el bagging, 0,743); boosting 87 árboles y profundidad 1, elegidos por VC, 0,785 (0,740 de validación cruzada; con profundidad 2, 0,774).</li>
+<li>Honestidad con el resultado: con 404 y 600 observaciones y pocas variables, la ventaja de los métodos de árboles es modesta, y en la tienda el modelo paramétrico bien especificado gana. Los árboles rinden cuando hay muchas variables, interacciones desconocidas y muchas observaciones. Con <code>churn</code> el AUC de prueba tiene un error estándar de unos 0,04 (121 clientes): 0,785 frente a 0,749 es sugerente, sin ser concluyente, y el orden del bosque y el bagging se invierte entre validación cruzada y prueba.</li>
 <li>La comparación es honesta porque todos los hiperparámetros se eligieron con los bloques y la prueba se usó una vez por modelo. Si se comparan cinco modelos en la misma prueba y se elige el mejor, ese número vuelve a ser algo optimista (sesgo de selección): con más modelos, la validación cruzada anidada que menciona el anexo del Tema 07.</li>
 </ul>
 <style type="text/css">
@@ -2196,7 +2202,7 @@ display:block!important;
 <ol type="1">
 <li><p>Afinad <code>mtry</code> de un bosque de 500 árboles con <code>grid_regular(mtry(range = c(1, 21)), levels = 7)</code>. Comparad el mejor <code>mtry</code> con el de la tienda y explicad la diferencia con las variables de cada base de datos. ¿Es grande la ventaja frente al bagging, comparada con el error estándar?</p></li>
 <li><p>Afinad por AUC un boosting con <code>tree_depth = 2</code>, <code>learn_rate = 0.1</code> y <code>trees</code> en la rejilla de la transparencia, con una receta <code>churn ~ .</code> y <code>step_dummy(all_nominal_predictors())</code>. Repetidlo con <code>tree_depth = 1</code>, comparad y explicad qué dice el resultado sobre las señales de abandono. <span class="ia" aria-hidden="true">Añadid <code>step_YeoJohnson(all_numeric_predictors())</code> a la receta.</span></p></li>
-<li><p>Evaluad en prueba con <code>last_fit()</code> el bosque y el boosting, y ponedlos en una tabla con el LASSO del Tema 07 (AUC 0,749 con esta semilla) y con el árbol podado. ¿Con cuál se queda la empresa? ¿Qué pierde respecto al LASSO, y qué cautela añade el tamaño de la prueba?</p></li>
+<li><p>Evaluad en prueba con <code>last_fit()</code> el mejor bosque y el mejor boosting, y ponedlos en una tabla con el LASSO del Tema 07 (AUC 0,749 con la semilla 12345678) y con un árbol podado (afinad <code>cost_complexity</code> por AUC, como en la práctica 1). ¿Con cuál se queda la empresa? ¿Qué pierde respecto al LASSO, y qué cautela añade el tamaño de la prueba?</p></li>
 </ol>
 </div>
 <div class="callout callout-note callout-titled callout-style-default">
